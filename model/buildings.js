@@ -17,7 +17,7 @@ class Building {
     // уровень от 0 до 3 определяет текущие значения башни, нужно их подтягивать откуда-то и как-то - из параметров
     this.level = parameters.get_tower_level[building.Level]; // текущий уровень башни
   }
-  add_defence (self, defence_bonus) {
+  add_defence = (defence_bonus) => {
     this.DefenseBonus += defence_bonus;
   }
 }

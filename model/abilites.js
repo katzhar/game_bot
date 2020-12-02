@@ -1,4 +1,6 @@
 
+
+
 const AbilityType = [
 // Типы абилок применяемых в игре
   'Speed_up',            // ускорение
@@ -79,6 +81,5 @@ constructor(params) {
   this.Ability = AbilityType[params.Ability]
   // начальный цвет цели
   this.TargetColor = params["TargetColor"];
-
 }
 }

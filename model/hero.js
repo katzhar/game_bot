@@ -13,7 +13,7 @@ class Hero {
   player_color = 0;
 
   constructor(game_parameters) {
-    if (game_parameters["HeroType"] !== self.hero_type.value)
+    if (game_parameters["HeroType"] !== this.hero_type.value)
       new Error('Hero type in game parameters init hero type')
   }
 
@@ -35,7 +35,7 @@ class Hero {
       "FromId": source_tower_id,
       "ToId": target_tower_id,
       "Part": part,
-      "PlayerColor": self.player_color,
+      "PlayerColor": this.player_color,
       "Type": 1
     }
     return json.stringify(action);
@@ -52,7 +52,7 @@ class Hero {
       "FirstTowerId": 0,
       "SecondTowerId": 0,
       "AbilityId": AbilityType.Speed_up.value,
-      "PlayerColor": self.player_color,
+      "PlayerColor": this.player_color,
       "Type": 2
     }
     return JSON.stringify(action);
@@ -65,7 +65,7 @@ class Hero {
     */
     const action = {
       "TowerId": tower_id,
-      "PlayerColor": self.player_color,
+      "PlayerColor": this.player_color,
       "Type": 4
     }
     return json.stringify(action);
@@ -87,7 +87,7 @@ class Mag extends Hero {
       "FirstTowerId": enemy_tower_id,
       "SecondTowerId": 0,
       "AbilityId": AbilityType.Plague.value,
-      "PlayerColor": self.player_color,
+      "PlayerColor": this.player_color,
       "Type": 2
     }
     return json.stringify(action);
@@ -105,7 +105,7 @@ class Mag extends Hero {
       "FirstTowerId": enemy_tower_id,
       "SecondTowerId": my_tower_id,
       "AbilityId": AbilityType.Build_exchange.value,
-      "PlayerColor": self.player_color,
+      "PlayerColor": this.player_color,
       "Type": 2
     }
     return json.stringify(action);
@@ -127,7 +127,7 @@ class Warrior extends Hero {
       "FirstTowerId": 0,
       "SecondTowerId": 0,
       "AbilityId": AbilityType.Berserk.value,
-      "PlayerColor": self.player_color,
+      "PlayerColor": this.player_color,
       "Type": 2
     }
     return json.stringify(action);
@@ -144,7 +144,7 @@ class Warrior extends Hero {
       "FirstTowerId": enemy_tower_id,
       "SecondTowerId": 0,
       "AbilityId": AbilityType.Growl.value,
-      "PlayerColor": self.player_color,
+      "PlayerColor": this.player_color,
       "Type": 2
     }
     return json.stringify(action);
@@ -166,7 +166,7 @@ const action = {
   "FirstTowerId": 0,
   "SecondTowerId": 0,
   "AbilityId": AbilityType.Area_damage.value,
-  "PlayerColor": self.player_color,
+  "PlayerColor": this.player_color,
   "Type": 2
 }
 return json.stringify(action);
@@ -183,7 +183,7 @@ const action = {
   "FirstTowerId": my_tower_id,
   "SecondTowerId": 0,
   "AbilityId": AbilityType.Armor.value,
-  "PlayerColor": self.player_color,
+  "PlayerColor": this.player_color,
   "Type": 2
 }
 return json.stringify(action);

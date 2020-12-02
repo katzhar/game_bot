@@ -27,7 +27,7 @@ class Map {
     if (from_id === to_id)
       return 0;
     // массив точек в векторе__get_waypoints
-    let waypoints = this.(from_id, to_id)
+    let waypoints = this.__get_waypoints(from_id, to_id)
     if (waypoints === null)
       return 0
     let result = 0
@@ -76,14 +76,14 @@ class Map {
     // Сортирует массив towers по расстояние до from_id
     let distances = [];
     for (let tower in towers)
-      distances.append({
+      distances =[...distances,{
         "tower": tower,
         "distance": this.towers_distance(from_id, tower.id)
-      })
+      }]
     // distances.sort(key=lambda b: b["distance"])
     let result = []
     for ( let item in distances)
-      result.append(item["tower"]);
+      result = [...result, item["tower"]]
     return result;
   }
   get_tower_location = (tower_id) => {
