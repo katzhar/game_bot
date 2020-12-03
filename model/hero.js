@@ -1,13 +1,12 @@
-
-const HeroType = {
-/* Типв героев */
+export const HeroType = {
+  /* Типв героев */
   Nobody: 0,         // Не определен
   Warrior: 1,        // Воин
   BlackSmith: 2,     // Рунный кузнец
   Mag: 3,            // Маг
 }
 
-class Hero {
+export class Hero {
   /*Общий класс для всех героев. Содержит общий набор возможностей*/
   hero_type = HeroType.Nobody;
   player_color = 0;
@@ -22,8 +21,8 @@ class Hero {
   team_id - идентификатор команды для командной игры
   player_color - цвет команды игрока
   */
-  // Проверка соответствия типа героя
 
+  // Проверка соответствия типа героя
   move = (source_tower_id, target_tower_id, part) => {
     /*
  Передвижение войск
@@ -36,16 +35,14 @@ class Hero {
       "ToId": target_tower_id,
       "Part": part,
       "PlayerColor": this.player_color,
-      "Type": 1
+      "Type": 1,
     }
     return json.stringify(action);
   }
 
   speed_up = (location) => {
-    /*
-    Ускорение союзных войск
-    location - координата точки применения
-    */
+    /*Ускорение союзных войск
+    location - координата точки применения */
     const action = {
       "X": location["x"],
       "Y": location["y"],
@@ -53,7 +50,7 @@ class Hero {
       "SecondTowerId": 0,
       "AbilityId": AbilityType.Speed_up.value,
       "PlayerColor": this.player_color,
-      "Type": 2
+      "Type": 2,
     }
     return JSON.stringify(action);
   }
@@ -66,13 +63,13 @@ class Hero {
     const action = {
       "TowerId": tower_id,
       "PlayerColor": this.player_color,
-      "Type": 4
+      "Type": 4,
     }
     return json.stringify(action);
   }
 }
 
-class Mag extends Hero {
+export class Mag extends Hero {
   /*Возможности героя Маг*/
   hero_type = HeroType.Mag;
 
@@ -88,7 +85,7 @@ class Mag extends Hero {
       "SecondTowerId": 0,
       "AbilityId": AbilityType.Plague.value,
       "PlayerColor": this.player_color,
-      "Type": 2
+      "Type": 2,
     }
     return json.stringify(action);
   }
@@ -106,13 +103,13 @@ class Mag extends Hero {
       "SecondTowerId": my_tower_id,
       "AbilityId": AbilityType.Build_exchange.value,
       "PlayerColor": this.player_color,
-      "Type": 2
+      "Type": 2,
     }
     return json.stringify(action);
   }
 }
 
-class Warrior extends Hero {
+export class Warrior extends Hero {
   /* Возможности героя Воин */
   hero_type = HeroType.Warrior
 
@@ -128,7 +125,7 @@ class Warrior extends Hero {
       "SecondTowerId": 0,
       "AbilityId": AbilityType.Berserk.value,
       "PlayerColor": this.player_color,
-      "Type": 2
+      "Type": 2,
     }
     return json.stringify(action);
   }
@@ -145,47 +142,47 @@ class Warrior extends Hero {
       "SecondTowerId": 0,
       "AbilityId": AbilityType.Growl.value,
       "PlayerColor": this.player_color,
-      "Type": 2
+      "Type": 2,
     }
     return json.stringify(action);
   }
 }
 
-class BlackSmith extends Hero {
-/* Возможности героя Кузнец */
-hero_type = HeroType.BlackSmith;
+export class BlackSmith extends Hero {
+  /* Возможности героя Кузнец */
+  hero_type = HeroType.BlackSmith;
 
-area_damage = (location) => {
-/*
-Урон по площади. Не действует на берсерков. Начинает дейстовать через секунду.
-location - координаты x, y
-*/
-const action = {
-  "X": location["x"],
-  "Y": location["y"],
-  "FirstTowerId": 0,
-  "SecondTowerId": 0,
-  "AbilityId": AbilityType.Area_damage.value,
-  "PlayerColor": this.player_color,
-  "Type": 2
-}
-return json.stringify(action);
-}
+  area_damage = (location) => {
+    /*
+    Урон по площади. Не действует на берсерков. Начинает дейстовать через секунду.
+    location - координаты x, y
+    */
+    const action = {
+      "X": location["x"],
+      "Y": location["y"],
+      "FirstTowerId": 0,
+      "SecondTowerId": 0,
+      "AbilityId": AbilityType.Area_damage.value,
+      "PlayerColor": this.player_color,
+      "Type": 2,
+    }
+    return json.stringify(action);
+  }
 
-armor = (my_tower_id) => {
-/*
-Защита своей башни (или союзника)
-my_tower_id - идентификатор целевой башни
-*/
-const action = {
-  "X": 0,
-  "Y": 0,
-  "FirstTowerId": my_tower_id,
-  "SecondTowerId": 0,
-  "AbilityId": AbilityType.Armor.value,
-  "PlayerColor": this.player_color,
-  "Type": 2
-}
-return json.stringify(action);
-}
+  armor = (my_tower_id) => {
+    /*
+    Защита своей башни (или союзника)
+    my_tower_id - идентификатор целевой башни
+    */
+    const action = {
+      "X": 0,
+      "Y": 0,
+      "FirstTowerId": my_tower_id,
+      "SecondTowerId": 0,
+      "AbilityId": AbilityType.Armor.value,
+      "PlayerColor": this.player_color,
+      "Type": 2,
+    }
+    return json.stringify(action);
+  }
 }

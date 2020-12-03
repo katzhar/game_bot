@@ -1,16 +1,13 @@
-
-
-class Way {
+export class Way {
   // Путь отряда
-  constructor(total, traveled)
-  {
+  constructor(total, traveled) {
     this.total = total; // какой путь нужно пройти
     this.traveled = traveled;  // сколько уже прошел
     this.left = total - traveled;  // сколько осталось
   }
 }
 
-class Squad {
+export class Squad {
   //Состояние отрядов. Передается в игровом стейте
   constructor(squad) {
     this.id = squad["Id"];  // идентификатор отряда
@@ -25,15 +22,16 @@ class Squad {
   }
 }
 
-class CreepParameters{
-//Класс предоставляющий праматеры крипов по умолчанию, которые передаются в игровых параметрах при инициализации игры
-constructor(params) {
-  //скорость в единицах расстояния карты
-  this.speed = params.Speed;
-  // время между шеренгами в тиках
-  this.wave_delay = params.WaveDelay;
-  // максимальное количество крипов в шеренге
-  this.max_wave_creeps_count = params.MaxWaveCreepsCount;
-  // интервал между крипами в шеренге
-  this.creep_in_wave_distance = params.CreepInWaveDistance;
-}}
+export class CreepParameters {
+  //Класс предоставляющий праматеры крипов по умолчанию, которые передаются в игровых параметрах при инициализации игры
+  constructor(params) {
+    //скорость в единицах расстояния карты
+    this.speed = params.Speed;
+    // время между шеренгами в тиках
+    this.wave_delay = params.WaveDelay;
+    // максимальное количество крипов в шеренге
+    this.max_wave_creeps_count = params.MaxWaveCreepsCount;
+    // интервал между крипами в шеренге
+    this.creep_in_wave_distance = params.CreepInWaveDistance;
+  }
+}

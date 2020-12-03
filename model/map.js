@@ -1,7 +1,6 @@
-
-class Map {
+export class Map {
   /* Класс предоставляяющий вспомогательные методы работы с картой */
-  constructor (game) {
+  constructor(game) {
     this.map = json.parse(game["ResponseGameParametersArgs"]["Map"])
     this.links = this.map["Links"];
     //Вычисляем и добавляем расстояние между башнями
@@ -65,7 +64,7 @@ class Map {
         let current_part = current_path / part_of_path
         let res = {
           "x": waypoints[i]["x"] + (waypoints[i + 1]["x"] - waypoints[i]["x"]) * current_part,
-          "y": waypoints[i]["y"] + (waypoints[i + 1]["y"] - waypoints[i]["y"]) * current_part
+          "y": waypoints[i]["y"] + (waypoints[i + 1]["y"] - waypoints[i]["y"]) * current_part,
         }
         return res;
       }
@@ -76,13 +75,21 @@ class Map {
     // Сортирует массив towers по расстояние до from_id
     let distances = [];
     for (let tower in towers)
-      distances =[...distances,{
-        "tower": tower,
-        "distance": this.towers_distance(from_id, tower.id)
+      distances = [...distances, {
+        tower,
+        "distance": this.towers_distance(from_id, tower.id),
       }]
-    // distances.sort(key=lambda b: b["distance"])
+    distances.sort(function (a, b) {
+      if (a.distance > b.distance) {
+        return 1;
+      }
+      if (a.distance < b.distance) {
+        return -1;
+      }
+      return 0;
+    });
     let result = []
-    for ( let item in distances)
+    for (let item in distances)
       result = [...result, item["tower"]]
     return result;
   }
@@ -92,7 +99,7 @@ class Map {
       if (link["From"] === tower_id)
         return {
           "x": link["Vectors"][0]["x"],
-          "y": link["Vectors"][0]["y"]
-      }
+          "y": link["Vectors"][0]["y"],
+        }
   }
 }

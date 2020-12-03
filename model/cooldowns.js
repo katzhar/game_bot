@@ -1,5 +1,6 @@
-class Cooldown {
-  // Фриз на применение абилок
+export class Cooldown {
+  /* Фриз на применение абилок*/
+
   constructor(cooldown) {
     this.ability = AbilityType[cooldown.Ability];  // тип абилки
     this.player_color = cooldown.PlayerColor;  // кто применил
