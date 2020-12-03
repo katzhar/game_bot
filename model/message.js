@@ -8,7 +8,7 @@ export class Message {
     let msg_gzip = Base64.decode(msg_base64);
     let msg_bytes = ungzip(msg_gzip);
     let msg_string = msg_bytes.decode();
-    this.json = json.parse(msg_string);
+    this.json = JSON.parse(msg_string);
     this.msg_type = this.json["MsgType"];
     if (this.json.GameId)
       this.game_id = this.json["GameId"];
@@ -17,13 +17,13 @@ export class Message {
   }
 
   send_message = () => {
-    let msg_string = json.stringify(this.json);
+    let msg_string = JSON.stringify(this.json);
     let msg_gzip = gzip(msg_string.encode());
     let msg_base64 = Base64.encode(msg_gzip);
     return msg_base64;
   }
   to_string = () => {
-    return escape(json.stringify(this.json));
+    return escape(JSON.stringify(this.json));
   }
 }
 

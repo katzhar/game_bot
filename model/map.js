@@ -1,7 +1,7 @@
 export class Map {
   /* Класс предоставляяющий вспомогательные методы работы с картой */
   constructor(game) {
-    this.map = json.parse(game["ResponseGameParametersArgs"]["Map"])
+    this.map = JSON.parse(game["ResponseGameParametersArgs"]["Map"])
     this.links = this.map["Links"];
     //Вычисляем и добавляем расстояние между башнями
     for (let link in this.links)

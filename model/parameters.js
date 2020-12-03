@@ -5,7 +5,7 @@ import {CreepParameters} from './squads';
 class Parameters {
   // Класс, предоставляющий доступ к параметрам игры
   constructor(game) {
-    let parameters = json.parse(game["ResponseGameParametersArgs"]["Parameters"])
+    let parameters = JSON.parse(game["ResponseGameParametersArgs"]["Parameters"])
     // максимальная продолжительность игры в тиках
     this.duration = parameters["Duration"]
     // защита башен по умолчанию
