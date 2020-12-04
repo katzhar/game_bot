@@ -7,7 +7,7 @@ class State {
   // Класс, предоставляющий доступ к состоянию игры
 
   constructor(state, teams, parameters) {
-    this.state = json.Parse(state);
+    this.state = JSON.parse(state);
     this.__player_color = teams.my_her.player_color;
     this.__my_team_players_color = teams.my_team_players_color();
 
