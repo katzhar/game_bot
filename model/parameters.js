@@ -2,7 +2,7 @@ import {AbilityParameters, GameEventParameters} from './abilites';
 import {TowerLevelParameters, ForgeParameters} from './buildings';
 import {CreepParameters} from './squads';
 
-class Parameters {
+export class Parameters {
   // Класс, предоставляющий доступ к параметрам игры
   constructor(game) {
     let parameters = JSON.parse(game["ResponseGameParametersArgs"]["Parameters"])

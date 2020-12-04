@@ -4,8 +4,9 @@ export class Map {
     this.map = JSON.parse(game["ResponseGameParametersArgs"]["Map"])
     this.links = this.map["Links"];
     //Вычисляем и добавляем расстояние между башнями
-    for (let link in this.links)
+    this.links.map((link) => {
       link["Distance"] = this.__towers_distance(link["From"], link["To"])
+    })
   }
 
   towers_distance = (from_id, to_id) => {
@@ -55,7 +56,6 @@ export class Map {
     distance = 0
     if (from_id > to_id)
       waypoints.reverse();
-    //надо глянуть как работвет reverse в питоне
     for (let i = 0; i < waypoints.length - 1; i++) {
       part_of_path = this.points_distance(waypoints[i], waypoints[i + 1])
       distance += part_of_path;

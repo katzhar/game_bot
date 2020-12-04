@@ -60,9 +60,10 @@ export class Teams {
 
   __get_team_id = (player_color) => {
     /* Возвращает идентификатор команды бота игрока player_color */
-    for (let team in this.teams)
+    for (let team in this.teams) {
       for (let player in team["Players"])
         if (player["PlayerColor"] === player_color)
           return team["TeamId"]
+    }
   }
 }

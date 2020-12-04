@@ -1,7 +1,7 @@
 {
   "name": "botNode",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "bot.js",
   "license": "MIT",
   "dependencies": {
     "gzip-js": "^0.3.2",
