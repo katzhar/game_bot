@@ -1,5 +1,5 @@
 export const HeroType = {
-  /* Типв героев */
+  /* Типы героев */
   Nobody: 0,         // Не определен
   Warrior: 1,        // Воин
   BlackSmith: 2,     // Рунный кузнец

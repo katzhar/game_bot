@@ -32,7 +32,7 @@ export class Teams {
   }
 
   my_team_players_color = () => {
-    /*Возвращает массив цветов игроков команды моего бота */
+    /* Возвращает массив цветов игроков команды моего бота */
     let result = [];
     for (let player in this.my_team)
       result = [...result, player.player_color]

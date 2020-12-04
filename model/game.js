@@ -17,7 +17,7 @@ export class Game {
         this.ssl_context.verify_mode = ssl.CERT_NONE;
         this.loop = asyncio.get_event_loop();
         this.loop.run_until_complete(
-        this.run(websocket_url, user_id, bot_id, game_id); 
+            this.run(websocket_url, user_id, bot_id, game_id));
     }
 
     run = async (websocket_url, user_id, bot_id, game_id) => {
@@ -31,12 +31,12 @@ export class Game {
                 console.log("Connection Error: " + error.toString());
             });
             connection.on('message', (message) => {
-                    console.log(message);
+                console.log(message);
             });
         });
-        // let msg = RequestGame(user_id, bot_id, game_id);
-        // await ws.send(msg.send_message());
-        // await this.handler(ws);
+        let msg = RequestGame(user_id, bot_id, game_id);
+        await ws.send(msg.send_message());
+        await this.handler(ws);
     }
 
     handler = async (ws) => {
@@ -58,7 +58,7 @@ export class Game {
                 this.game_server = input_msg.json["ResponseGameParametersArgs"]["GameServer"];
                 this.game_parameters = input_msg;
                 let player_color = null;
-                
+
                 // Выбор цвета игрока
                 let team_players = this.game_parameters.json["ResponseGameParametersArgs"]["TeamPlayers"];
 
