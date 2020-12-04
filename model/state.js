@@ -3,7 +3,7 @@ import {Building, BuildingType} from './buildings';
 import {Squad} from './squads';
 import {Cooldown} from './cooldowns';
 
-class State {
+export class State {
   // Класс, предоставляющий доступ к состоянию игры
 
   constructor(state, teams, parameters) {
