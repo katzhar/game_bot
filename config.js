@@ -7,6 +7,7 @@ if (typeof require !== 'undefined' && require.main === module) {
     const parser = new ArgumentParser({
         description: 'Runner for ITGod'
     });
+    const args = parser.parse_args();
 
     parser.add_argument('-i', '--ip', { 
         type: 'str',
@@ -40,7 +41,6 @@ if (typeof require !== 'undefined' && require.main === module) {
         help: 'Service argument'
     });
 
-    const args = parser.parse_args();
     // const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE)
 
     // if (args.srv) {
