@@ -1,12 +1,13 @@
-import {Ability, AbilityType} from './abilites';
+import {Ability} from './abilites';
 import {Building, BuildingType} from './buildings';
 import {Squad} from './squads';
 import {Cooldown} from './cooldowns';
 
 class State {
   // Класс, предоставляющий доступ к состоянию игры
+
   constructor(state, teams, parameters) {
-    this.state = json.parse(state);
+    this.state = json.Parse(state);
     this.__player_color = teams.my_her.player_color;
     this.__my_team_players_color = teams.my_team_players_color();
 
@@ -34,104 +35,67 @@ class State {
     this.global_buffs_mask = this.state["State"]["GlobalBuffsMask"];
 
     // получаем список кузниц
-    this.forges = this.buildings.filter((x) => x.type === BuildingType.Forge)
-    this.forges = this.buildings.map((x) => {
-      return x.type === BuildingType.Forge;
-    })
+    this.forges = this.buildings.filter((x) => x.type === BuildingType.Forge);
 
     // добавление бонуса защиты для башен игрока владеющего кузницей
     for (let forg in this.forges) {
       let team_colors = teams.get_team_colors_by_color(forg.player_color);
       if (team_colors.length > 0) {
-        this.buildings.map((x) => {
-          if (x.type !== BuildingType.Forge
-            && team_colors.includes(x.player_color)) {
+        this.buildings = this.buildings.filter((x) => { x.type !== BuildingType.Forge
+            && team_colors.includes(x.player_color)})
+        for (let building in this.buildings)
             building.add_defence(parameters.forge.defence_bonus);
-          }
-        })
+        }
       }
     }
-  }
 
   my_buildings = () => {
     // Мои здания
-    this.buildings.map((x) => {
-      return (x.type === BuildingType.Tower
-        && x.player_color === this.__player_color)
-    })
+    return this.buildings.filter((x) => x.type === BuildingType.Tower
+      && x.player_color === this.__player_color);
   }
 
   enemy_buildings = () => {
     // Вражеские здания
-    this.buildings.map((x) => {
-      if (!this.__my_team_players_color.includes(x.player_color)) {
-        return (x.player_color !== 0
-          && x.type === BuildingType.Tower)
-      }
-    })
-  }
+    return this.buildings.filter((x) => {!this.__my_team_players_color.includes(x.player_color) &&
+    x.player_color !== 0 && x.type === BuildingType.Tower})
+    }
 
   neutral_buildings = () => {
     // Нейтральные здания
-    this.buildings.map((x) => {
-      return (x.player_color === 0
-        && x.type === BuildingType.Tower);
-    })
+    return this.buildings.filter((x) =>
+      x.player_color === 0 && x.type === BuildingType.Tower);
   }
 
   forges_buildings = () => {
     // Кузницы
-    this.buildings.map((x) => {
-      return x.type === BuildingType.Forge;
-    })
+    return this.buildings.filter((x) => x.type === BuildingType.Forge);
   }
 
   my_squads = () => {
     // Мои отряды
-    this.squads.map((x) => {
-      return x.player_color === this.__player_color;
-    })
+    return this.squads.filter((x) => x.player_color === this.__player_color);
   }
 
   enemy_squads = () => {
     // Вражеские отряды
-    this.squads.map((x) => {
-      if (!this.__my_team_players_color.includes(x.player_color)) {
-        return this.squads;
-      }
-    })
+    return this.squads.filter((x) =>
+      !this.__my_team_players_color.includes(x.player_color));
   }
-  enemy_squads = () => {
-    // Вражеские отряды
-    this.squads.filter((x) => {
-      if (!this.__my_team_players_color.includes(x.player_color)) {
-        return this.squads;
-      }
-    })
-  }
-
 
   my_active_abilities = () => {
     // Мои возможности активные в текущем стейте
-    this.abilities.map((x) => {
-      return x.player_color === this.__player_color;
-    })
+    return this.abilities.filter((x) => x.player_color === this.__player_color);
   }
 
   enemy_active_abilities = (ability) => {
     // Активные абилки примененные врагом
     if (ability) {
-      this.abilities.map((x) => {
-        if (!this.__my_team_players_color.includes(x.player_color)) {
-          return x.ability === ability;
-        }
-      })
+      return this.abilities.filter((x) => {!this.__my_team_players_color.includes(x.player_color) &&
+      x.ability === ability});
     } else {
-      this.abilities.map((x) => {
-        if (!this.__my_team_players_color.includes(x.player_color)) {
-          return this.abilities;
-        }
-      })
+      return this.abilities.filter((x) =>
+        !this.__my_team_players_color.includes(x.player_color));
     }
   }
 

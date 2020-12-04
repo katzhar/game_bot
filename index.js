@@ -10,8 +10,6 @@ let rl = readline.createInterface({
   output: process.stdout
 });
 
-
-
 let game = JSON.parse(rl.on('', (line) => line));
 
 const game_map = Map(game)  // карта игрового мира
