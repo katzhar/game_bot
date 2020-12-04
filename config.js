@@ -41,12 +41,11 @@ if (typeof require !== 'undefined' && require.main === module) {
     });
 
     const args = parser.parse_args();
+    // const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE)
 
-    const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE)
-
-    if (args.srv) {
-        Game(process, "{}/game".format(args.ip), null, args.bot, args.game)
-    } else {
-        Game(process, "{}/game".format(args.ip), args.user, args.bot, null)
-    }
+    // if (args.srv) {
+    //     Game(process, "{}/game".format(args.ip), null, args.bot, args.game)
+    // } else {
+    //     Game(process, "{}/game".format(args.ip), args.user, args.bot, null)
+    // }
 }
