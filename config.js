@@ -1,3 +1,4 @@
+import { Game } from '../game';
 const { ArgumentParser } = require('argparse');
 const server_ip = 'wss://gameapi.it-god.ru';
 const user_id = 'USER_ID';
@@ -7,13 +8,12 @@ if (typeof require !== 'undefined' && require.main === module) {
     const parser = new ArgumentParser({
         description: 'Runner for ITGod'
     });
-    const args = parser.parse_args();
 
-    parser.add_argument('-i', '--ip', { 
+    parser.add_argument('-i', '--ip', {
         type: 'str',
         nargs: '?',
         help: 'Server IP',
-        default: server_ip 
+        default: server_ip
     });
 
     parser.add_argument('-b', '--bot', {
@@ -41,11 +41,13 @@ if (typeof require !== 'undefined' && require.main === module) {
         help: 'Service argument'
     });
 
-    // const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE)
+    const args = parser.parse_args();
+    // sockets?
+    // const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE);
 
-    // if (args.srv) {
-    //     Game(process, "{}/game".format(args.ip), null, args.bot, args.game)
-    // } else {
-    //     Game(process, "{}/game".format(args.ip), args.user, args.bot, null)
-    // }
+    if (args.srv) {
+        new Game(process, `${args.ip}/game`, null, args.bot, args.game);
+    } else {
+        new Game(process, `${args.ip}/game`, args.user, args.bot, null);
+    }
 }
