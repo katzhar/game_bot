@@ -17,6 +17,7 @@ export class Map {
       if (link["From"] === from_id && link["To"] == to_id)
         return link["Distance"];
   }
+
   points_distance = (point1, point2) => {
     /* Вычиляет расстояние между двумя точками */
     return Math.sqrt((point1["x"] - point2["x"]) ** 2 + (point1["y"] - point2["y"]) ** 2)
@@ -71,6 +72,7 @@ export class Map {
     }
     return { "x": 0, "y": 0 }
   }
+
   get_nearest_towers = (from_id, towers) => {
     // Сортирует массив towers по расстояние до from_id
     let distances = [];
@@ -93,6 +95,7 @@ export class Map {
       result = [...result, item["tower"]]
     return result;
   }
+
   get_tower_location = (tower_id) => {
     /* Возвращает location башни */
     for (let link in this.links)

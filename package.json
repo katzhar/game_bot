@@ -4,6 +4,7 @@
   "main": "bot.js",
   "license": "MIT",
   "dependencies": {
+    "argparse": "^2.0.1",
     "gzip-js": "^0.3.2",
     "js-base64": "^3.6.0",
     "node-gzip": "^1.1.2",

@@ -1,11 +1,9 @@
-import {Ability} from './abilites';
-import {Building, BuildingType} from './buildings';
-import {Squad} from './squads';
-import {Cooldown} from './cooldowns';
-
+import { Ability } from './abilites';
+import { Building, BuildingType } from './buildings';
+import { Squad } from './squads';
+import { Cooldown } from './cooldowns';
 export class State {
-  // Класс, предоставляющий доступ к состоянию игры
-
+  /* Класс, предоставляющий доступ к состоянию игры */
   constructor(state, teams, parameters) {
     this.state = JSON.parse(state);
     this.__player_color = teams.my_her.player_color;
@@ -41,13 +39,15 @@ export class State {
     for (let forg in this.forges) {
       let team_colors = teams.get_team_colors_by_color(forg.player_color);
       if (team_colors.length > 0) {
-        this.buildings = this.buildings.filter((x) => { x.type !== BuildingType.Forge
-            && team_colors.includes(x.player_color)})
+        this.buildings = this.buildings.filter((x) => {
+          x.type !== BuildingType.Forge
+            && team_colors.includes(x.player_color)
+        })
         for (let building in this.buildings)
-            building.add_defence(parameters.forge.defence_bonus);
-        }
+          building.add_defence(parameters.forge.defence_bonus);
       }
     }
+  }
 
   my_buildings = () => {
     // Мои здания
@@ -57,9 +57,11 @@ export class State {
 
   enemy_buildings = () => {
     // Вражеские здания
-    return this.buildings.filter((x) => {!this.__my_team_players_color.includes(x.player_color) &&
-    x.player_color !== 0 && x.type === BuildingType.Tower})
-    }
+    return this.buildings.filter((x) => {
+      !this.__my_team_players_color.includes(x.player_color) &&
+        x.player_color !== 0 && x.type === BuildingType.Tower
+    })
+  }
 
   neutral_buildings = () => {
     // Нейтральные здания
@@ -91,8 +93,10 @@ export class State {
   enemy_active_abilities = (ability) => {
     // Активные абилки примененные врагом
     if (ability) {
-      return this.abilities.filter((x) => {!this.__my_team_players_color.includes(x.player_color) &&
-      x.ability === ability});
+      return this.abilities.filter((x) => {
+        !this.__my_team_players_color.includes(x.player_color) &&
+          x.ability === ability
+      });
     } else {
       return this.abilities.filter((x) =>
         !this.__my_team_players_color.includes(x.player_color));

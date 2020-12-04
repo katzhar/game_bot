@@ -1,6 +1,6 @@
-import {AbilityParameters, GameEventParameters} from './abilites';
-import {TowerLevelParameters, ForgeParameters} from './buildings';
-import {CreepParameters} from './squads';
+import { AbilityParameters, GameEventParameters } from './abilites';
+import { TowerLevelParameters, ForgeParameters } from './buildings';
+import { CreepParameters } from './squads';
 
 export class Parameters {
   // Класс, предоставляющий доступ к параметрам игры

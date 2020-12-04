@@ -1,13 +1,12 @@
 import { AbilityType } from './abilites';
 
 export const HeroType = {
-  /* Типв героев */
+  /* Типы героев */
   Nobody: 0,         // Не определен
   Warrior: 1,        // Воин
   BlackSmith: 2,     // Рунный кузнец
   Mag: 3,            // Маг
 }
-
 export class Hero {
   /*Общий класс для всех героев. Содержит общий набор возможностей*/
   hero_type = HeroType.Nobody;
@@ -70,7 +69,6 @@ export class Hero {
     return escape(JSON.stringify(action));
   }
 }
-
 export class Mag extends Hero {
   /*Возможности героя Маг*/
   hero_type = HeroType.Mag;
@@ -110,7 +108,6 @@ export class Mag extends Hero {
     return escape(JSON.stringify(action));
   }
 }
-
 export class Warrior extends Hero {
   /* Возможности героя Воин */
   hero_type = HeroType.Warrior
@@ -149,7 +146,6 @@ export class Warrior extends Hero {
     return escape(JSON.stringify(action));
   }
 }
-
 export class BlackSmith extends Hero {
   /* Возможности героя Кузнец */
   hero_type = HeroType.BlackSmith;

@@ -20,7 +20,6 @@ export const AbilityInputType = [
   'TwoTowerAbility',    // применяется к двум башням
 ]
 
-
 export class Ability {
   constructor(Ability) {
     this.ability = AbilityType[Ability.Ability]; //тип абилки
@@ -41,9 +40,7 @@ export class Ability {
     this.end_tick = Ability["EndTick"];  // когда закончит действовать
   }
 }
-
 export class AbilityParameters {
-
   /*Класс предоставляющий праматеры абилок по умолчанию, которые передаются в игровых параметрах при
   инициализации игры*/
 
@@ -64,10 +61,7 @@ export class AbilityParameters {
     this.ability_data = params["AbilityData"];
   }
 }
-
-
 export class GameEventParameters {
-
   /*Класс предоставляющий праматеры глобальных событий игры,
    которые передаются в игровых параметрах при инициализации игры
    */
