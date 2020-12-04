@@ -6,7 +6,6 @@ export class Way {
     this.left = total - traveled;  // сколько осталось
   }
 }
-
 export class Squad {
   // Состояние отрядов. Передается в игровом стейте
   constructor(squad) {
@@ -21,7 +20,6 @@ export class Squad {
     // - берсерк 0, чума 1, убийство червяком -2
   }
 }
-
 export class CreepParameters {
   // Класс предоставляющий праматеры крипов по умолчанию, которые передаются в игровых параметрах при инициализации игры
   constructor(params) {

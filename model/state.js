@@ -2,7 +2,6 @@ import { Ability } from './abilites';
 import { Building, BuildingType } from './buildings';
 import { Squad } from './squads';
 import { Cooldown } from './cooldowns';
-
 export class State {
   /* Класс, предоставляющий доступ к состоянию игры */
   constructor(state, teams, parameters) {
@@ -42,7 +41,7 @@ export class State {
       if (team_colors.length > 0) {
         this.buildings = this.buildings.filter((x) => {
           x.type !== BuildingType.Forge
-          && team_colors.includes(x.player_color)
+            && team_colors.includes(x.player_color)
         })
         for (let building in this.buildings)
           building.add_defence(parameters.forge.defence_bonus);
@@ -60,7 +59,7 @@ export class State {
     // Вражеские здания
     return this.buildings.filter((x) => {
       !this.__my_team_players_color.includes(x.player_color) &&
-      x.player_color !== 0 && x.type === BuildingType.Tower
+        x.player_color !== 0 && x.type === BuildingType.Tower
     })
   }
 
@@ -96,7 +95,7 @@ export class State {
     if (ability) {
       return this.abilities.filter((x) => {
         !this.__my_team_players_color.includes(x.player_color) &&
-        x.ability === ability
+          x.ability === ability
       });
     } else {
       return this.abilities.filter((x) =>

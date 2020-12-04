@@ -5,7 +5,6 @@ export class PLayer {
     this.hero_type = hero_type
   }
 }
-
 export class Teams {
   /* Класс игровых команд */
   my_team = [];  // массив игроков моей команды

@@ -28,6 +28,7 @@ class Parameters {
         for (let game_event in parameters["GameEventsParameters"])
             this.game_events = [...this.game_events, new GameEventParameters(game_event)]
     }
+
     get_tower_level = (level) => {
         // Возвращает параметры уровня башни level
         for (let tower_level in this.tower_levels) {

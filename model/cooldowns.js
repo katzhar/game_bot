@@ -1,5 +1,5 @@
 export class Cooldown {
-/* Фриз на применение абилок*/
+  /* Фриз на применение абилок*/
 
   constructor(cooldown) {
     this.ability = AbilityType[cooldown.Ability];  // тип абилки

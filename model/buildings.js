@@ -3,7 +3,6 @@ export const BuildingType = [
   'Tower', // обычная башня
   'Forge',  // кузница
 ]
-
 export class Building {
   /*Состояние башен. Передается в игровом стейте*/
   constructor(building, parameters) {
@@ -22,7 +21,6 @@ export class Building {
     this.DefenseBonus += defence_bonus;
   }
 }
-
 export class TowerLevelParameters {
   /*
   Класс предоставляющий праматеры башен по уровням, которые передаются в игровых параметрах при
@@ -47,7 +45,6 @@ export class TowerLevelParameters {
     this.neutral_max_count = params["NeutralMaxCount"]
   }
 }
-
 export class ForgeParameters {
   /*
   Класс предоставляющий праматеры кузницы, которые передаются в игровых параметрах при

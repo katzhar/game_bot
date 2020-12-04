@@ -22,6 +22,7 @@ export class Message {
     let msg_base64 = Base64.encode(msg_gzip);
     return msg_base64;
   }
+  
   to_string = () => {
     return escape(JSON.stringify(this.json));
   }
