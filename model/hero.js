@@ -1,4 +1,4 @@
-import { AbilityType } from './abilites';
+import { AbilityType } from './abilites.js';
 
 export const HeroType = {
   /* Типы героев */
@@ -13,8 +13,9 @@ export class Hero {
   player_color = 0;
 
   constructor(game_parameters) {
-    if (game_parameters["HeroType"] !== this.hero_type.value)
+    if (game_parameters["HeroType"] !== this.hero_type)
       new Error('Hero type in game parameters init hero type')
+    this.player_color = game_parameters["PlayerColor"];
   }
 
   /*
@@ -45,8 +46,8 @@ export class Hero {
     /*Ускорение союзных войск
     location - координата точки применения */
     const action = {
-      "X": location["x"],
-      "Y": location["y"],
+      "X": location.x,
+      "Y": location.y,
       "FirstTowerId": 0,
       "SecondTowerId": 0,
       "AbilityId": AbilityType.indexOf('Speed_up'),
@@ -118,8 +119,8 @@ export class Warrior extends Hero {
     location - координаты x, y
     */
     const action = {
-      "X": location["x"],
-      "Y": location["y"],
+      "X": location.x,
+      "Y": location.y,
       "FirstTowerId": 0,
       "SecondTowerId": 0,
       "AbilityId": AbilityType.indexOf('Berserk'),
@@ -156,8 +157,8 @@ export class BlackSmith extends Hero {
     location - координаты x, y
     */
     const action = {
-      "X": location["x"],
-      "Y": location["y"],
+      "X": location.x,
+      "Y": location.y,
       "FirstTowerId": 0,
       "SecondTowerId": 0,
       "AbilityId": AbilityType.indexOf('Area_damage'),
