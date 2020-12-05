@@ -1,7 +1,8 @@
 export class Map {
   /* Класс предоставляяющий вспомогательные методы работы с картой */
   constructor(game) {
-    this.map = JSON.parse(game["ResponseGameParametersArgs"]["Map"])
+    this.map = JSON.parse(game);
+    this.map = this.map["ResponseGameParametersArgs"]["Map"];
     this.links = this.map["Links"];
     //Вычисляем и добавляем расстояние между башнями
     this.links.map((link) => {
@@ -39,11 +40,15 @@ export class Map {
 
   __get_waypoints = (from_id, to_id) => {
     /* Извлекает массив точек маршрута между двумя башнями */
+    let res = null;
     if (from_id > to_id)
       from_id = [to_id, to_id = from_id][0];
-    for (let link in this.links)
-      if (link["From"] === from_id && link["To"] === to_id)
-        return link["Vectors"]
+     this.links.forEach((link)=> {
+       if (link["From"] === from_id && link["To"] === to_id)
+         res = link["Vectors"]
+     }
+  )
+    return res;
   }
 
   get_squad_center_position = (squad) => {
@@ -106,3 +111,79 @@ export class Map {
         }
   }
 }
+
+// const links = JSON.stringify({
+//   "ResponseGameParametersArgs":
+//     {
+//       "Map": {
+//         "Links": [ //Связи между башнями
+//           {
+//             "From": 1, //В каком строении начинается связь
+//             "To": 2, //В каком строении заканчивается связь
+//             "Vectors": [ //Список позиций, представляющий данную связь
+//               {
+//                 "x": 0.0,
+//                 "y": 2.60713267,
+//                 "z": 0.0
+//               },
+//               {
+//                 "x": -2.42173266,
+//                 "y": 1.92118263,
+//                 "z": 0.0
+//               }
+//             ]
+//           },
+//           {
+//             "From": 1,
+//             "To": 3,
+//             "Vectors": [
+//               {
+//                 "x": 0.0,
+//                 "y": 2.60713267,
+//                 "z": 0.0
+//               },
+//               {
+//                 "x": -2.98172283,
+//                 "y": 2.61295533,
+//                 "z": 0.0
+//               },
+//               {
+//                 "x": -4.186665,
+//                 "y": 1.71475124,
+//                 "z": 0.0
+//               },
+//               {
+//                 "x": -5.61572,
+//                 "y": 3.04421186,
+//                 "z": 0.0
+//               }
+//             ]
+//           },
+//           {
+//             "From": 14,
+//             "To": 15,
+//             "Vectors": [
+//               {
+//                 "x": 7.028422,
+//                 "y": -2.93850613,
+//                 "z": 0.0
+//               },
+//               {
+//                 "x": 4.637161,
+//                 "y": -2.68677759,
+//                 "z": 0.0
+//               },
+//               {
+//                 "x": 2.838401,
+//                 "y": -3.107386,
+//                 "z": 0.0
+//               }
+//             ]
+//           }
+//         ]
+//       }
+//     }
+// })
+//
+// const test = new Map(links);
+// console.log(test);
