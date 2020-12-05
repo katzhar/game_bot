@@ -36,28 +36,31 @@ export class Teams {
   my_team_players_color = () => {
     /* Возвращает массив цветов игроков команды моего бота */
     let result = [];
-    for (let player in this.my_team)
-      result = [...result, player.player_color]
+    this.my_team.forEach((player) =>
+      result = [...result, player.player_color])
     return result;
   }
 
   enemy_players_have_hero = (hero_type) => {
     /* Возвращает True если в команде противника найден тип героя hero_type */
-    for (let player in this.enemy_team)
+    let res = null;
+     this.enemy_team.forEach((player) =>{
       if (player.hero_type === hero_type)
-        return player;
+        res =  player;})
+      return res;
   }
 
   get_team_colors_by_color = (player_color) => {
     /* Возвращает массив игроков команды игрока player_color */
     let team_id = this.__get_team_id(player_color);
     let result = []
-    for (let team in this.teams) {
-      for (let player in team["Players"])
-        if (team["TeamId"] === team_id)
-          result = [...result, player["PlayerColor"]]
-      return result;
-    }
+     this.teams.forEach((team) => {
+     team.Players.forEach((player) => {
+       if (team["TeamId"] === team_id)
+         result = [...result, player["PlayerColor"]]
+     })
+    })
+    return result;
   }
 
   __get_team_id = (player_color) => {
