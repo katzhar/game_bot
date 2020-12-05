@@ -11,24 +11,24 @@ export class State {
 
     // получаем список всех зданий
     this.buildings = [];
-    for (let building in this.state["State"]["buildingStates"]) {
+    this.state["State"]["buildingStates"].forEach((building) => {
       this.buildings = [...this.buildings, new Building(building, parameters)];
-    }
+    })
     // получаем список всех отрядов
     this.squads = [];
-    for (let squad in this.state["State"]["squadStates"]) {
+    this.state["State"]["squadStates"].forEach((squad) => {
       this.squads = [...this.squads, new Squad(squad)];
-    }
+    })
     // получаем список всех примененных абилок
     this.abilities = [];
-    for (let ability in this.state["State"]["AbilityStates"]) {
+    this.state["State"]["AbilityStates"].forEach((ability) => {
       this.abilities = [...this.abilities, new Ability(ability)];
-    }
+    })
     // получаем список всех фризов на применение абилок
     this.cooldowns = [];
-    for (let cooldown in this.state["State"]["CooldownState"]) {
+    this.state["State"]["CooldownState"].forEach((cooldown) => {
       this.cooldowns = [...this.cooldowns, new Cooldown(cooldown)];
-    }
+    })
     // глобальный бафф который происходит побитовая маска
     this.global_buffs_mask = this.state["State"]["GlobalBuffsMask"];
 
@@ -36,17 +36,17 @@ export class State {
     this.forges = this.buildings.filter((x) => x.type === BuildingType.Forge);
 
     // добавление бонуса защиты для башен игрока владеющего кузницей
-    for (let forg in this.forges) {
+    this.forges.forEach((forg) => {
       let team_colors = teams.get_team_colors_by_color(forg.player_color);
       if (team_colors.length > 0) {
         this.buildings = this.buildings.filter((x) => {
           x.type !== BuildingType.Forge
             && team_colors.includes(x.player_color)
         })
-        for (let building in this.buildings)
-          building.add_defence(parameters.forge.defence_bonus);
+        this.buildings.forEach((building) =>{
+          building.add_defence(parameters.forge.defence_bonus);})
       }
-    }
+    })
   }
 
   my_buildings = () => {
@@ -92,24 +92,24 @@ export class State {
 
   enemy_active_abilities = (ability) => {
     // Активные абилки примененные врагом
+    const includesPlColor =!this.__my_team_players_color.includes(x.player_color);
     if (ability) {
       return this.abilities.filter((x) => {
-        !this.__my_team_players_color.includes(x.player_color) &&
-          x.ability === ability
-      });
+        includesPlColor && x.ability === ability});
     } else {
       return this.abilities.filter((x) =>
-        !this.__my_team_players_color.includes(x.player_color));
+        includesPlColor);
     }
   }
 
   ability_ready = (ability) => {
     // Готовность к повторному применению
-    for (let cool_down in this.cooldowns) {
+    let res = true;
+    this.cooldowns.forEach((cool_down) => {
       if (cool_down.player_color === this.__player_color
         && cool_down.ability === ability)
-        return false;
-    }
-    return true;
+        res = false;
+    })
+    return res;
   }
 }
