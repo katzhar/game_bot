@@ -39,8 +39,9 @@ export class Map {
   __get_waypoints = (from_id, to_id) => {
     /* Извлекает массив точек маршрута между двумя башнями */
     if (from_id > to_id)
-      from_id = [to_id, to_id = from_id][0];
+      return from_id = [to_id, to_id = from_id];
     for (let link in this.links)
+    console.log(link);
       if (link["From"] === from_id && link["To"] === to_id)
         return link["Vectors"]
   }
