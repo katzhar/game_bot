@@ -1,3 +1,5 @@
+import { AbilityType } from './abilites.js';
+
 export const HeroType = {
   /* Типы героев */
   Nobody: 0,         // Не определен
@@ -11,8 +13,9 @@ export class Hero {
   player_color = 0;
 
   constructor(game_parameters) {
-    if (game_parameters["HeroType"] !== this.hero_type.value)
+    if (game_parameters["HeroType"] !== this.hero_type)
       new Error('Hero type in game parameters init hero type')
+    this.player_color = game_parameters["PlayerColor"];
   }
 
   /*
@@ -36,22 +39,22 @@ export class Hero {
       "PlayerColor": this.player_color,
       "Type": 1,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 
   speed_up = (location) => {
     /*Ускорение союзных войск
     location - координата точки применения */
     const action = {
-      "X": location["x"],
-      "Y": location["y"],
+      "X": location.x,
+      "Y": location.y,
       "FirstTowerId": 0,
       "SecondTowerId": 0,
-      "AbilityId": AbilityType.Speed_up.value,
+      "AbilityId": AbilityType.indexOf('Speed_up'),
       "PlayerColor": this.player_color,
       "Type": 2,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 
   upgrade_tower = (tower_id) => {
@@ -64,7 +67,7 @@ export class Hero {
       "PlayerColor": this.player_color,
       "Type": 4,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 }
 export class Mag extends Hero {
@@ -81,11 +84,11 @@ export class Mag extends Hero {
       "Y": 0,
       "FirstTowerId": enemy_tower_id,
       "SecondTowerId": 0,
-      "AbilityId": AbilityType.Plague.value,
+      "AbilityId": AbilityType.indexOf('Plague'),
       "PlayerColor": this.player_color,
       "Type": 2,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 
   exchange = (enemy_tower_id, my_tower_id) => {
@@ -99,11 +102,11 @@ export class Mag extends Hero {
       "Y": 0,
       "FirstTowerId": enemy_tower_id,
       "SecondTowerId": my_tower_id,
-      "AbilityId": AbilityType.Build_exchange.value,
+      "AbilityId": AbilityType.indexOf('Build_exchange'),
       "PlayerColor": this.player_color,
       "Type": 2,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 }
 export class Warrior extends Hero {
@@ -116,15 +119,15 @@ export class Warrior extends Hero {
     location - координаты x, y
     */
     const action = {
-      "X": location["x"],
-      "Y": location["y"],
+      "X": location.x,
+      "Y": location.y,
       "FirstTowerId": 0,
       "SecondTowerId": 0,
-      "AbilityId": AbilityType.Berserk.value,
+      "AbilityId": AbilityType.indexOf('Berserk'),
       "PlayerColor": this.player_color,
       "Type": 2,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 
   growl = (enemy_tower_id) => {
@@ -137,11 +140,11 @@ export class Warrior extends Hero {
       "Y": 0,
       "FirstTowerId": enemy_tower_id,
       "SecondTowerId": 0,
-      "AbilityId": AbilityType.Growl.value,
+      "AbilityId": AbilityType.indexOf('Growl'),
       "PlayerColor": this.player_color,
       "Type": 2,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 }
 export class BlackSmith extends Hero {
@@ -154,15 +157,15 @@ export class BlackSmith extends Hero {
     location - координаты x, y
     */
     const action = {
-      "X": location["x"],
-      "Y": location["y"],
+      "X": location.x,
+      "Y": location.y,
       "FirstTowerId": 0,
       "SecondTowerId": 0,
-      "AbilityId": AbilityType.Area_damage.value,
+      "AbilityId": AbilityType.indexOf('Area_damage'),
       "PlayerColor": this.player_color,
       "Type": 2,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 
   armor = (my_tower_id) => {
@@ -175,10 +178,10 @@ export class BlackSmith extends Hero {
       "Y": 0,
       "FirstTowerId": my_tower_id,
       "SecondTowerId": 0,
-      "AbilityId": AbilityType.Armor.value,
+      "AbilityId": AbilityType.indexOf('Armor'),
       "PlayerColor": this.player_color,
       "Type": 2,
     }
-    return JSON.stringify(action);
+    return escape(JSON.stringify(action));
   }
 }

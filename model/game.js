@@ -1,4 +1,13 @@
 const WebSocket = require('ws');
+import {
+    Message,
+    RequestGame,
+    PlayerConnect,
+    PlayerChangeHero,
+    PlayerChangeColor,
+    PlayerPrepared,
+    PlayerChangeColor
+} from './message';
 export class Game {
     bot_ready = true;
 
@@ -12,16 +21,18 @@ export class Game {
         this.user_id = user_id;
         this.bot_id = bot_id;
         this.lobby_changed = 0;
-        this.ssl_context = ssl.SSLContext();
-        this.ssl_context.check_hostname = false;
-        this.ssl_context.verify_mode = ssl.CERT_NONE;
-        this.loop = asyncio.get_event_loop();
-        this.loop.run_until_complete(
-            this.run(websocket_url, user_id, bot_id, game_id));
+        // this.ssl_context = ssl.SSLContext();
+        // this.ssl_context.check_hostname = false;
+        // this.ssl_context.verify_mode = ssl.CERT_NONE;
+        // this.loop = asyncio.get_event_loop();
+        // this.loop.run_until_complete(
+        this.run(websocket_url, user_id, bot_id, game_id)
+        // );
     }
 
     run = async (websocket_url, user_id, bot_id, game_id) => {
         const ws = new WebSocket(websocket_url);
+
         ws.on('connect failed', (err) => {
             console.log('Connect Error: ' + err.toString());
         })
@@ -34,14 +45,15 @@ export class Game {
                 console.log(message);
             });
         });
-        let msg = RequestGame(user_id, bot_id, game_id);
+
+        let msg = new RequestGame(user_id, bot_id, game_id);
         await ws.send(msg.send_message());
         await this.handler(ws);
     }
 
     handler = async (ws) => {
         for (let message in ws) {
-            const input_msg = Message(message);
+            const input_msg = new Message(message);
 
             if (input_msg.game_id === 0) {
                 input_msg.msg_type = 0;
@@ -63,7 +75,7 @@ export class Game {
                 let team_players = this.game_parameters.json["ResponseGameParametersArgs"]["TeamPlayers"];
 
                 const botConnect = () => {
-                    let output_msg = PlayerConnect(this.game_server, this.game_id, this.bot_id);
+                    let output_msg = new PlayerConnect(this.game_server, this.game_id, this.bot_id);
                     console.log("OUT >>> Bot connect");
                     await ws.send(output_msg.send_message());
                 }
@@ -72,7 +84,7 @@ export class Game {
                 // Определение героя бота
                 const botChooseHero = () => {
                     hero_type = this.game_parameters.json["ResponseGameParametersArgs"]["HeroType"];
-                    output_msg = PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
+                    output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
                     console.log("OUT >>> Bot choose hero");
                     await ws.send(output_msg.send_message());
                 }
@@ -93,7 +105,7 @@ export class Game {
                 }
 
                 const botPlayerChangeColor = () => {
-                    let output_msg = PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
+                    let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
                     console.log("OUT >>> Bot choose color");
                     await ws.send(output_msg.send_message());
                 }
@@ -115,7 +127,7 @@ export class Game {
             if (input_msg.msg_type === 10) {
                 console.log("IN <<< All players connected");
 
-                let output_msg = PlayerPrepared(this.game_server, this.game_id, this.bot_id);
+                let output_msg = new PlayerPrepared(this.game_server, this.game_id, this.bot_id);
                 console.log("OUT >>> Bot prepared");
                 await ws.send(output_msg.send_message());
 
@@ -128,7 +140,7 @@ export class Game {
 
             if (input_msg.msg_type == 12) {
                 console.log("IN <<< All players prepared")
-                let output_msg = PlayerReady(this.game_server, this.game_id, this.bot_id)
+                let output_msg = new PlayerReady(this.game_server, this.game_id, this.bot_id)
                 console.log("OUT >>> Bot ready")
                 await ws.send(output_msg.send_message())
             }
@@ -183,7 +195,7 @@ export class Game {
             }
             else if (command) {
                 console.log("OUT >>> Send command: " + command);
-                let msg = GameActions(this.game_server, this.game_id, json.Parse(command));
+                let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
                 await ws.send(msg.send_message());
             }
         }

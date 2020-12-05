@@ -42,12 +42,11 @@ if (typeof require !== 'undefined' && require.main === module) {
     });
 
     const args = parser.parse_args();
-    // sockets?
-    // const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE);
+    // const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE)
 
     if (args.srv) {
-        new Game(process, `${args.ip}/game`, null, args.bot, args.game);
+        new Game(process, "{}/game".format(args.ip), null, args.bot, args.game)
     } else {
-        new Game(process, `${args.ip}/game`, args.user, args.bot, null);
+        new Game(process, "{}/game".format(args.ip), args.user, args.bot, null)
     }
 }
