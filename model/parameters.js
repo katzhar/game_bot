@@ -34,18 +34,22 @@ export class Parameters {
 
   get_tower_level = (level) => {
     // Возвращает параметры уровня башни level
-    for (let tower_level in this.tower_levels) {
+    let res = null;
+ this.tower_levels.forEach((tower_level) =>{
       if (tower_level.id === level)
-        return tower_level;
-    }
+        res = tower_level;
+    })
+    return res;
   }
 
   get_ability_parameters = (Ability) => {
     // Возвращает параметры уровня башни level
-    for (let item in this.abilities) {
+    let res = null;
+    this.abilities.forEach((item) => {
       if (item.ability === Ability)
-        return item;
-    }
+        res = item;
+    })
+    return res;
   }
 }
 
