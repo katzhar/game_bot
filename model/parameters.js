@@ -1,11 +1,12 @@
-import { AbilityParameters, GameEventParameters } from './abilites';
-import { TowerLevelParameters, ForgeParameters } from './buildings';
-import { CreepParameters } from './squads';
+import { AbilityParameters, GameEventParameters } from './abilites.js';
+import { TowerLevelParameters, ForgeParameters } from './buildings.js';
+import { CreepParameters } from './squads.js';
 
-export class Parameters {
+ export class Parameters {
   // Класс, предоставляющий доступ к параметрам игры
   constructor(game) {
-    let parameters = JSON.parse(game["ResponseGameParametersArgs"]["Parameters"])
+    let parameters = JSON.parse(game);
+    parameters = parameters.ResponseGameParametersArgs.Parameters;
     // максимальная продолжительность игры в тиках
     this.duration = parameters["Duration"]
     // защита башен по умолчанию
@@ -20,12 +21,14 @@ export class Parameters {
     this.creep = new CreepParameters(parameters["Creeps"])
     // параметры абилок
     this.abilities = []
-    for (let ability in parameters["AbilitiesParameters"]["abilities"])
+    parameters.AbilitiesParameters.abilities.forEach((ability) => {
       // параметры глобальных игровых событий
       this.abilities = [...this.abilities, new AbilityParameters(ability)]
+    })
     this.game_events = []
-    for (let game_event in parameters["GameEventsParameters"])
+   parameters["GameEventsParameters"].forEach((game_event) =>
       this.game_events = [...this.game_events, new GameEventParameters(game_event)]
+  )
   }
     get_tower_level = (level) => {
       // Возвращает параметры уровня башни level

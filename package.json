@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "bot.js",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/node": "^7.12.6",
+    "@babel/preset-env": "^7.12.7",
     "argparse": "^2.0.1",
     "gzip-js": "^0.3.2",
     "js-base64": "^3.6.0",
