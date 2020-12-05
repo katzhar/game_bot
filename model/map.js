@@ -190,4 +190,3 @@ export class Map {
     // })
     //
     // const test = new Map(links);
-    // console.log(test);

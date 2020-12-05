@@ -1,4 +1,4 @@
-import { Game } from '../game';
+import { Game } from './model/game.js';
 const { ArgumentParser } = require('argparse');
 const server_ip = 'wss://gameapi.it-god.ru';
 const user_id = 'USER_ID';

@@ -19,7 +19,6 @@ export const AbilityInputType = [
     'OneTowerAbility',     // применяется к одной башне
     'TwoTowerAbility',    // применяется к двум башням
 ]
-
 export class Ability {
     constructor(Ability) {
         this.ability = AbilityType[Ability.Ability]; //тип абилки

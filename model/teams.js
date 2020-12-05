@@ -1,5 +1,4 @@
 import { Mag, Warrior, BlackSmith, HeroType } from './hero.js';
-
 export class PLayer {
   /* Класс с необходимой информацией об иргроках */
   constructor(player_color, hero_type) {
@@ -7,7 +6,6 @@ export class PLayer {
     this.hero_type = hero_type
   }
 }
-
 export class Teams {
   /* Класс игровых команд */
   my_team = [];  // массив игроков моей команды

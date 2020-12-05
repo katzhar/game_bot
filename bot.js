@@ -3,6 +3,7 @@ import { Map } from './model/map';
 import { Parameters } from './model/parameters';
 import { AbilityType } from './model/abilites';
 import { Teams } from './model/teams';
+import { State } from './model/state';
 
 const readline = require('readline');
 let process = require('process');
