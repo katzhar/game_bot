@@ -13,9 +13,10 @@ export class Parameters {
     this.default_defence_parameters = parameters["DefaultDefenseParameter"]
     // уровни башен
     this.tower_levels = []
-    for (let tower in parameters["Towers"])
+    for (let tower in parameters["Towers"]) {
       this.tower_levels = [...this.tower_levels, new TowerLevelParameters(+tower,
         parameters["Towers"][tower])]
+    }
     // параметры кузницы
     this.forge = new ForgeParameters(parameters["Forges"])
     // параметры крипов
@@ -236,4 +237,5 @@ export class Parameters {
 //     }
 //   }
 // })
-
+//
+// const test = new Parameters(params)

@@ -68,9 +68,10 @@ rl.on('line', (input) => {
         }
       }
       // атакуем башню противника
-      for (let my_building in my_buildings)
+      my_buildings.forEach((my_building) => {
         if (my_building.creeps_count > my_building.level.player_max_count)
           console.log(game_teams.my_her.move(my_building.id, enemy_buildings[0].id, 1))
+      })
     }
 
     /* Играем за рунного кузнеца */

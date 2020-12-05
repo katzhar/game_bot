@@ -12,11 +12,15 @@ export class Map {
 
   towers_distance = (from_id, to_id) => {
     /* Возвращает расстояние между башнями */
+    let res = null;
     if (from_id > to_id)
       from_id = [to_id, to_id = from_id][0];
-    for (let link in this.links)
+    this.links.forEach((link) =>
+    {
       if (link["From"] === from_id && link["To"] == to_id)
-        return link["Distance"];
+        res = link["Distance"];
+    })
+    return res;
   }
 
   points_distance = (point1, point2) => {
@@ -81,11 +85,11 @@ export class Map {
   get_nearest_towers = (from_id, towers) => {
     // Сортирует массив towers по расстояние до from_id
     let distances = [];
-    for (let tower in towers)
+     towers.forEach((tower) =>{
       distances = [...distances, {
         tower,
         "distance": this.towers_distance(from_id, tower.id),
-      }]
+      }]})
     distances.sort(function (a, b) {
       if (a.distance > b.distance) {
         return 1;
