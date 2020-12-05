@@ -112,4 +112,3 @@ export class Teams {
 // }
 //
 // const test = new Teams(hero);
-// console.log(test);

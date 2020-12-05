@@ -1,5 +1,4 @@
 const WebSocket = require('ws');
-
 import {
     Message,
     RequestGame,
@@ -30,7 +29,7 @@ export class Game {
         );
     }
 
-    run = async (websocket_url, user_id, bot_id, game_id) => {
+    run = (websocket_url, user_id, bot_id, game_id) => {
         const ws = new WebSocket(websocket_url);
 
         ws.on('connect failed', (err) => {
