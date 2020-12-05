@@ -1,4 +1,13 @@
 const WebSocket = require('ws');
+
+import {
+    Message,
+    RequestGame,
+    PlayerConnect,
+    PlayerChangeHero,
+    PlayerChangeColor,
+    PlayerPrepared,
+} from './message.js';
 export class Game {
     bot_ready = true;
 
@@ -17,11 +26,13 @@ export class Game {
         this.ssl_context.verify_mode = ssl.CERT_NONE;
         this.loop = asyncio.get_event_loop();
         this.loop.run_until_complete(
-            this.run(websocket_url, user_id, bot_id, game_id));
+            this.run(websocket_url, user_id, bot_id, game_id)
+        );
     }
 
     run = async (websocket_url, user_id, bot_id, game_id) => {
         const ws = new WebSocket(websocket_url);
+
         ws.on('connect failed', (err) => {
             console.log('Connect Error: ' + err.toString());
         })
@@ -34,14 +45,15 @@ export class Game {
                 console.log(message);
             });
         });
-        let msg = RequestGame(user_id, bot_id, game_id);
-        await ws.send(msg.send_message());
-        await this.handler(ws);
+
+        let msg = new RequestGame(user_id, bot_id, game_id);
+        ws.send(msg.send_message());
+        this.handler(ws);
     }
 
     handler = async (ws) => {
         for (let message in ws) {
-            const input_msg = Message(message);
+            const input_msg = new Message(message);
 
             if (input_msg.game_id === 0) {
                 input_msg.msg_type = 0;
@@ -53,28 +65,27 @@ export class Game {
 
             if (input_msg.msg_type === 18) {
                 console.log("IN <<< Game parameters");
-
                 this.game_id = input_msg.game_id;
-                this.game_server = input_msg.json["ResponseGameParametersArgs"]["GameServer"];
+                this.game_server = input_msg.json.ResponseGameParametersArgs.GameServer;
                 this.game_parameters = input_msg;
                 let player_color = null;
 
                 // Выбор цвета игрока
-                let team_players = this.game_parameters.json["ResponseGameParametersArgs"]["TeamPlayers"];
+                let team_players = this.game_parameters.json.ResponseGameParametersArgs.TeamPlayers;
 
                 const botConnect = () => {
-                    let output_msg = PlayerConnect(this.game_server, this.game_id, this.bot_id);
+                    let output_msg = new PlayerConnect(this.game_server, this.game_id, this.bot_id);
                     console.log("OUT >>> Bot connect");
-                    await ws.send(output_msg.send_message());
+                    ws.send(output_msg.send_message());
                 }
                 setTimeout(botConnect(), 100);
 
                 // Определение героя бота
                 const botChooseHero = () => {
-                    hero_type = this.game_parameters.json["ResponseGameParametersArgs"]["HeroType"];
-                    output_msg = PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
+                    hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
+                    output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
                     console.log("OUT >>> Bot choose hero");
-                    await ws.send(output_msg.send_message());
+                    ws.send(output_msg.send_message());
                 }
                 setTimeout(botChooseHero(), 100);
 
@@ -93,9 +104,9 @@ export class Game {
                 }
 
                 const botPlayerChangeColor = () => {
-                    let output_msg = PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
+                    let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
                     console.log("OUT >>> Bot choose color");
-                    await ws.send(output_msg.send_message());
+                    ws.send(output_msg.send_message());
                 }
                 setTimeout(botPlayerChangeColor(), 100);
 
@@ -115,12 +126,12 @@ export class Game {
             if (input_msg.msg_type === 10) {
                 console.log("IN <<< All players connected");
 
-                let output_msg = PlayerPrepared(this.game_server, this.game_id, this.bot_id);
+                let output_msg = new PlayerPrepared(this.game_server, this.game_id, this.bot_id);
                 console.log("OUT >>> Bot prepared");
-                await ws.send(output_msg.send_message());
+                ws.send(output_msg.send_message());
 
                 // Передача боту параметров игры
-                this.game_parameters.json["Teams"] = input_msg.json["AllPlayersConnectedArgs"]["Teams"];
+                this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
                 let msg_bytes = this.game_parameters.toString().encode() + '/n';
                 this.process.stdin.write(msg_bytes)
                 this.process.stdin.flush();
@@ -128,9 +139,9 @@ export class Game {
 
             if (input_msg.msg_type == 12) {
                 console.log("IN <<< All players prepared")
-                let output_msg = PlayerReady(this.game_server, this.game_id, this.bot_id)
+                let output_msg = new PlayerReady(this.game_server, this.game_id, this.bot_id)
                 console.log("OUT >>> Bot ready")
-                await ws.send(output_msg.send_message())
+                ws.send(output_msg.send_message())
             }
 
             if (input_msg.msg_type === 14) {
@@ -143,12 +154,10 @@ export class Game {
 
             if (input_msg.msg_type === 4) {
                 if (this.bot_ready) {
-                    console.log("IN <<< Game tick: " + str(input_msg.json["GameStateArgs"]["Tick"]));
-
+                    console.log("IN <<< Game tick: " + str(input_msg.json.GameStateArgs.Tick));
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
-
-                    let msg_bytes = '{}\n'.format(json.dumps(input_msg.json["GameStateArgs"], ensure_ascii = False)).encode()
+                    let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
                     this.process.stdin.write(msg_bytes)
                     this.process.stdin.flush()
 
@@ -160,13 +169,13 @@ export class Game {
             if (input_msg.msg_type === 6) {
                 console.log("IN <<< Game over");
                 this.process.kill();
-                await ws.close();
+                ws.close();
             }
 
             if (input_msg.msg_type === 5) {
                 console.log("IN <<< Game cancel");
                 this.process.kill();
-                await ws.close();
+                ws.close();
             }
 
             if (input_msg.msg_type === 9) {
@@ -183,8 +192,8 @@ export class Game {
             }
             else if (command) {
                 console.log("OUT >>> Send command: " + command);
-                let msg = GameActions(this.game_server, this.game_id, json.Parse(command));
-                await ws.send(msg.send_message());
+                let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
+                ws.send(msg.send_message());
             }
         }
     }

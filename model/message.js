@@ -1,6 +1,5 @@
 const { Base64 } = require('js-base64');
 const { gzip, ungzip } = require('node-gzip');
-
 export class Message {
   json = {};
 
@@ -27,7 +26,6 @@ export class Message {
     return escape(JSON.stringify(this.json));
   }
 }
-
 export class RequestGame extends Message {
   json = {
     "MsgType": 17,
@@ -46,7 +44,6 @@ export class RequestGame extends Message {
       this.json["RequestGameParametersArgs"]["GameId"] = game_id;
   }
 }
-
 export class PlayerConnect extends Message {
   json = {
     "MsgType": 8,
@@ -64,7 +61,6 @@ export class PlayerConnect extends Message {
     this.json["PlayerConnectArgs"]["PlayerId"] = bot_id;
   }
 }
-
 export class PlayerChangeHero extends Message {
   json = {
     "MsgType": 22,
@@ -84,7 +80,6 @@ export class PlayerChangeHero extends Message {
     this.json["PlayerChangeHeroTypeArgs"]["HeroType"] = hero_type;
   }
 }
-
 export class PlayerChangeColor extends Message {
   json = {
     "MsgType": 23,
@@ -104,7 +99,6 @@ export class PlayerChangeColor extends Message {
     this.json["PlayerChangeColorArgs"]["PlayerColor"] = player_color;
   }
 }
-
 export class PlayerPrepared extends Message {
   json = {
     "MsgType": 11,
@@ -122,7 +116,6 @@ export class PlayerPrepared extends Message {
     this.json["PlayerPreparedArgs"]["PlayerId"] = bot_id;
   }
 }
-
 export class PlayerReady extends Message {
   json = {
     "MsgType": 13,
@@ -140,7 +133,6 @@ export class PlayerReady extends Message {
     this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
   }
 }
-
 export class GameActions extends Message {
   json = {
     "MsgType": 3,

@@ -3,6 +3,7 @@ import { Map } from './model/map';
 import { Parameters } from './model/parameters';
 import { AbilityType } from './model/abilites';
 import { Teams } from './model/teams';
+import { State } from './model/state';
 
 const readline = require('readline');
 let process = require('process');
@@ -18,14 +19,15 @@ let game_teams;
 
 rl.on('line', (input) => {
   game = JSON.parse(input);
-  game_map = new Map(game)  // карта игрового мира
-  game_params = new Parameters(game)  // параметры игры
-  game_teams = new Teams(game)  // моя команда
+  game_map = new Map(game);  // карта игрового мира
+  game_params = new Parameters(game);  // параметры игры
+  game_teams = new Teams(game);  // моя команда
+
   try {
     /* Получение состояния игры */
-    const state = new State(rl.on('', (line) => line), game_teams, game_params)
-    const my_buildings = state.my_buildings()
-    const my_squads = state.my_squads()
+    const state = new State(rl.on('', (line) => line), game_teams, game_params);
+    const my_buildings = state.my_buildings();
+    const my_squads = state.my_squads();
     // сортируем по остаточному пути
     my_squads.sort(function (a, b) {
       if (a.way.left > b.way.left) {
@@ -37,11 +39,11 @@ rl.on('line', (input) => {
       return 0;
     });
 
-    const enemy_buildings = state.enemy_buildings()
-    const enemy_squads = state.enemy_squads()
+    const enemy_buildings = state.enemy_buildings();
+    const enemy_squads = state.enemy_squads();
 
-    const neutral_buildings = state.neutral_buildings()
-    const forges_buildings = state.forges_buildings()
+    const neutral_buildings = state.neutral_buildings();
+    const forges_buildings = state.forges_buildings();
 
     /* Играем за мага */
 
@@ -151,12 +153,12 @@ rl.on('line', (input) => {
     // Применение абилки ускорение
     if (my_squads.length > 4) {
       if (state.ability_ready(AbilityType.Speed_up)) {
-        location = game_map.get_squad_center_position(my_squads[2])
-        console.log(game_teams.my_her.speed_up(location))
+        location = game_map.get_squad_center_position(my_squads[2]);
+        console.log(game_teams.my_her.speed_up(location));
       }
     }
   }
   catch (e) {
-    console.log(e)
+    console.log(e);
   }
 });

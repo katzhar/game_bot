@@ -1,5 +1,4 @@
 import { Mag, Warrior, BlackSmith, HeroType } from './hero.js';
-
 export class PLayer {
   /* Класс с необходимой информацией об иргроках */
   constructor(player_color, hero_type) {
@@ -7,7 +6,6 @@ export class PLayer {
     this.hero_type = hero_type
   }
 }
-
 export class Teams {
   /* Класс игровых команд */
   my_team = [];  // массив игроков моей команды
@@ -22,8 +20,8 @@ export class Teams {
     if (game["HeroType"] === HeroType.BlackSmith)
       this.my_her = new BlackSmith(game);
     let my_team_id = this.__get_team_id(this.my_her.player_color)
-   this.teams.forEach((team) => {
-       team.Players.forEach((player) => {
+    this.teams.forEach((team) => {
+      team.Players.forEach((player) => {
         if (team.TeamId === my_team_id)
           this.my_team = [...this.my_team, new PLayer(player["PlayerColor"], player["HeroType"])]
         else
@@ -44,21 +42,22 @@ export class Teams {
   enemy_players_have_hero = (hero_type) => {
     /* Возвращает True если в команде противника найден тип героя hero_type */
     let res = null;
-     this.enemy_team.forEach((player) =>{
+    this.enemy_team.forEach((player) => {
       if (player.hero_type === hero_type)
-        res =  player;})
-      return res;
+        res = player;
+    })
+    return res;
   }
 
   get_team_colors_by_color = (player_color) => {
     /* Возвращает массив игроков команды игрока player_color */
     let team_id = this.__get_team_id(player_color);
     let result = []
-     this.teams.forEach((team) => {
-     team.Players.forEach((player) => {
-       if (team["TeamId"] === team_id)
-         result = [...result, player["PlayerColor"]]
-     })
+    this.teams.forEach((team) => {
+      team.Players.forEach((player) => {
+        if (team["TeamId"] === team_id)
+          result = [...result, player["PlayerColor"]]
+      })
     })
     return result;
   }

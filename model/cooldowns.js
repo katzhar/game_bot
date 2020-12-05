@@ -1,5 +1,4 @@
-import { AbilityType } from './abilites';
-
+import { AbilityType } from './abilites.js';
 export class Cooldown {
   /* Фриз на применение абилок*/
   constructor(cooldown) {
