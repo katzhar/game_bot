@@ -26,7 +26,6 @@ class Game {
     }
 
     run = (websocket_url, user_id, bot_id, game_id) => {
-        const websocket_url = 'ws://ift.gameapi.it-god.ru';
         const wss = new WebSocket(websocket_url);
         let message = new RequestGame(user_id, bot_id, game_id);
 

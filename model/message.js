@@ -169,3 +169,4 @@ module.exports.GameActions = GameActions;
 module.exports.PlayerPrepared = PlayerPrepared;
 module.exports.PlayerReady = PlayerReady;
 module.exports.RequestGame = RequestGame;
+module.exports.PlayerConnect = PlayerConnect;
