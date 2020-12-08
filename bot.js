@@ -5,8 +5,9 @@ import { AbilityType } from './model/abilites';
 import { Teams } from './model/teams';
 import { State } from './model/state';
 
-const readline = require('readline');
-let process = require('process');
+import  readline from 'readline';
+import  process from 'process';
+
 let rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,

@@ -1,11 +1,11 @@
-const { Base64 } = require('js-base64');
-const { gzip, ungzip } = require('node-gzip');
+import Base64 from 'js-base64';
+import  Zip from 'node-gzip';
 export class Message {
   json = {};
 
   constructor(msg_base64) {
     let msg_gzip = Base64.decode(msg_base64);
-    let msg_bytes = ungzip(msg_gzip);
+    let msg_bytes = Zip.ungzip(msg_gzip);
     let msg_string = msg_bytes.decode();
     this.json = JSON.parse(msg_string);
     this.msg_type = this.json["MsgType"];
@@ -17,7 +17,7 @@ export class Message {
 
   send_message = () => {
     let msg_string = JSON.stringify(this.json);
-    let msg_gzip = gzip(msg_string.encode());
+    let msg_gzip = Zip.gzip(msg_string.encode());
     let msg_base64 = Base64.encode(msg_gzip);
     return msg_base64;
   };
