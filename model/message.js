@@ -1,24 +1,27 @@
 const { Base64 } = require('js-base64');
 const { gzip, ungzip } = require('node-gzip');
 
- class Message {
+class Message {
   json = {};
 
-  constructor(msg_base64) {
+  constructor (msg_base64) {
     let msg_gzip = Base64.decode(msg_base64);
-    let msg_bytes = ungzip(msg_gzip);
-    let msg_string = msg_bytes.decode();
-    this.json = JSON.parse(msg_string);
-    this.msg_type = this.json["MsgType"];
-    if (this.json.GameId)
-      this.game_id = this.json["GameId"];
-    else
-      this.game_id = 0;
+    let msg_bytes, msg_string;
+    ungzip(msg_gzip).then(async (res) => msg_bytes = res)
+      .then(() => {
+        msg_string = msg_bytes.decode();
+        this.json = JSON.parse(msg_string)
+        this.msg_type = this.json["MsgType"];
+        if (this.json.GameId)
+          this.game_id = this.json["GameId"];
+        else
+          this.game_id = 0;
+      })
   }
 
-  send_message = () => {
+  send_message = async () => {
     let msg_string = JSON.stringify(this.json);
-    let msg_gzip = gzip(msg_string.encode());
+    let msg_gzip = await gzip(msg_string.encode());
     let msg_base64 = Base64.encode(msg_gzip);
     return msg_base64;
   };
@@ -27,7 +30,8 @@ const { gzip, ungzip } = require('node-gzip');
     return escape(JSON.stringify(this.json));
   }
 }
- class RequestGame extends Message {
+
+class RequestGame extends Message {
   json = {
     "MsgType": 17,
     "RequestGameParametersArgs": {
@@ -45,7 +49,8 @@ const { gzip, ungzip } = require('node-gzip');
       this.json["RequestGameParametersArgs"]["GameId"] = game_id;
   }
 }
- class PlayerConnect extends Message {
+
+class PlayerConnect extends Message {
   json = {
     "MsgType": 8,
     "GameId": "",
@@ -62,7 +67,8 @@ const { gzip, ungzip } = require('node-gzip');
     this.json["PlayerConnectArgs"]["PlayerId"] = bot_id;
   }
 }
- class PlayerChangeHero extends Message {
+
+class PlayerChangeHero extends Message {
   json = {
     "MsgType": 22,
     "GameId": "",
@@ -81,7 +87,8 @@ const { gzip, ungzip } = require('node-gzip');
     this.json["PlayerChangeHeroTypeArgs"]["HeroType"] = hero_type;
   }
 }
- class PlayerChangeColor extends Message {
+
+class PlayerChangeColor extends Message {
   json = {
     "MsgType": 23,
     "GameId": "",
@@ -100,7 +107,8 @@ const { gzip, ungzip } = require('node-gzip');
     this.json["PlayerChangeColorArgs"]["PlayerColor"] = player_color;
   }
 }
- class PlayerPrepared extends Message {
+
+class PlayerPrepared extends Message {
   json = {
     "MsgType": 11,
     "GameId": "",
@@ -117,7 +125,8 @@ const { gzip, ungzip } = require('node-gzip');
     this.json["PlayerPreparedArgs"]["PlayerId"] = bot_id;
   }
 }
- class PlayerReady extends Message {
+
+class PlayerReady extends Message {
   json = {
     "MsgType": 13,
     "GameId": "",
@@ -134,7 +143,8 @@ const { gzip, ungzip } = require('node-gzip');
     this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
   }
 }
- class GameActions extends Message {
+
+class GameActions extends Message {
   json = {
     "MsgType": 3,
     "GameId": "",

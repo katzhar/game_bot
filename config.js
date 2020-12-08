@@ -1,6 +1,6 @@
-const  Game = require('./model/game');
+const  { Game } = require('./model/game');
 const { ArgumentParser } = require('argparse');
-const server_ip = 'wss://gameapi.it-god.ru';
+const server_ip = 'wss://ift.gameapi.it-god.ru';
 const user_id = '3616b393-c3e3-4899-9eb8-84d15f18e0cb';
 const bot_id = '08def1f1-5e6f-4cab-9850-5868c500b835';
 

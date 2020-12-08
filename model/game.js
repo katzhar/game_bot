@@ -20,13 +20,7 @@ class Game {
         this.user_id = user_id;
         this.bot_id = bot_id;
         this.lobby_changed = 0;
-        this.ssl_context = ssl.SSLContext();
-        this.ssl_context.check_hostname = false;
-        this.ssl_context.verify_mode = ssl.CERT_NONE;
-        this.loop = asyncio.get_event_loop();
-        this.loop.run_until_complete(
-            this.run(websocket_url, user_id, bot_id, game_id)
-        );
+        this.run(websocket_url, user_id, bot_id, game_id);
     }
 
     run = (websocket_url, user_id, bot_id, game_id) => {
@@ -197,4 +191,4 @@ class Game {
     }
 }
 
-module.exports = Game;
+module.exports.Game = Game;
