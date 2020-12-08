@@ -1,4 +1,4 @@
-export class Way {
+ class Way {
   // Путь отряда
   constructor(total, traveled) {
     this.total = total; // какой путь нужно пройти
@@ -6,7 +6,7 @@ export class Way {
     this.left = total - traveled;  // сколько осталось
   }
 }
-export class Squad {
+ class Squad {
   // Состояние отрядов. Передается в игровом стейте
   constructor(squad) {
     this.id = squad["Id"];  // идентификатор отряда
@@ -20,7 +20,7 @@ export class Squad {
     // - берсерк 0, чума 1, убийство червяком -2
   }
 }
-export class CreepParameters {
+ class CreepParameters {
   // Класс предоставляющий праматеры крипов по умолчанию, которые передаются в игровых параметрах при инициализации игры
   constructor(params) {
     //скорость в единицах расстояния карты
@@ -33,3 +33,6 @@ export class CreepParameters {
     this.creep_in_wave_distance = params.CreepInWaveDistance;
   }
 }
+
+ module.exports.Squad = Squad;
+ module.exports.CreepParameters = CreepParameters;

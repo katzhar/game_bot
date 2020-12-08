@@ -1,12 +1,14 @@
-import { Mag, Warrior, BlackSmith, HeroType } from './hero.js';
-export class PLayer {
+const { Mag, Warrior, BlackSmith, HeroType } = require ('./hero.js');
+
+class PLayer {
   /* Класс с необходимой информацией об иргроках */
   constructor(player_color, hero_type) {
     this.player_color = player_color;
     this.hero_type = hero_type
   }
 }
-export class Teams {
+
+class Teams {
   /* Класс игровых команд */
   my_team = [];  // массив игроков моей команды
   enemy_team = [];  // массив игроков команд противников
@@ -112,3 +114,6 @@ export class Teams {
 // }
 //
 // const test = new Teams(hero);
+
+module.exports.Teams = Teams;
+

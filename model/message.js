@@ -1,11 +1,12 @@
-import Base64 from 'js-base64';
-import  Zip from 'node-gzip';
-export class Message {
+const { Base64 } = require('js-base64');
+const { gzip, ungzip } = require('node-gzip');
+
+ class Message {
   json = {};
 
   constructor(msg_base64) {
     let msg_gzip = Base64.decode(msg_base64);
-    let msg_bytes = Zip.ungzip(msg_gzip);
+    let msg_bytes = ungzip(msg_gzip);
     let msg_string = msg_bytes.decode();
     this.json = JSON.parse(msg_string);
     this.msg_type = this.json["MsgType"];
@@ -17,7 +18,7 @@ export class Message {
 
   send_message = () => {
     let msg_string = JSON.stringify(this.json);
-    let msg_gzip = Zip.gzip(msg_string.encode());
+    let msg_gzip = gzip(msg_string.encode());
     let msg_base64 = Base64.encode(msg_gzip);
     return msg_base64;
   };
@@ -26,7 +27,7 @@ export class Message {
     return escape(JSON.stringify(this.json));
   }
 }
-export class RequestGame extends Message {
+ class RequestGame extends Message {
   json = {
     "MsgType": 17,
     "RequestGameParametersArgs": {
@@ -44,7 +45,7 @@ export class RequestGame extends Message {
       this.json["RequestGameParametersArgs"]["GameId"] = game_id;
   }
 }
-export class PlayerConnect extends Message {
+ class PlayerConnect extends Message {
   json = {
     "MsgType": 8,
     "GameId": "",
@@ -61,7 +62,7 @@ export class PlayerConnect extends Message {
     this.json["PlayerConnectArgs"]["PlayerId"] = bot_id;
   }
 }
-export class PlayerChangeHero extends Message {
+ class PlayerChangeHero extends Message {
   json = {
     "MsgType": 22,
     "GameId": "",
@@ -80,7 +81,7 @@ export class PlayerChangeHero extends Message {
     this.json["PlayerChangeHeroTypeArgs"]["HeroType"] = hero_type;
   }
 }
-export class PlayerChangeColor extends Message {
+ class PlayerChangeColor extends Message {
   json = {
     "MsgType": 23,
     "GameId": "",
@@ -99,7 +100,7 @@ export class PlayerChangeColor extends Message {
     this.json["PlayerChangeColorArgs"]["PlayerColor"] = player_color;
   }
 }
-export class PlayerPrepared extends Message {
+ class PlayerPrepared extends Message {
   json = {
     "MsgType": 11,
     "GameId": "",
@@ -116,7 +117,7 @@ export class PlayerPrepared extends Message {
     this.json["PlayerPreparedArgs"]["PlayerId"] = bot_id;
   }
 }
-export class PlayerReady extends Message {
+ class PlayerReady extends Message {
   json = {
     "MsgType": 13,
     "GameId": "",
@@ -133,7 +134,7 @@ export class PlayerReady extends Message {
     this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
   }
 }
-export class GameActions extends Message {
+ class GameActions extends Message {
   json = {
     "MsgType": 3,
     "GameId": "",
@@ -150,3 +151,11 @@ export class GameActions extends Message {
     this.json["GameActionsArgs"]["Action"] = action;
   }
 }
+
+module.exports.Message = Message;
+module.exports.PlayerChangeHero = PlayerChangeHero;
+module.exports.PlayerChangeColor = PlayerChangeColor;
+module.exports.GameActions = GameActions;
+module.exports.PlayerPrepared = PlayerPrepared;
+module.exports.PlayerReady = PlayerReady;
+module.exports.RequestGame = RequestGame;

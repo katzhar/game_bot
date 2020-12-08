@@ -1,15 +1,15 @@
-import  WebSocket from 'ws';
-import {
+const WebSocket = require('ws');
+const {
     Message,
     RequestGame,
     PlayerConnect,
     PlayerChangeHero,
     PlayerChangeColor,
     PlayerPrepared,
-} from './message.js';
-export class Game {
-    bot_ready = true;
+} = require ('./message.js');
 
+class Game {
+    bot_ready = true;
     constructor(process, websocket_url, user_id, bot_id, game_id) {
         this.process = process;
         if (!game_id) {
@@ -196,3 +196,5 @@ export class Game {
         }
     }
 }
+
+module.exports = Game;

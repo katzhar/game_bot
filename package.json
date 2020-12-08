@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "bot.js",
   "license": "MIT",
-  "type": "module",
   "dependencies": {
     "@babel/cli": "^7.12.8",
     "@babel/core": "^7.12.9",

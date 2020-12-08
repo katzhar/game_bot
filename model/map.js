@@ -1,4 +1,4 @@
-export class Map {
+class Map {
     /* Класс предоставляяющий вспомогательные методы работы с картой */
     constructor(game) {
         this.map = JSON.parse(game);
@@ -190,3 +190,5 @@ export class Map {
     // })
     //
     // const test = new Map(links);
+
+module.exports.Map = Map;

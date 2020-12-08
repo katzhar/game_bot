@@ -1,12 +1,12 @@
-import { HeroType } from './model/hero';
-import { Map } from './model/map';
-import { Parameters } from './model/parameters';
-import { AbilityType } from './model/abilites';
-import { Teams } from './model/teams';
-import { State } from './model/state';
+const { HeroType } = require('./model/hero');
+const { Map } = require('./model/map');
+const { Parameters } = require('./model/parameters');
+const { AbilityType } = require('./model/abilites');
+const { Teams } = require('./model/teams');
+const { State } = require('./model/state');
 
-import  readline from 'readline';
-import  process from 'process';
+const  readline = 'readline';
+const  process = 'process';
 
 let rl = readline.createInterface({
   input: process.stdin,

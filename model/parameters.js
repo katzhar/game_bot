@@ -1,7 +1,8 @@
-import { AbilityParameters, GameEventParameters } from './abilites.js';
-import { TowerLevelParameters, ForgeParameters } from './buildings.js';
-import { CreepParameters } from './squads.js';
-export class Parameters {
+const { AbilityParameters, GameEventParameters } = require('./abilites.js');
+const { TowerLevelParameters, ForgeParameters } = require('./buildings.js');
+const { CreepParameters } = require('./squads.js');
+
+ class Parameters {
     // Класс, предоставляющий доступ к параметрам игры
     constructor(game) {
         let parameters = JSON.parse(game);
@@ -235,5 +236,8 @@ export class Parameters {
 //         }
 //     }
 // })
-
+//
 // const test = new Parameters(params)
+// console.log(test)
+
+module.exports.Parameters = Parameters;

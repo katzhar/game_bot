@@ -1,5 +1,5 @@
-import { AbilityType } from './abilites.js';
-export class Cooldown {
+const { AbilityType } = require('./abilites.js');
+class Cooldown {
   /* Фриз на применение абилок*/
   constructor(cooldown) {
     this.ability = AbilityType[cooldown.Ability];  // тип абилки
@@ -7,3 +7,5 @@ export class Cooldown {
     this.ticks_to_cooldown_end = cooldown.TicksToCooldownEnd; // сколько тиков осталось до повторного применения
   }
 }
+
+module.exports.Cooldown = Cooldown;

@@ -1,8 +1,9 @@
-import { Ability } from './abilites.js';
-import { Building, BuildingType } from './buildings.js';
-import { Squad } from './squads.js';
-import { Cooldown } from './cooldowns.js';
-export class State {
+const { Ability } = require('./abilites.js');
+const { Building, BuildingType } = require('./buildings.js');
+const { Squad } = require('./squads.js');
+const { Cooldown } = require('./cooldowns.js');
+
+ class State {
   /* Класс, предоставляющий доступ к состоянию игры */
   constructor(state, teams, parameters) {
     this.state = JSON.parse(state);
@@ -441,3 +442,5 @@ export class State {
 // const game_teams = new Teams(state);  // моя команда
 
 // const test = new State(state, game_teams, game_params);
+
+module.exports.State = State;
