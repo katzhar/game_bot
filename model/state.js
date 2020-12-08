@@ -13,22 +13,22 @@ export class State {
     this.buildings = [];
     this.state.buildingStates.forEach((building) => {
       this.buildings = [...this.buildings, new Building(building, parameters)];
-    })
+    });
     // получаем список всех отрядов
     this.squads = [];
     this.state.squadStates.forEach((squad) => {
       this.squads = [...this.squads, new Squad(squad)];
-    })
+    });
     // получаем список всех примененных абилок
     this.abilities = [];
     this.state.AbilityStates.forEach((ability) => {
       this.abilities = [...this.abilities, new Ability(ability)];
-    })
+    });
     // получаем список всех фризов на применение абилок
     this.cooldowns = [];
     this.state.CooldownState.forEach((cooldown) => {
       this.cooldowns = [...this.cooldowns, new Cooldown(cooldown)];
-    })
+    });
     // глобальный бафф который происходит побитовая маска
     this.global_buffs_mask = this.state.GlobalBuffsMask;
 
@@ -42,7 +42,7 @@ export class State {
         this.buildings = this.buildings.filter((x) => {
           x.type !== BuildingType.Forge
             && team_colors.includes(x.player_color)
-        })
+        });
         this.buildings.forEach((building) => {
           building.add_defence(parameters.forge.defence_bonus);
         })
@@ -54,7 +54,7 @@ export class State {
     // Мои здания
     return this.buildings.filter((x) => x.type === BuildingType.Tower
       && x.player_color === this.__player_color);
-  }
+  };
 
   enemy_buildings = () => {
     // Вражеские здания
@@ -62,34 +62,34 @@ export class State {
       !this.__my_team_players_color.includes(x.player_color) &&
         x.player_color !== 0 && x.type === BuildingType.Tower
     })
-  }
+  };
 
   neutral_buildings = () => {
     // Нейтральные здания
     return this.buildings.filter((x) =>
       x.player_color === 0 && x.type === BuildingType.Tower);
-  }
+  };
 
   forges_buildings = () => {
     // Кузницы
     return this.buildings.filter((x) => x.type === BuildingType.Forge);
-  }
+  };
 
   my_squads = () => {
     // Мои отряды
     return this.squads.filter((x) => x.player_color === this.__player_color);
-  }
+  };
 
   enemy_squads = () => {
     // Вражеские отряды
     return this.squads.filter((x) =>
       !this.__my_team_players_color.includes(x.player_color));
-  }
+  };
 
   my_active_abilities = () => {
     // Мои возможности активные в текущем стейте
     return this.abilities.filter((x) => x.player_color === this.__player_color);
-  }
+  };
 
   enemy_active_abilities = (ability) => {
     // Активные абилки примененные врагом
@@ -102,7 +102,7 @@ export class State {
       return this.abilities.filter((x) =>
         includesPlColor);
     }
-  }
+  };
 
   ability_ready = (ability) => {
     // Готовность к повторному применению
@@ -111,7 +111,7 @@ export class State {
       if (cool_down.player_color === this.__player_color
         && cool_down.ability === ability)
         res = false;
-    })
+    });
     return res;
   }
 }
@@ -178,7 +178,7 @@ export class State {
 //       "OwnerColor": 0, //Цвет игрока, который произнес заклинание
 //       "InitialTick": 826, //Номер тика, на котором заклинание было произнесено
 //       "StartTick": 827, //Номер тика, на котором заклинание начало/ начнет свое действие
-//       "EndTick": 827 //Номер тика, на котором заклинание прекращает 
+//       "EndTick": 827 //Номер тика, на котором заклинание прекращает
 //     },
 //     {
 //       "AbilityInputType": 1,

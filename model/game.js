@@ -34,7 +34,7 @@ export class Game {
 
         ws.on('connect failed', (err) => {
             console.log('Connect Error: ' + err.toString());
-        })
+        });
         ws.on('connect', (connection) => {
             console.log("OUT >>> Request Game");
             connection.on('error', (error) => {
@@ -48,7 +48,7 @@ export class Game {
         let msg = new RequestGame(user_id, bot_id, game_id);
         ws.send(msg.send_message());
         this.handler(ws);
-    }
+    };
 
     handler = async (ws) => {
         for (let message in ws) {
@@ -76,27 +76,27 @@ export class Game {
                     let output_msg = new PlayerConnect(this.game_server, this.game_id, this.bot_id);
                     console.log("OUT >>> Bot connect");
                     ws.send(output_msg.send_message());
-                }
+                };
                 setTimeout(botConnect(), 100);
 
                 // Определение героя бота
                 const botChooseHero = () => {
-                    hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
-                    output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
+                    const hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
+                    const output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
                     console.log("OUT >>> Bot choose hero");
                     ws.send(output_msg.send_message());
-                }
+                };
                 setTimeout(botChooseHero(), 100);
 
-                for (team in team_players) {
+                for (let team in team_players) {
                     if (team.includes("PlayerId") && team["PlayerId"] === this.bot_id) {
                         player_color = team["PlayerColor"];
                     }
                 }
 
-                if (!player_color) {
-                    for (team in team_players) {
-                        if (!team.includes("PlayerId")) {
+                if (! player_color) {
+                    for (let team in team_players) {
+                        if (! team.includes("PlayerId")) {
                             player_color = team["PlayerColor"]
                         }
                     }
@@ -106,7 +106,7 @@ export class Game {
                     let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
                     console.log("OUT >>> Bot choose color");
                     ws.send(output_msg.send_message());
-                }
+                };
                 setTimeout(botPlayerChangeColor(), 100);
 
                 // Передача боту параметров игры
@@ -132,14 +132,14 @@ export class Game {
                 // Передача боту параметров игры
                 this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
                 let msg_bytes = this.game_parameters.toString().encode() + '/n';
-                this.process.stdin.write(msg_bytes)
+                this.process.stdin.write(msg_bytes);
                 this.process.stdin.flush();
             }
 
-            if (input_msg.msg_type == 12) {
-                console.log("IN <<< All players prepared")
-                let output_msg = new PlayerReady(this.game_server, this.game_id, this.bot_id)
-                console.log("OUT >>> Bot ready")
+            if (input_msg.msg_type === 12) {
+                console.log("IN <<< All players prepared");
+                let output_msg = new PlayerReady(this.game_server, this.game_id, this.bot_id);
+                console.log("OUT >>> Bot ready");
                 ws.send(output_msg.send_message())
             }
 
@@ -157,8 +157,8 @@ export class Game {
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
                     let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
-                    this.process.stdin.write(msg_bytes)
-                    this.process.stdin.flush()
+                    this.process.stdin.write(msg_bytes);
+                    this.process.stdin.flush();
 
                     // Запускаем асинхронное ожидание команды
                     this.loop.create_task(this.get_command(ws))
@@ -181,11 +181,10 @@ export class Game {
                 console.log("IN <<< Player disconnected");
             }
         }
-    }
+    };
 
     get_command = async (ws) => {
         while (!this.bot_ready) {
-            //command = this.process.stdout.readline().decode('utf-8').strip();
             if (command === "end") {
                 this.bot_ready = true;
             }

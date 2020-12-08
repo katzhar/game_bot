@@ -15,7 +15,7 @@ export class Squad {
     this.player_color = squad["PlayerColor"];  // кому принадлежит
     this.creeps_count = squad["CreepsCount"];  // сколько крипов в отряде
     this.speed = squad["Speed"];  // скорость передвижения
-    this.way = new Way(squad["Way"]["Total"], squad["Way"]["Traveled"])  // путь отряда
+    this.way = new Way(squad["Way"]["Total"], squad["Way"]["Traveled"]);  // путь отряда
     this.buff = squad["BuffMask"];  // побитовая маска - каждый байт - крип, в каждом байте бит соответствует бафу
     // - берсерк 0, чума 1, убийство червяком -2
   }

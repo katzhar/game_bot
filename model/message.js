@@ -20,8 +20,8 @@ export class Message {
     let msg_gzip = gzip(msg_string.encode());
     let msg_base64 = Base64.encode(msg_gzip);
     return msg_base64;
-  }
-  
+  };
+
   to_string = () => {
     return escape(JSON.stringify(this.json));
   }
@@ -32,7 +32,7 @@ export class RequestGame extends Message {
     "RequestGameParametersArgs": {
       "BotId": "",
     },
-  }
+  };
 
   constructor(user_id, bot_id, game_id) {
     super(user_id, bot_id, game_id);
@@ -52,11 +52,11 @@ export class PlayerConnect extends Message {
     "PlayerConnectArgs": {
       "PlayerId": "",
     },
-  }
+  };
 
   constructor(game_server, game_id, bot_id) {
     super(game_server, game_id, bot_id);
-    this.json["Subscribers"] = [...this.json["Subscribers"], game_server]
+    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
     this.json["GameId"] = game_id;
     this.json["PlayerConnectArgs"]["PlayerId"] = bot_id;
   }
@@ -70,11 +70,11 @@ export class PlayerChangeHero extends Message {
       "PlayerId": "",
       "HeroType": 0,
     },
-  }
+  };
 
   constructor(game_server, game_id, bot_id, hero_type) {
     super(game_server, game_id, bot_id, hero_type);
-    this.json["Subscribers"] = [...this.json["Subscribers"], game_server]
+    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
     this.json["GameId"] = game_id;
     this.json["PlayerChangeHeroTypeArgs"]["PlayerId"] = bot_id;
     this.json["PlayerChangeHeroTypeArgs"]["HeroType"] = hero_type;
@@ -89,12 +89,12 @@ export class PlayerChangeColor extends Message {
       "PlayerId": "",
       "PlayerColor": 2,
     },
-  }
+  };
 
   constructor(game_server, game_id, bot_id, player_color) {
     super(game_server, game_id, bot_id, player_color);
     this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
-    this.json["GameId"] = game_id
+    this.json["GameId"] = game_id;
     this.json["PlayerChangeColorArgs"]["PlayerId"] = bot_id;
     this.json["PlayerChangeColorArgs"]["PlayerColor"] = player_color;
   }
@@ -107,7 +107,7 @@ export class PlayerPrepared extends Message {
     "PlayerPreparedArgs": {
       "PlayerId": "",
     },
-  }
+  };
 
   constructor(game_server, game_id, bot_id) {
     super(game_server, game_id, bot_id);
@@ -124,12 +124,12 @@ export class PlayerReady extends Message {
     "PlayerReadyArgs": {
       "PlayerId": "",
     },
-  }
+  };
 
   constructor(game_server, game_id, bot_id) {
     super(game_server, game_id, bot_id);
     this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
-    this.json["GameId"] = game_id
+    this.json["GameId"] = game_id;
     this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
   }
 }
@@ -141,12 +141,12 @@ export class GameActions extends Message {
     "GameActionsArgs": {
       "Action": {},
     },
-  }
+  };
 
   constructor(game_server, game_id, action) {
-    super(game_server, game_id, action)
+    super(game_server, game_id, action);
     this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
-    this.json["GameId"] = game_id
+    this.json["GameId"] = game_id;
     this.json["GameActionsArgs"]["Action"] = action;
   }
 }

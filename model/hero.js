@@ -6,7 +6,7 @@ export const HeroType = {
   Warrior: 1,        // Воин
   BlackSmith: 2,     // Рунный кузнец
   Mag: 3,            // Маг
-}
+};
 export class Hero {
   /*Общий класс для всех героев. Содержит общий набор возможностей*/
   hero_type = HeroType.Nobody;
@@ -14,7 +14,7 @@ export class Hero {
 
   constructor(game_parameters) {
     if (game_parameters["HeroType"] !== this.hero_type)
-      new Error('Hero type in game parameters init hero type')
+      new Error('Hero type in game parameters init hero type');
     this.player_color = game_parameters["PlayerColor"];
   }
 
@@ -38,9 +38,9 @@ export class Hero {
       "Part": part,
       "PlayerColor": this.player_color,
       "Type": 1,
-    }
+    };
     return escape(JSON.stringify(action));
-  }
+  };
 
   speed_up = (location) => {
     /*Ускорение союзных войск
@@ -53,9 +53,9 @@ export class Hero {
       "AbilityId": AbilityType.indexOf('Speed_up'),
       "PlayerColor": this.player_color,
       "Type": 2,
-    }
+    };
     return escape(JSON.stringify(action));
-  }
+  };
 
   upgrade_tower = (tower_id) => {
     /*
@@ -66,7 +66,7 @@ export class Hero {
       "TowerId": tower_id,
       "PlayerColor": this.player_color,
       "Type": 4,
-    }
+    };
     return escape(JSON.stringify(action));
   }
 }
@@ -87,9 +87,9 @@ export class Mag extends Hero {
       "AbilityId": AbilityType.indexOf('Plague'),
       "PlayerColor": this.player_color,
       "Type": 2,
-    }
+    };
     return escape(JSON.stringify(action));
-  }
+  };
 
   exchange = (enemy_tower_id, my_tower_id) => {
     /*
@@ -105,13 +105,13 @@ export class Mag extends Hero {
       "AbilityId": AbilityType.indexOf('Build_exchange'),
       "PlayerColor": this.player_color,
       "Type": 2,
-    }
+    };
     return escape(JSON.stringify(action));
   }
 }
 export class Warrior extends Hero {
   /* Возможности героя Воин */
-  hero_type = HeroType.Warrior
+  hero_type = HeroType.Warrior;
 
   berserk = (location) => {
     /*
@@ -126,9 +126,9 @@ export class Warrior extends Hero {
       "AbilityId": AbilityType.indexOf('Berserk'),
       "PlayerColor": this.player_color,
       "Type": 2,
-    }
+    };
     return escape(JSON.stringify(action));
-  }
+  };
 
   growl = (enemy_tower_id) => {
     /*
@@ -143,7 +143,7 @@ export class Warrior extends Hero {
       "AbilityId": AbilityType.indexOf('Growl'),
       "PlayerColor": this.player_color,
       "Type": 2,
-    }
+    };
     return escape(JSON.stringify(action));
   }
 }
@@ -164,9 +164,9 @@ export class BlackSmith extends Hero {
       "AbilityId": AbilityType.indexOf('Area_damage'),
       "PlayerColor": this.player_color,
       "Type": 2,
-    }
+    };
     return escape(JSON.stringify(action));
-  }
+  };
 
   armor = (my_tower_id) => {
     /*
@@ -181,7 +181,7 @@ export class BlackSmith extends Hero {
       "AbilityId": AbilityType.indexOf('Armor'),
       "PlayerColor": this.player_color,
       "Type": 2,
-    }
+    };
     return escape(JSON.stringify(action));
   }
 }

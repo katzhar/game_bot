@@ -19,11 +19,11 @@ export class Teams {
       this.my_her = new Warrior(game);
     if (game["HeroType"] === HeroType.BlackSmith)
       this.my_her = new BlackSmith(game);
-    let my_team_id = this.__get_team_id(this.my_her.player_color)
+    let my_team_id = this.__get_team_id(this.my_her.player_color);
     this.teams.forEach((team) => {
       team.Players.forEach((player) => {
         if (team.TeamId === my_team_id)
-          this.my_team = [...this.my_team, new PLayer(player["PlayerColor"], player["HeroType"])]
+          this.my_team = [...this.my_team, new PLayer(player["PlayerColor"], player["HeroType"])];
         else
           this.enemy_team = [...this.enemy_team, new PLayer(player["PlayerColor"],
             player["HeroType"])];
@@ -35,9 +35,9 @@ export class Teams {
     /* Возвращает массив цветов игроков команды моего бота */
     let result = [];
     this.my_team.forEach((player) =>
-      result = [...result, player.player_color])
+      result = [...result, player.player_color]);
     return result;
-  }
+  };
 
   enemy_players_have_hero = (hero_type) => {
     /* Возвращает True если в команде противника найден тип героя hero_type */
@@ -45,22 +45,22 @@ export class Teams {
     this.enemy_team.forEach((player) => {
       if (player.hero_type === hero_type)
         res = player;
-    })
+    });
     return res;
-  }
+  };
 
   get_team_colors_by_color = (player_color) => {
     /* Возвращает массив игроков команды игрока player_color */
     let team_id = this.__get_team_id(player_color);
-    let result = []
+    let result = [];
     this.teams.forEach((team) => {
       team.Players.forEach((player) => {
         if (team["TeamId"] === team_id)
           result = [...result, player["PlayerColor"]]
       })
-    })
+    });
     return result;
-  }
+  };
 
   __get_team_id = (player_color) => {
     /* Возвращает идентификатор команды бота игрока player_color */
@@ -70,7 +70,7 @@ export class Teams {
         if (player.PlayerColor === player_color)
           res = team.TeamId;
       })
-    })
+    });
     return res;
   }
 }

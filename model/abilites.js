@@ -10,7 +10,7 @@ export const AbilityType = [
     'Armor',              // защита башни (BlackSmith)
     'Tremors',            // червь (общая)
     'Fair_wind',           // усорение всех войск (общая)
-]
+];
 
 export const AbilityInputType = [
     // Способы применения абилок
@@ -18,12 +18,12 @@ export const AbilityInputType = [
     'AreaAbility',         //площадная абилка
     'OneTowerAbility',     // применяется к одной башне
     'TwoTowerAbility',    // применяется к двум башням
-]
+];
 export class Ability {
     constructor(Ability) {
         this.ability = AbilityType[Ability.Ability]; //тип абилки
         if (Ability.TargetTowerId)
-            this.target_tower_id = Ability["TargetTowerId"] //башня к которой применена (для input type 2  )
+            this.target_tower_id = Ability["TargetTowerId"]; //башня к которой применена (для input type 2  )
         if (Ability.FirstTargetTowerId)
             this.first_target_tower_id = Ability["FirstTargetTowerId"];  // башня к которой применена (для input type 3)
         if (Ability.SecondTargetTowerId)
@@ -45,9 +45,9 @@ export class AbilityParameters {
 
     constructor(params) {
         // тип абилки
-        this.ability = AbilityType[params.Id]
+        this.ability = AbilityType[params.Id];
         //тип действия 0 - общие, 1 - площадные, 2 - на 1 башню, 3 - на 2 башни
-        this.input_type = AbilityInputType[params.InputType]
+        this.input_type = AbilityInputType[params.InputType];
         // сколько длится в тиках
         this.duration = params["Duration"];
         // через сколько будет доступна снова
@@ -73,9 +73,9 @@ export class GameEventParameters {
         // повторяется или нет
         this.LoopMode = params["LoopMode"];
         // 0 - на игрока, 1 - на всех
-        this.UseMode = params["UseMode"]
+        this.UseMode = params["UseMode"];
         //тип абилки
-        this.Ability = AbilityType[params.Ability]
+        this.Ability = AbilityType[params.Ability];
         // начальный цвет цели
         this.TargetColor = params["TargetColor"];
     }
