@@ -1,4 +1,5 @@
-const  Game  = require('./model/game');
+require('dotenv/config');
+const Game = require('./model/game');
 const { ArgumentParser } = require('argparse');
 
 if (typeof require !== 'undefined' && require.main === module) {
@@ -39,11 +40,9 @@ if (typeof require !== 'undefined' && require.main === module) {
     });
 
     const args = parser.parse_args();
-    const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE)
-
     if (args.srv) {
-        new Game(process, `${args.ip}/game`, null, args.bot, args.game)
+        new Game(`${args.ip}/game`, null, args.bot, args.game);
     } else {
-        new Game(process, `${args.ip}/game`, args.user, args.bot, null)
+        new Game(`${args.ip}/game`, args.user, args.bot, null);
     }
 }
