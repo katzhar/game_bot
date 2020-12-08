@@ -8,7 +8,7 @@ class Message {
     let msg_gzip = Base64.decode(msg_base64);
     let msg_bytes, msg_string;
     ungzip(msg_gzip).then( (res) => {
-      msg_bytes = res;})
+      msg_bytes = res.toString();})
       .then(() => {
         msg_string = Base64.atob(msg_bytes);
         this.json = JSON.parse(msg_string)
@@ -23,7 +23,7 @@ class Message {
   send_message = async () => {
     let msg_string = JSON.stringify(this.json);
     let msg_gzip = await gzip(Base64.btoa(msg_string));
-    let msg_base64 = Base64.encode(msg_gzip.toString());
+    let msg_base64 = Base64.encode(msg_gzip);
     return msg_base64;
   };
 
