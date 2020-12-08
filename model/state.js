@@ -2,7 +2,7 @@ import { Ability } from './abilites.js';
 import { Building, BuildingType } from './buildings.js';
 import { Squad } from './squads.js';
 import { Cooldown } from './cooldowns.js';
-export class State {
+  class State {
   /* Класс, предоставляющий доступ к состоянию игры */
   constructor(state, teams, parameters) {
     this.state = JSON.parse(state);

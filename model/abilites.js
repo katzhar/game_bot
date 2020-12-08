@@ -1,4 +1,4 @@
-export const AbilityType = [
+  const AbilityType = [
     // Типы абилок применяемых в игре
     'Speed_up',            // ускорение
     'Vision',            // видеть количество войск в башнях (для игроков)
@@ -12,14 +12,14 @@ export const AbilityType = [
     'Fair_wind',           // усорение всех войск (общая)
 ];
 
-export const AbilityInputType = [
+  const AbilityInputType = [
     // Способы применения абилок
     'CommonAbility',      // общая абилка
     'AreaAbility',         //площадная абилка
     'OneTowerAbility',     // применяется к одной башне
     'TwoTowerAbility',    // применяется к двум башням
 ];
-export class Ability {
+  class Ability {
     constructor(Ability) {
         this.ability = AbilityType[Ability.Ability]; //тип абилки
         if (Ability.TargetTowerId)
@@ -39,7 +39,7 @@ export class Ability {
         this.end_tick = Ability["EndTick"];  // когда закончит действовать
     }
 }
-export class AbilityParameters {
+  class AbilityParameters {
     /*Класс предоставляющий праматеры абилок по умолчанию, которые передаются в игровых параметрах при
     инициализации игры*/
 
@@ -60,7 +60,7 @@ export class AbilityParameters {
         this.ability_data = params["AbilityData"];
     }
 }
-export class GameEventParameters {
+  class GameEventParameters {
     /*Класс предоставляющий праматеры глобальных событий игры,
      которые передаются в игровых параметрах при инициализации игры
      */

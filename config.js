@@ -1,8 +1,5 @@
-import { Game } from './model/game.js';
 const { ArgumentParser } = require('argparse');
-const server_ip = 'wss://gameapi.it-god.ru';
-const user_id = '3616b393-c3e3-4899-9eb8-84d15f18e0cb';
-const bot_id = '08def1f1-5e6f-4cab-9850-5868c500b835';
+const Game = require('./model/game');
 
 if (typeof require !== 'undefined' && require.main === module) {
     const parser = new ArgumentParser({
@@ -13,21 +10,21 @@ if (typeof require !== 'undefined' && require.main === module) {
         type: 'str',
         nargs: '?',
         help: 'Server IP',
-        default: server_ip
+        default: process.env.SERVER_IP
     });
 
     parser.add_argument('-b', '--bot', {
         type: 'str',
         nargs: '?',
         help: 'Bot Id',
-        default: bot_id
+        default: process.env.BOT_ID
     });
 
     parser.add_argument('-u', '--user', {
         type: 'str',
         nargs: '?',
         help: 'User Id',
-        default: user_id
+        default: process.env.USER_ID
     });
 
     parser.add_argument('-g', '--game', {
@@ -42,6 +39,7 @@ if (typeof require !== 'undefined' && require.main === module) {
     });
 
     const args = parser.parse_args();
+    // const process = Popen(["python", "-u", "index.py"], stdout = PIPE, stdin = PIPE)
 
     if (args.srv) {
         new Game(process, `${args.ip}/game`, null, args.bot, args.game)

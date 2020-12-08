@@ -1,4 +1,4 @@
-export class Map {
+  class Map {
     /* Класс предоставляяющий вспомогательные методы работы с картой */
     constructor(game) {
         this.map = JSON.parse(game);

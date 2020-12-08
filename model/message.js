@@ -1,6 +1,6 @@
 const { Base64 } = require('js-base64');
 const { gzip, ungzip } = require('node-gzip');
-export class Message {
+class Message {
   json = {};
 
   constructor(msg_base64) {
@@ -26,7 +26,7 @@ export class Message {
     return escape(JSON.stringify(this.json));
   }
 }
-export class RequestGame extends Message {
+class RequestGame extends Message {
   json = {
     "MsgType": 17,
     "RequestGameParametersArgs": {
@@ -44,7 +44,7 @@ export class RequestGame extends Message {
       this.json["RequestGameParametersArgs"]["GameId"] = game_id;
   }
 }
-export class PlayerConnect extends Message {
+class PlayerConnect extends Message {
   json = {
     "MsgType": 8,
     "GameId": "",
@@ -61,7 +61,7 @@ export class PlayerConnect extends Message {
     this.json["PlayerConnectArgs"]["PlayerId"] = bot_id;
   }
 }
-export class PlayerChangeHero extends Message {
+class PlayerChangeHero extends Message {
   json = {
     "MsgType": 22,
     "GameId": "",
@@ -80,7 +80,7 @@ export class PlayerChangeHero extends Message {
     this.json["PlayerChangeHeroTypeArgs"]["HeroType"] = hero_type;
   }
 }
-export class PlayerChangeColor extends Message {
+class PlayerChangeColor extends Message {
   json = {
     "MsgType": 23,
     "GameId": "",
@@ -99,7 +99,7 @@ export class PlayerChangeColor extends Message {
     this.json["PlayerChangeColorArgs"]["PlayerColor"] = player_color;
   }
 }
-export class PlayerPrepared extends Message {
+class PlayerPrepared extends Message {
   json = {
     "MsgType": 11,
     "GameId": "",
@@ -116,7 +116,7 @@ export class PlayerPrepared extends Message {
     this.json["PlayerPreparedArgs"]["PlayerId"] = bot_id;
   }
 }
-export class PlayerReady extends Message {
+class PlayerReady extends Message {
   json = {
     "MsgType": 13,
     "GameId": "",
@@ -133,7 +133,7 @@ export class PlayerReady extends Message {
     this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
   }
 }
-export class GameActions extends Message {
+class GameActions extends Message {
   json = {
     "MsgType": 3,
     "GameId": "",
@@ -150,3 +150,12 @@ export class GameActions extends Message {
     this.json["GameActionsArgs"]["Action"] = action;
   }
 }
+
+module.exports = {
+  Message,
+  RequestGame,
+  PlayerConnect,
+  PlayerChangeHero,
+  PlayerChangeColor,
+  PlayerPrepared
+};
