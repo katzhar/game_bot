@@ -7,13 +7,11 @@ const {
     PlayerChangeHero,
     PlayerChangeColor,
     PlayerPrepared,
-} = require('./message.js')
+} = require('./message.js');
 
 class Game {
     bot_ready = true;
-
-    constructor(process, websocket_url, user_id, bot_id, game_id) {
-        this.process = process;
+    constructor(websocket_url, user_id, bot_id, game_id) {
         if (!game_id) {
             this.game_id = 0;
         } else {
@@ -26,7 +24,6 @@ class Game {
     }
 
     run = (websocket_url, user_id, bot_id, game_id) => {
-        const websocket_url = 'ws://ift.gameapi.it-god.ru';
         const wss = new WebSocket(websocket_url);
         let message = new RequestGame(user_id, bot_id, game_id);
 
@@ -114,16 +111,15 @@ class Game {
 
                 if (input_msg.msg_type === 10) {
                     console.log("IN <<< All players connected");
-
                     let output_msg = new PlayerPrepared(this.game_server, this.game_id, this.bot_id);
+                    
                     console.log("OUT >>> Bot prepared");
                     ws.send(output_msg.send_message());
 
                     // Передача боту параметров игры
                     this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
                     let msg_bytes = this.game_parameters.toString().encode() + '/n';
-                    this.process.stdin.write(msg_bytes);
-                    this.process.stdin.flush();
+                    process.stdin.write(msg_bytes);
                 }
 
                 if (input_msg.msg_type === 2) {
@@ -151,23 +147,24 @@ class Game {
                         // Если бот готов, отправляем ему стейт
                         this.bot_ready = false;
                         let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
-                        this.process.stdin.write(msg_bytes);
-                        this.process.stdin.flush();
+                        process.stdin.write(msg_bytes);
                         // Запускаем асинхронное ожидание команды
                         get_command();
                     }
                 }
+
                 if (input_msg.msg_type === 5) {
                     console.log("IN <<< Game cancel");
-                    this.process.exit();
-                    ws.close();
+                    process.exit();
                 }
 
                 if (input_msg.msg_type === 6) {
                     console.log("IN <<< Game over");
-                    this.process.exit();
-                    ws.close();
+                    process.exit();
                 }
+            });
+            ws.on('close', () => {
+                console.log('disconnected');
             });
         });
     };
