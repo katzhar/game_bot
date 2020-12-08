@@ -1,6 +1,5 @@
 require('dotenv/config');
 const WebSocket = require('ws');
-const io = require('socket.io');
 const {
     Message,
     RequestGame,
@@ -35,6 +34,7 @@ class Game {
             ws.send(message.send_message());
             ws.on('message', incoming = (msg) => {
                 const input_msg = new Message(msg);
+
                 if (input_msg.game_id === 0 || (this.game_id !== 0
                     && this.game_id !== input_msg.game_id)) {
                     input_msg.msg_type = 0;
@@ -42,7 +42,7 @@ class Game {
 
                 if (input_msg.msg_type === 24) {
                     console.log("IN <<< Lobby changed");
-                    this.lobby_changed += 1;
+                    this.lobby_changed++;
                     if (this.lobby_changed > 2) {
                         console.log(">>> GAME READY <<<");
                     }
@@ -52,7 +52,7 @@ class Game {
                     console.log("IN <<< All players prepared");
                     let output_msg = new PlayerReady(this.game_server, this.game_id, this.bot_id);
                     console.log("OUT >>> Bot ready");
-                    ws.send(output_msg.send_message())
+                    ws.send(output_msg.send_message());
                 }
 
                 if (input_msg.msg_type === 14) {
@@ -74,7 +74,7 @@ class Game {
                         console.log("OUT >>> Bot connect");
                         ws.send(output_msg.send_message());
                     };
-                    setTimeout(botConnect(), 100);
+                    botConnect();
 
                     // Определение героя бота
                     const botChooseHero = () => {
@@ -83,7 +83,7 @@ class Game {
                         console.log("OUT >>> Bot choose hero");
                         ws.send(output_msg.send_message());
                     };
-                    setTimeout(botChooseHero(), 100);
+                    botChooseHero();
 
                     for (let team in team_players) {
                         if (team.includes("PlayerId") && team["PlayerId"] === this.bot_id) {
@@ -104,7 +104,7 @@ class Game {
                         console.log("OUT >>> Bot choose color");
                         ws.send(output_msg.send_message());
                     };
-                    setTimeout(botPlayerChangeColor(), 100);
+                    botPlayerChangeColor();
 
                     // Передача боту параметров игры
                     this.game_parameters.json["HeroType"] = hero_type;
@@ -129,15 +129,8 @@ class Game {
                     console.log("IN <<< Game started");
                 }
 
-
                 if (input_msg.msg_type === 6) {
                     console.log("IN <<< Game over");
-                    this.process.kill();
-                    ws.close();
-                }
-
-                if (input_msg.msg_type === 5) {
-                    console.log("IN <<< Game cancel");
                     this.process.kill();
                     ws.close();
                 }
@@ -156,26 +149,31 @@ class Game {
                         this.process.stdin.flush();
 
                         // Запускаем асинхронное ожидание команды
-                        this.loop.create_task(this.get_command(ws))
+                        this.get_command();
                     }
+                }
+
+                get_command = () => {
+                    while (!this.bot_ready) {
+                        if (command === "end") {
+                            this.bot_ready = true;
+                        } else if (command) {
+                            console.log("OUT >>> Send command: " + command);
+                            let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
+                            ws.send(msg.send_message());
+                        }
+                    }
+                }
+
+                if (input_msg.msg_type === 5) {
+                    console.log("IN <<< Game cancel");
+                    this.process.exit();
+                    ws.close();
                 }
             });
         });
 
     };
-
-    get_command = async (ws) => {
-        while (!this.bot_ready) {
-            if (command === "end") {
-                this.bot_ready = true;
-            }
-            else if (command) {
-                console.log("OUT >>> Send command: " + command);
-                // let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
-                ws.send(msg.send_message());
-            }
-        }
-    }
 }
 
 module.exports = Game;
