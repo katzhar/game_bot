@@ -26,13 +26,14 @@ class Game {
     }
 
     run = (websocket_url, user_id, bot_id, game_id) => {
+        const websocket_url = 'ws://ift.gameapi.it-god.ru';
         const wss = new WebSocket(websocket_url);
         let message = new RequestGame(user_id, bot_id, game_id);
 
-        wss.on('connection', connection = (ws) => {
+        wss.on('connection', ws => {
             console.log("OUT >>> Request Game");
             ws.send(message.send_message());
-            ws.on('message', incoming = (msg) => {
+            ws.on('message', msg => {
                 const input_msg = new Message(msg);
 
                 if (input_msg.game_id === 0 || (this.game_id !== 0
@@ -129,17 +130,22 @@ class Game {
                     console.log("IN <<< Game started");
                 }
 
-                if (input_msg.msg_type === 6) {
-                    console.log("IN <<< Game over");
-                    this.process.kill();
-                    ws.close();
-                }
-
                 if (input_msg.msg_type === 9) {
                     console.log("IN <<< Player disconnected");
                 }
 
                 if (input_msg.msg_type === 4) {
+                    const get_command = () => {
+                        while (!this.bot_ready) {
+                            if (command === "end") {
+                                this.bot_ready = true;
+                            } else if (command) {
+                                console.log("OUT >>> Send command: " + command);
+                                let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
+                                ws.send(msg.send_message());
+                            }
+                        }
+                    }
                     if (this.bot_ready) {
                         console.log("IN <<< Game tick: " + str(input_msg.json.GameStateArgs.Tick));
                         // Если бот готов, отправляем ему стейт
@@ -147,32 +153,23 @@ class Game {
                         let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
                         this.process.stdin.write(msg_bytes);
                         this.process.stdin.flush();
-
                         // Запускаем асинхронное ожидание команды
-                        this.get_command();
+                        get_command();
                     }
                 }
-
-                get_command = () => {
-                    while (!this.bot_ready) {
-                        if (command === "end") {
-                            this.bot_ready = true;
-                        } else if (command) {
-                            console.log("OUT >>> Send command: " + command);
-                            let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
-                            ws.send(msg.send_message());
-                        }
-                    }
-                }
-
                 if (input_msg.msg_type === 5) {
                     console.log("IN <<< Game cancel");
                     this.process.exit();
                     ws.close();
                 }
+
+                if (input_msg.msg_type === 6) {
+                    console.log("IN <<< Game over");
+                    this.process.exit();
+                    ws.close();
+                }
             });
         });
-
     };
 }
 
