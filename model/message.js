@@ -1,5 +1,5 @@
 const { Base64 } = require('js-base64');
-const { gzip, ungzip } = require('node-gzip');
+const {gzip, ungzip} = require('node-gzip');
 
 class Message {
   json = {};
@@ -7,9 +7,10 @@ class Message {
   constructor (msg_base64) {
     let msg_gzip = Base64.decode(msg_base64);
     let msg_bytes, msg_string;
-    ungzip(msg_gzip).then(async (res) => msg_bytes = res)
+    ungzip(msg_gzip).then( (res) => {
+      msg_bytes = res;})
       .then(() => {
-        msg_string = msg_bytes.decode();
+        msg_string = Base64.atob(msg_bytes);
         this.json = JSON.parse(msg_string)
         this.msg_type = this.json["MsgType"];
         if (this.json.GameId)
@@ -21,8 +22,8 @@ class Message {
 
   send_message = async () => {
     let msg_string = JSON.stringify(this.json);
-    let msg_gzip = await gzip(msg_string.encode());
-    let msg_base64 = Base64.encode(msg_gzip);
+    let msg_gzip = await gzip(Base64.btoa(msg_string));
+    let msg_base64 = Base64.encode(msg_gzip.toString());
     return msg_base64;
   };
 
@@ -169,3 +170,5 @@ module.exports.GameActions = GameActions;
 module.exports.PlayerPrepared = PlayerPrepared;
 module.exports.PlayerReady = PlayerReady;
 module.exports.RequestGame = RequestGame;
+module.exports.PlayerConnect = PlayerConnect;
+
