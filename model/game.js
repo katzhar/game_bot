@@ -29,7 +29,10 @@ class Game {
 
         wss.on('connection', ws => {
             console.log("OUT >>> Request Game");
-            ws.send(message.send_message());
+            message.send_message().then((res) => {
+                ws.send(res)
+            })
+
             ws.on('message', msg => {
                 const input_msg = new Message(msg);
 
@@ -50,7 +53,9 @@ class Game {
                     console.log("IN <<< All players prepared");
                     let output_msg = new PlayerReady(this.game_server, this.game_id, this.bot_id);
                     console.log("OUT >>> Bot ready");
-                    ws.send(output_msg.send_message());
+                    output_msg.send_message().then((res) => {
+                        ws.send(res)
+                    })
                 }
 
                 if (input_msg.msg_type === 14) {
@@ -63,23 +68,26 @@ class Game {
                     this.game_server = input_msg.json.ResponseGameParametersArgs.GameServer;
                     this.game_parameters = input_msg;
                     let player_color = null;
-
                     // Выбор цвета игрока
                     let team_players = this.game_parameters.json.ResponseGameParametersArgs.TeamPlayers;
 
                     const botConnect = () => {
                         let output_msg = new PlayerConnect(this.game_server, this.game_id, this.bot_id);
                         console.log("OUT >>> Bot connect");
-                        ws.send(output_msg.send_message());
+                        output_msg.send_message().then((res) => {
+                            ws.send(res)
+                        })
                     };
                     botConnect();
 
                     // Определение героя бота
                     const botChooseHero = () => {
                         const hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
-                        const output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
+                        let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
                         console.log("OUT >>> Bot choose hero");
-                        ws.send(output_msg.send_message());
+                        output_msg.send_message().then((res) => {
+                            ws.send(res)
+                        })
                     };
                     botChooseHero();
 
@@ -100,7 +108,9 @@ class Game {
                     const botPlayerChangeColor = () => {
                         let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
                         console.log("OUT >>> Bot choose color");
-                        ws.send(output_msg.send_message());
+                        output_msg.send_message().then((res) => {
+                            ws.send(res)
+                        })
                     };
                     botPlayerChangeColor();
 
@@ -112,9 +122,11 @@ class Game {
                 if (input_msg.msg_type === 10) {
                     console.log("IN <<< All players connected");
                     let output_msg = new PlayerPrepared(this.game_server, this.game_id, this.bot_id);
-                    
+
                     console.log("OUT >>> Bot prepared");
-                    ws.send(output_msg.send_message());
+                    output_msg.send_message().then((res) => {
+                        ws.send(res)
+                    })
 
                     // Передача боту параметров игры
                     this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
@@ -138,7 +150,9 @@ class Game {
                             } else if (command) {
                                 console.log("OUT >>> Send command: " + command);
                                 let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
-                                ws.send(msg.send_message());
+                                msg.send_message().then((res) => {
+                                    ws.send(res)
+                                })
                             }
                         }
                     }
