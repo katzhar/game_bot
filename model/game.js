@@ -34,6 +34,7 @@ class Game {
             })
 
             ws.on('message', msg => {
+
                 const input_msg = new Message(msg);
 
                 if (input_msg.game_id === 0 || (this.game_id !== 0
