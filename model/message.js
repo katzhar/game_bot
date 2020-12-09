@@ -1,4 +1,5 @@
 const { deflate, unzip } = require('zlib');
+const { Base64 } = require('js-base64');
 
 
 class ParentsMessage {
@@ -26,20 +27,22 @@ class Message extends ParentsMessage {
 
   constructor(msg_base64) {
     super();
-    console.log(2, msg_base64);
-    // const buffer = Buffer.from(msg_base64, 'base64');
-    unzip(msg_base64, (err, msg_base64) => {
+     const buffer = Buffer.from(msg_base64, 'base64');
+    console.log(buffer)
+    unzip(buffer, (err, buffer) => {
       if (err) {
         console.error('An error occurred:', err);
         process.exitCode = 1;
       }
-      let msg_string = msg_base64.toString();
-      this.json = JSON.parse(unescape(msg_string))
-      this.msg_type = this.json["MsgType"];
-      if (this.json.GameId)
-        this.game_id = this.json["GameId"];
-      else
-        this.game_id = 0;
+      else {
+        let msg_string = buffer.toString();
+        this.json = JSON.parse(unescape(msg_string))
+        this.msg_type = this.json["MsgType"];
+        if (this.json.GameId)
+          this.game_id = this.json["GameId"];
+        else
+          this.game_id = 0;
+      }
     });
   }
 }
@@ -185,14 +188,4 @@ module.exports.RequestGame = RequestGame;
 module.exports.PlayerConnect = PlayerConnect;
 
 
-// const send_message = (s) => {
-//   return new Promise(function(resolve, reject){
-//     deflate(escape(s),(err, buffer) =>{
-//         if (err)
-//           reject(err);
-//         else
-//           resolve(buffer.toString('base64'));
-//       })
-//   }
-// )
-// }
+

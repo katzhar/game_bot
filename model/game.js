@@ -24,19 +24,20 @@ class Game {
         this.run(websocket_url, user_id, bot_id, game_id)
     }
 
-    run = (websocket_url, user_id, bot_id, game_id) => {
+    run = async (websocket_url, user_id, bot_id, game_id) => {
         const wss = new WebSocket(websocket_url);
         let message = new RequestGame(user_id, bot_id, game_id);
 
-        wss.onopen = (ws) => {
+       wss.onopen =  (ws) => {
             console.log("OUT >>> Request Game");
             message.send_message().then((res) => {
-                ws.send(res);
-                console.log(res);
+                console.log(res)
             });
+            let res = 'eJxTNXXKT8pKTS5RNTLwhzBMXQBICgaQ';
+           wss.send(res);
         };
 
-        wss.onmessage = (msg) => {
+        wss.onmessage = async (msg) => {
             const input_msg = new Message(msg.data);
             console.log(input_msg);
 
