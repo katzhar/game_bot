@@ -1,38 +1,49 @@
-const { Base64 } = require('js-base64');
-const {gzip, ungzip} = require('node-gzip');
+const { deflate, unzip } = require('zlib');
 
-class Message {
+
+class ParentsMessage {
   json = {};
-
-  constructor (msg_base64) {
-    let msg_gzip = Base64.decode(msg_base64);
-    let msg_bytes, msg_string;
-    ungzip(msg_gzip).then( (res) => {
-      msg_bytes = res.toString();})
-      .then(() => {
-        msg_string = Base64.atob(msg_bytes);
-        this.json = JSON.parse(msg_string)
-        this.msg_type = this.json["MsgType"];
-        if (this.json.GameId)
-          this.game_id = this.json["GameId"];
-        else
-          this.game_id = 0;
-      })
+  send_message = (json = this.json) => {
+    return new Promise(function (resolve, reject) {
+        deflate(escape(json), (err, buffer) => {
+          if (err)
+            reject(err);
+          else
+            resolve(buffer.toString('base64'));
+        })
+      },
+    )
   }
-
-  send_message = async () => {
-    let msg_string = JSON.stringify(this.json);
-    let msg_gzip = await gzip(Base64.btoa(msg_string));
-    let msg_base64 = Base64.encode(msg_gzip);
-    return msg_base64;
-  };
 
   to_string = () => {
     return escape(JSON.stringify(this.json));
   }
+
 }
 
-class RequestGame extends Message {
+class Message extends ParentsMessage {
+  json = {};
+
+  constructor(msg_base64) {
+    super();
+    const buffer = Buffer.from(msg_base64, 'base64');
+    unzip(buffer, (err, buffer) => {
+      if (err) {
+        console.error('An error occurred:', err);
+        process.exitCode = 1;
+      }
+      let msg_string = buffer.toString();
+      this.json = JSON.parse(unescape(msg_string))
+      this.msg_type = this.json["MsgType"];
+      if (this.json.GameId)
+        this.game_id = this.json["GameId"];
+      else
+        this.game_id = 0;
+    });
+  }
+}
+
+class RequestGame extends ParentsMessage {
   json = {
     "MsgType": 17,
     "RequestGameParametersArgs": {
@@ -41,7 +52,7 @@ class RequestGame extends Message {
   };
 
   constructor(user_id, bot_id, game_id) {
-    super(user_id, bot_id, game_id);
+    super();
     if (user_id)
       this.json["RequestGameParametersArgs"]["UserId"] = user_id;
     if (bot_id)
@@ -51,7 +62,7 @@ class RequestGame extends Message {
   }
 }
 
-class PlayerConnect extends Message {
+class PlayerConnect extends ParentsMessage {
   json = {
     "MsgType": 8,
     "GameId": "",
@@ -62,14 +73,14 @@ class PlayerConnect extends Message {
   };
 
   constructor(game_server, game_id, bot_id) {
-    super(game_server, game_id, bot_id);
+    super();
     this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
     this.json["GameId"] = game_id;
     this.json["PlayerConnectArgs"]["PlayerId"] = bot_id;
   }
 }
 
-class PlayerChangeHero extends Message {
+class PlayerChangeHero extends ParentsMessage {
   json = {
     "MsgType": 22,
     "GameId": "",
@@ -81,7 +92,7 @@ class PlayerChangeHero extends Message {
   };
 
   constructor(game_server, game_id, bot_id, hero_type) {
-    super(game_server, game_id, bot_id, hero_type);
+    super();
     this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
     this.json["GameId"] = game_id;
     this.json["PlayerChangeHeroTypeArgs"]["PlayerId"] = bot_id;
@@ -89,7 +100,7 @@ class PlayerChangeHero extends Message {
   }
 }
 
-class PlayerChangeColor extends Message {
+class PlayerChangeColor extends ParentsMessage {
   json = {
     "MsgType": 23,
     "GameId": "",
@@ -101,7 +112,7 @@ class PlayerChangeColor extends Message {
   };
 
   constructor(game_server, game_id, bot_id, player_color) {
-    super(game_server, game_id, bot_id, player_color);
+    super();
     this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
     this.json["GameId"] = game_id;
     this.json["PlayerChangeColorArgs"]["PlayerId"] = bot_id;
@@ -109,7 +120,7 @@ class PlayerChangeColor extends Message {
   }
 }
 
-class PlayerPrepared extends Message {
+class PlayerPrepared extends ParentsMessage {
   json = {
     "MsgType": 11,
     "GameId": "",
@@ -120,14 +131,14 @@ class PlayerPrepared extends Message {
   };
 
   constructor(game_server, game_id, bot_id) {
-    super(game_server, game_id, bot_id);
+    super();
     this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
     this.json["GameId"] = game_id;
     this.json["PlayerPreparedArgs"]["PlayerId"] = bot_id;
   }
 }
 
-class PlayerReady extends Message {
+class PlayerReady extends ParentsMessage {
   json = {
     "MsgType": 13,
     "GameId": "",
@@ -138,14 +149,14 @@ class PlayerReady extends Message {
   };
 
   constructor(game_server, game_id, bot_id) {
-    super(game_server, game_id, bot_id);
+    super();
     this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
     this.json["GameId"] = game_id;
     this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
   }
 }
 
-class GameActions extends Message {
+class GameActions extends ParentsMessage {
   json = {
     "MsgType": 3,
     "GameId": "",
@@ -156,7 +167,7 @@ class GameActions extends Message {
   };
 
   constructor(game_server, game_id, action) {
-    super(game_server, game_id, action);
+    super();
     this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
     this.json["GameId"] = game_id;
     this.json["GameActionsArgs"]["Action"] = action;
@@ -172,3 +183,15 @@ module.exports.PlayerReady = PlayerReady;
 module.exports.RequestGame = RequestGame;
 module.exports.PlayerConnect = PlayerConnect;
 
+
+// const send_message = (s) => {
+//   return new Promise(function(resolve, reject){
+//     deflate(escape(s),(err, buffer) =>{
+//         if (err)
+//           reject(err);
+//         else
+//           resolve(buffer.toString('base64'));
+//       })
+//   }
+// )
+// }
