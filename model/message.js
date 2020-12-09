@@ -26,13 +26,14 @@ class Message extends ParentsMessage {
 
   constructor(msg_base64) {
     super();
-    const buffer = Buffer.from(msg_base64, 'base64');
-    unzip(buffer, (err, buffer) => {
+    console.log(2, msg_base64);
+    // const buffer = Buffer.from(msg_base64, 'base64');
+    unzip(msg_base64, (err, msg_base64) => {
       if (err) {
         console.error('An error occurred:', err);
         process.exitCode = 1;
       }
-      let msg_string = buffer.toString();
+      let msg_string = msg_base64.toString();
       this.json = JSON.parse(unescape(msg_string))
       this.msg_type = this.json["MsgType"];
       if (this.json.GameId)

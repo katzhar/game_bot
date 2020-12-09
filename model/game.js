@@ -28,162 +28,169 @@ class Game {
         const wss = new WebSocket(websocket_url);
         let message = new RequestGame(user_id, bot_id, game_id);
 
-        wss.onopen = () => {
+        wss.onopen = (ws) => {
             console.log("OUT >>> Request Game");
             message.send_message().then((res) => {
-                // ws.send(res)
+                ws.send(res);
                 console.log(res);
+            });
+        };
 
-            })
-            wss.onmessage = (msg) => {
-                const input_msg = new Message(msg);
+        wss.onmessage = (msg) => {
+            const input_msg = new Message(msg.data);
+            console.log(input_msg);
 
-                if (input_msg.game_id === 0 || (this.game_id !== 0
-                    && this.game_id !== input_msg.game_id)) {
-                    input_msg.msg_type = 0;
+            if (input_msg.game_id === 0 || (this.game_id !== 0
+                && this.game_id !== input_msg.game_id)) {
+                input_msg.msg_type = 0;
+            }
+
+            if (input_msg.msg_type === 24) {
+                console.log("IN <<< Lobby changed");
+                this.lobby_changed++;
+                if (this.lobby_changed > 2) {
+                    console.log(">>> GAME READY <<<");
                 }
+            }
 
-                if (input_msg.msg_type === 24) {
-                    console.log("IN <<< Lobby changed");
-                    this.lobby_changed++;
-                    if (this.lobby_changed > 2) {
-                        console.log(">>> GAME READY <<<");
-                    }
-                }
+            if (input_msg.msg_type === 12) {
+                console.log("IN <<< All players prepared");
+                let output_msg = new PlayerReady(this.game_server, this.game_id, this.bot_id);
+                console.log("OUT >>> Bot ready");
+                output_msg.send_message().then((res) => {
+                    ws.send(res)
+                })
+            }
 
-                if (input_msg.msg_type === 12) {
-                    console.log("IN <<< All players prepared");
-                    let output_msg = new PlayerReady(this.game_server, this.game_id, this.bot_id);
-                    console.log("OUT >>> Bot ready");
+            if (input_msg.msg_type === 14) {
+                console.log("IN <<< All players ready");
+            }
+
+            if (input_msg.msg_type === 18) {
+                console.log("IN <<< Game parameters");
+                this.game_id = input_msg.game_id;
+                this.game_server = input_msg.json.ResponseGameParametersArgs.GameServer;
+                this.game_parameters = input_msg;
+                let player_color = null;
+                // Выбор цвета игрока
+                let team_players = this.game_parameters.json.ResponseGameParametersArgs.TeamPlayers;
+
+                const botConnect = () => {
+                    let output_msg = new PlayerConnect(this.game_server, this.game_id, this.bot_id);
+                    console.log("OUT >>> Bot connect");
                     output_msg.send_message().then((res) => {
                         ws.send(res)
                     })
+                };
+                botConnect();
+
+                // Определение героя бота
+                const botChooseHero = () => {
+                    const hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
+                    let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
+                    console.log("OUT >>> Bot choose hero");
+                    output_msg.send_message().then((res) => {
+                        ws.send(res)
+                    })
+                };
+                botChooseHero();
+
+                for (let team in team_players) {
+                    if (team.includes("PlayerId") && team["PlayerId"] === this.bot_id) {
+                        player_color = team["PlayerColor"];
+                    }
                 }
 
-                if (input_msg.msg_type === 14) {
-                    console.log("IN <<< All players ready");
-                }
-
-                if (input_msg.msg_type === 18) {
-                    console.log("IN <<< Game parameters");
-                    this.game_id = input_msg.game_id;
-                    this.game_server = input_msg.json.ResponseGameParametersArgs.GameServer;
-                    this.game_parameters = input_msg;
-                    let player_color = null;
-                    // Выбор цвета игрока
-                    let team_players = this.game_parameters.json.ResponseGameParametersArgs.TeamPlayers;
-
-                    const botConnect = () => {
-                        let output_msg = new PlayerConnect(this.game_server, this.game_id, this.bot_id);
-                        console.log("OUT >>> Bot connect");
-                        output_msg.send_message().then((res) => {
-                            ws.send(res)
-                        })
-                    };
-                    botConnect();
-
-                    // Определение героя бота
-                    const botChooseHero = () => {
-                        const hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
-                        let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
-                        console.log("OUT >>> Bot choose hero");
-                        output_msg.send_message().then((res) => {
-                            ws.send(res)
-                        })
-                    };
-                    botChooseHero();
-
+                if (!player_color) {
                     for (let team in team_players) {
-                        if (team.includes("PlayerId") && team["PlayerId"] === this.bot_id) {
-                            player_color = team["PlayerColor"];
+                        if (!team.includes("PlayerId")) {
+                            player_color = team["PlayerColor"]
                         }
                     }
-
-                    if (!player_color) {
-                        for (let team in team_players) {
-                            if (!team.includes("PlayerId")) {
-                                player_color = team["PlayerColor"]
-                            }
-                        }
-                    }
-
-                    const botPlayerChangeColor = () => {
-                        let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
-                        console.log("OUT >>> Bot choose color");
-                        output_msg.send_message().then((res) => {
-                            ws.send(res)
-                        })
-                    };
-                    botPlayerChangeColor();
-
-                    // Передача боту параметров игры
-                    this.game_parameters.json["HeroType"] = hero_type;
-                    this.game_parameters.json["PlayerColor"] = player_color;
                 }
 
-                if (input_msg.msg_type === 10) {
-                    console.log("IN <<< All players connected");
-                    let output_msg = new PlayerPrepared(this.game_server, this.game_id, this.bot_id);
-
-                    console.log("OUT >>> Bot prepared");
+                const botPlayerChangeColor = () => {
+                    let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
+                    console.log("OUT >>> Bot choose color");
                     output_msg.send_message().then((res) => {
                         ws.send(res)
                     })
+                };
+                botPlayerChangeColor();
 
-                    // Передача боту параметров игры
-                    this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
-                    let msg_bytes = this.game_parameters.toString().encode() + '/n';
-                    process.stdin.write(msg_bytes);
-                }
+                // Передача боту параметров игры
+                this.game_parameters.json["HeroType"] = hero_type;
+                this.game_parameters.json["PlayerColor"] = player_color;
+            }
 
-                if (input_msg.msg_type === 2) {
-                    console.log("IN <<< Game started");
-                }
+            if (input_msg.msg_type === 10) {
+                console.log("IN <<< All players connected");
+                let output_msg = new PlayerPrepared(this.game_server, this.game_id, this.bot_id);
 
-                if (input_msg.msg_type === 9) {
-                    console.log("IN <<< Player disconnected");
-                }
+                console.log("OUT >>> Bot prepared");
+                output_msg.send_message().then((res) => {
+                    ws.send(res)
+                })
 
-                if (input_msg.msg_type === 4) {
-                    const get_command = () => {
-                        while (!this.bot_ready) {
-                            if (command === "end") {
-                                this.bot_ready = true;
-                            } else if (command) {
-                                console.log("OUT >>> Send command: " + command);
-                                let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
-                                msg.send_message().then((res) => {
-                                    ws.send(res)
-                                })
-                            }
+                // Передача боту параметров игры
+                this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
+                let msg_bytes = this.game_parameters.toString().encode() + '/n';
+                process.stdin.write(msg_bytes);
+            }
+
+            if (input_msg.msg_type === 2) {
+                console.log("IN <<< Game started");
+            }
+
+            if (input_msg.msg_type === 9) {
+                console.log("IN <<< Player disconnected");
+            }
+
+            if (input_msg.msg_type === 4) {
+                const get_command = () => {
+                    while (!this.bot_ready) {
+                        if (command === "end") {
+                            this.bot_ready = true;
+                        } else if (command) {
+                            console.log("OUT >>> Send command: " + command);
+                            let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
+                            msg.send_message().then((res) => {
+                                ws.send(res)
+                            })
                         }
                     }
-                    if (this.bot_ready) {
-                        console.log("IN <<< Game tick: " + str(input_msg.json.GameStateArgs.Tick));
-                        // Если бот готов, отправляем ему стейт
-                        this.bot_ready = false;
-                        let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
-                        process.stdin.write(msg_bytes);
-                        // Запускаем асинхронное ожидание команды
-                        get_command();
-                    }
                 }
+                if (this.bot_ready) {
+                    console.log("IN <<< Game tick: " + str(input_msg.json.GameStateArgs.Tick));
+                    // Если бот готов, отправляем ему стейт
+                    this.bot_ready = false;
+                    let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
+                    process.stdin.write(msg_bytes);
+                    // Запускаем асинхронное ожидание команды
+                    get_command();
+                }
+            }
 
-                if (input_msg.msg_type === 5) {
-                    console.log("IN <<< Game cancel");
-                    process.exit();
-                }
+            if (input_msg.msg_type === 5) {
+                console.log("IN <<< Game cancel");
+                process.exit();
+            }
 
-                if (input_msg.msg_type === 6) {
-                    console.log("IN <<< Game over");
-                    process.exit();
-                }
-            };
-            wss.onerror = (err) => {
-                alert("err " + err.message);
-            };
-        }
+            if (input_msg.msg_type === 6) {
+                console.log("IN <<< Game over");
+                process.exit();
+            }
+        };
+
+        wss.onclose = (event) => {
+            console.log(event.reason);
+        };
+
+        wss.onerror = function (error) {
+            alert("Ошибка " + error.message);
+        };
     }
 }
+
 
 module.exports = Game;
