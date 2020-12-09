@@ -1,4 +1,5 @@
 const { deflate, unzip } = require('zlib');
+const { Base64 } = require('js-base64');
 
 
 class ParentsMessage {
@@ -26,15 +27,16 @@ class Message extends ParentsMessage {
 
   constructor(msg_base64) {
     super();
-    console.log(2, msg_base64);
-    // const buffer = Buffer.from(msg_base64, 'base64');
-    unzip(msg_base64, (err, msg_base64) => {
+    unzip(msg_base64, (err, res) => {
       if (err) {
+        console.log(1, err);
         console.error('An error occurred:', err);
         process.exitCode = 1;
       }
       let msg_string = msg_base64.toString();
-      this.json = JSON.parse(unescape(msg_string))
+      let buffer = Base64.decode(msg_string);
+      console.log(2, buffer);
+      this.json = JSON.parse(unescape(buffer))
       this.msg_type = this.json["MsgType"];
       if (this.json.GameId)
         this.game_id = this.json["GameId"];

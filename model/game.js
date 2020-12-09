@@ -31,8 +31,8 @@ class Game {
         wss.onopen = (ws) => {
             console.log("OUT >>> Request Game");
             message.send_message().then((res) => {
-                ws.send(res);
                 console.log(res);
+                ws.send(res);
             });
         };
 
