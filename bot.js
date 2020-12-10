@@ -4,9 +4,7 @@ const { Parameters } = require('./model/parameters');
 const { AbilityType } = require('./model/abilites');
 const { Teams } = require('./model/teams');
 const { State } = require('./model/state');
-
-const  readline = 'readline';
-const  process = 'process';
+const  readline = require('readline');
 
 let rl = readline.createInterface({
   input: process.stdin,
