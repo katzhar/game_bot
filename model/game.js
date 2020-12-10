@@ -1,6 +1,5 @@
 
 require('dotenv/config');
-// require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
 const WebSocket = require('ws');
 const {
     Message,
@@ -106,7 +105,6 @@ class Game {
                         player_color = team["PlayerColor"];
                     }
                 }
-
                 if (!player_color) {
                     for (let team in team_players) {
                         if (!team.includes("PlayerId")) {
@@ -167,7 +165,7 @@ class Game {
                     }
                 }
                 if (this.bot_ready) {
-                    console.log("IN <<< Game tick: " + str(input_msg.json.GameStateArgs.Tick));
+                    console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
                     let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
