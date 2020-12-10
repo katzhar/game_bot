@@ -1,24 +1,20 @@
-const { deflate, unzip } = require('zlib');
+const { gzip, ungzip } = require('node-gzip');
 const { Base64 } = require('js-base64');
+
 
 class ParentsMessage {
   json = {};
-  send_message = (json = this.json) => {
-    return new Promise(function (resolve, reject) {
-      deflate(escape(json), (err, buffer) => {
-        if (err)
-          reject(err);
-        else
-          resolve(buffer.toString('base64'));
-      })
-    },
-    )
+  send_message = async (json = this.json) => {
+    json = JSON.stringify(json);
+    json = Buffer.from(json, 'utf8');
+    const compressed = await gzip(json);
+    let byte = compressed.toString('base64')
+    return byte;
   }
 
   to_string = () => {
     return escape(JSON.stringify(this.json));
   }
-
 }
 
 class Message extends ParentsMessage {
@@ -26,23 +22,20 @@ class Message extends ParentsMessage {
 
   constructor(msg_base64) {
     super();
-    const buffer = Buffer.from(msg_base64, 'base64');
-    unzip(buffer, (err, buffer) => {
-      if (err) {
-        console.error('An error occurred:', err);
-        process.exitCode = 1;
-      }
-      else {
-        let msg_string = buffer.toString();
-        console.log(msg_string);
-        this.json = JSON.parse(unescape(msg_string))
-        this.msg_type = this.json["MsgType"];
-        if (this.json.GameId)
-          this.game_id = this.json["GameId"];
-        else
-          this.game_id = 0;
-      }
-    });
+    let decodebase64 = Base64.atob(msg_base64);
+    let rawLength = decodebase64.length;
+    let array = new Uint8Array(new ArrayBuffer(rawLength));
+    for (let i = 0; i < rawLength; i++) {
+      array[i] = decodebase64.charCodeAt(i);
+    }
+    ungzip(array).then((decompressed) => {
+      this.json = JSON.parse(decompressed.toString())
+      this.msg_type = this.json["MsgType"];
+      if (this.json.GameId)
+        this.game_id = this.json["GameId"];
+      else
+        this.game_id = 0;
+    })
   }
 }
 
@@ -185,16 +178,3 @@ module.exports.PlayerPrepared = PlayerPrepared;
 module.exports.PlayerReady = PlayerReady;
 module.exports.RequestGame = RequestGame;
 module.exports.PlayerConnect = PlayerConnect;
-
-
-// const send_message = (s) => {
-//   return new Promise(function(resolve, reject){
-//     deflate(escape(s),(err, buffer) =>{
-//         if (err)
-//           reject(err);
-//         else
-//           resolve(buffer.toString('base64'));
-//       })
-//   }
-// )
-// }
