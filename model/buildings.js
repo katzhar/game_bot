@@ -1,8 +1,8 @@
 /*Типы башен*/
-const BuildingType = [
-  'Tower', // обычная башня
-  'Forge',  // кузница
-];
+const BuildingType = {
+  1:'Tower', // обычная башня
+  2:'Forge',  // кузница
+};
 
 class Building {
   /*Состояние башен. Передается в игровом стейте*/

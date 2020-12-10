@@ -2,6 +2,7 @@
 require('dotenv/config');
 const WebSocket = require('ws');
 const {
+    GameActions,
     Message,
     RequestGame,
     PlayerConnect,
@@ -100,17 +101,15 @@ class Game {
                 };
                 botChooseHero();
 
-                for (let team in team_players) {
-                    if (team.includes("PlayerId") && team["PlayerId"] === this.bot_id) {
-                        player_color = team["PlayerColor"];
-                    }
-                }
+                 team_players.forEach((team) => {
+                    if (team.PlayerId === this.bot_id)
+                        player_color = team.PlayerColor;
+                })
                 if (!player_color) {
-                    for (let team in team_players) {
-                        if (!team.includes("PlayerId")) {
-                            player_color = team["PlayerColor"]
-                        }
-                    }
+                  team_players.forEach((team) => {
+                        if (!team.PlayerId)
+                            player_color = team.PlayerColor
+                    })
                 }
 
                 const botPlayerChangeColor = () => {
@@ -153,6 +152,7 @@ class Game {
 
             if (input_msg.msg_type === 4) {
                 const get_command = () => {
+                    //toDo добавить command = self.process.stdout.readline().decode('utf-8').strip()
                     while (!this.bot_ready) {
                         if (command === "end") {
                             this.bot_ready = true;

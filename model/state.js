@@ -1,7 +1,7 @@
 const { Ability } = require('./abilites.js');
 const { Building, BuildingType } = require('./buildings.js');
 const { Squad } = require('./squads.js');
-const { Cooldown } = require('./cooldowns.js');
+const { Cooldown } = require('./cooldowns.js')
 
  class State {
   /* Класс, предоставляющий доступ к состоянию игры */
@@ -34,14 +34,14 @@ const { Cooldown } = require('./cooldowns.js');
     this.global_buffs_mask = this.state.GlobalBuffsMask;
 
     // получаем список кузниц
-    this.forges = this.buildings.filter((x) => x.type === BuildingType.Forge);
+    this.forges = this.buildings.filter((x) => x.type === BuildingType[2]);
 
     // добавление бонуса защиты для башен игрока, владеющего кузницей
     this.forges.forEach((forg) => {
       let team_colors = teams.get_team_colors_by_color(forg.player_color);
       if (team_colors.length > 0) {
         this.buildings = this.buildings.filter((x) => {
-          x.type !== BuildingType.Forge
+          x.type !== BuildingType[2]
             && team_colors.includes(x.player_color)
         });
         this.buildings.forEach((building) => {
@@ -53,7 +53,7 @@ const { Cooldown } = require('./cooldowns.js');
 
   my_buildings = () => {
     // Мои здания
-    return this.buildings.filter((x) => x.type === BuildingType.Tower
+    return this.buildings.filter((x) => x.type === BuildingType[1]
       && x.player_color === this.__player_color);
   };
 
@@ -61,19 +61,19 @@ const { Cooldown } = require('./cooldowns.js');
     // Вражеские здания
     return this.buildings.filter((x) => {
       !this.__my_team_players_color.includes(x.player_color) &&
-        x.player_color !== 0 && x.type === BuildingType.Tower
+        x.player_color !== 0 && x.type === BuildingType[2]
     })
   };
 
   neutral_buildings = () => {
     // Нейтральные здания
     return this.buildings.filter((x) =>
-      x.player_color === 0 && x.type === BuildingType.Tower);
+      x.player_color === 0 && x.type === BuildingType[2]);
   };
 
   forges_buildings = () => {
     // Кузницы
-    return this.buildings.filter((x) => x.type === BuildingType.Forge);
+    return this.buildings.filter((x) => x.type === BuildingType[1]);
   };
 
   my_squads = () => {
@@ -92,16 +92,16 @@ const { Cooldown } = require('./cooldowns.js');
     return this.abilities.filter((x) => x.player_color === this.__player_color);
   };
 
-  enemy_active_abilities = (ability) => {
+  enemy_active_abilities = (ability = null) => {
     // Активные абилки примененные врагом
-    const includesPlColor = !this.__my_team_players_color.includes(x.player_color);
+
     if (ability) {
       return this.abilities.filter((x) => {
-        includesPlColor && x.ability === ability
+        !this.__my_team_players_color.includes(x.player_color) && x.ability === ability
       });
     } else {
       return this.abilities.filter((x) =>
-        includesPlColor);
+        !this.__my_team_players_color.includes(x.player_color));
     }
   };
 
@@ -116,7 +116,7 @@ const { Cooldown } = require('./cooldowns.js');
     return res;
   }
 }
-
+//
 // const state = JSON.stringify({
 //   "squadStates": [ //Список состояний отрядов крипов на карте
 //     {
@@ -152,7 +152,7 @@ const { Cooldown } = require('./cooldowns.js');
 //   ],
 //   "buildingStates": [ //Список состояний строений на карте
 //     {
-//       "Type": 1, //Тип строения(см сопоставление типов строений ниже)
+//       "Type": 2, //Тип строения(см сопоставление типов строений ниже)
 //       "Level": 0, //Текущий уровень строения
 //       "CreepCreationTime": 10, //Время создания крипов в данном строении
 //       "DefenseBonus": 0.0, //Добавочный показатель защиты данного строения
@@ -401,7 +401,7 @@ const { Cooldown } = require('./cooldowns.js');
 //     }
 //   }
 // });
-
+//
 // const teams = JSON.stringify({
 //   'HeroType': 3,
 //   'PlayerColor': 1,
@@ -438,9 +438,9 @@ const { Cooldown } = require('./cooldowns.js');
 //   ],
 // });
 
-// const game_params = new Parameters(state);  // параметры игры
-// const game_teams = new Teams(state);  // моя команда
-
+//  const game_params = new Parameters(state);  // параметры игры
+//  const game_teams = new Teams(teams);  // моя команда
+//
 // const test = new State(state, game_teams, game_params);
 
 module.exports.State = State;

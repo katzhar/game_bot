@@ -1,4 +1,4 @@
-const {gzip, ungzip} = require('node-gzip');
+const { gzip, ungzip } = require('node-gzip');
 const { Base64 } = require('js-base64');
 
 
@@ -6,7 +6,7 @@ class ParentsMessage {
   json = {};
   send_message = async (json = this.json) => {
     json = JSON.stringify(json);
-    this.json = Buffer.from(json,'utf8');
+    this.json = Buffer.from(json, 'utf8');
     const compressed = await gzip(this.json);
     let byte = compressed.toString('base64')
     return byte;
@@ -19,6 +19,7 @@ class ParentsMessage {
 
 class Message extends ParentsMessage {
   json = {};
+
   constructor(strBase64) {
     super();
     this.strBase64 = strBase64;
