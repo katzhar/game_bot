@@ -139,7 +139,8 @@ class Game {
                 // Передача боту параметров игры
                 this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
                 let msg_bytes = this.game_parameters.toString().encode() + '/n';
-                process.stdin.write(msg_bytes);
+                wss.send(msg_bytes);
+                // process.stdin.write(msg_bytes);
             }
 
             if (input_msg.msg_type === 2) {
@@ -169,8 +170,8 @@ class Game {
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
                     let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
-                    process.stdin.write(msg_bytes);
-                    // Запускаем асинхронное ожидание команды
+                    wss.send(msg_bytes);
+                    // process.stdin.write(msg_bytes);
                     get_command();
                 }
             }
