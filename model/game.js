@@ -11,6 +11,7 @@ const {
 
 class Game {
     bot_ready = true;
+    
     constructor(websocket_url, user_id, bot_id, game_id) {
         if (!game_id) {
             this.game_id = 0;
@@ -26,6 +27,7 @@ class Game {
     run = async (websocket_url, user_id, bot_id, game_id) => {
         const wss = new WebSocket(websocket_url,null,{rejectUnauthorized: false});
         let message = new RequestGame(user_id, bot_id, game_id);
+
         wss.onopen = (e) => {
             console.log("[open] connected successfully");
 
@@ -215,7 +217,7 @@ class Game {
         //         console.log("Ошибка " + error.message);
         //     };
         // }
-}
+}game
 
 
 module.exports = Game;
