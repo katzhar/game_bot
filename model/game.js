@@ -31,12 +31,13 @@ class Game {
 
             message.send_message().then((res) => {
                 console.log(res)
-                 wss.send(res);
+                wss.send(res);
             });
         };
 
         wss.onmessage = (event) => {
             let input = new Message(event.data);
+            console.log(typeof event.data)
             console.log(`[message] server response: ${event.data}`);
         };
 
