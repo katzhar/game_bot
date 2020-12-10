@@ -22,9 +22,10 @@ rl.on('line', (input) => {
   game_params = new Parameters(game);  // параметры игры
   game_teams = new Teams(game);  // моя команда
   while (1) {
+    rl.on('line', (line) => {
     try {
       /* Получение состояния игры */
-      const state = new State(rl.on('', (line) => line), game_teams, game_params);
+      const state = new State(rl.on( line, game_teams, game_params);
       const my_buildings = state.my_buildings();
       const my_squads = state.my_squads();
       // сортируем по остаточному пути
@@ -160,5 +161,6 @@ rl.on('line', (input) => {
     catch (e) {
       console.log(e);
     }
+    })
   }
 });
