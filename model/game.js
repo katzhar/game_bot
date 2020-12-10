@@ -30,16 +30,15 @@ class Game {
 
         wss.onopen = (e) => {
             console.log("[open] connected successfully");
-
             message.send_message().then((res) => {
                 console.log(res)
                 wss.send(res);
             });
         };
 
-        wss.onmessage = (event) => {
-            let input = new Message(event.data);
-            console.log(typeof event.data)
+        wss.onmessage = async (event) => {
+            let input = await new Message(event.data);
+            console.log(input)
             console.log(`[message] server response: ${event.data}`);
         };
 
