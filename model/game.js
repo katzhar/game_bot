@@ -36,17 +36,14 @@ class Game {
         let message = new RequestGame(user_id, bot_id, game_id);
 
         wss.onopen = (e) => {
-            console.log("[onOpen] connected successfully");
+            console.log(">>> REQUEST GAME");
             message.send_message().then((res) => {
-                console.log(res);
                 wss.send(res);
             });
         };
 
         wss.onmessage = async (event) => {
-            console.log(`[message] server response: ${event.data}`);
             let input_msg = await new Message(event.data);
-            console.log(input_msg)
 
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
