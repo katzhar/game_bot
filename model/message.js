@@ -59,6 +59,7 @@ class RequestGame extends ParentsMessage {
       this.json["RequestGameParametersArgs"]["BotId"] = bot_id;
     if (game_id)
       this.json["RequestGameParametersArgs"]["GameId"] = game_id;
+
   }
 }
 
