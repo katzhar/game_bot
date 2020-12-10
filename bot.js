@@ -49,22 +49,22 @@ rl.on('line', (input) => {
 
       if (game_teams.my_her.hero_type === HeroType.Mag) {
         // проверяем доступность абилки Обмен башнями
-        if (state.ability_ready(AbilityType.Build_exchange)) {
+        if (state.ability_ready(AbilityType.indexOf('Build_exchange'))) {
           // если враг применил абилку обмен башнями
-          const build_exchange = state.enemy_active_abilities(AbilityType.Build_exchange);
+          const build_exchange = state.enemy_active_abilities(AbilityType.indexOf('Build_exchange'));
           if (build_exchange.length > 0)
             console.log(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id));
           else if (my_buildings[0].creeps_count < 10)
             console.log(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id))
         }
         // проверяем доступность абилки Чума
-        if (state.ability_ready(AbilityType.Plague)) {
+        if (state.ability_ready(AbilityType.indexOf('Plague'))) {
           // для эффективности применяем ближе к башне
           if (my_squads.length > 1) {
             //сколько тиков первому отряду осталось до башни
             const left_to_aim = my_squads[0].way.left / my_squads[0].speed;
             // если первый отряд находится в зоне инициализации абилки
-            const plague_parameters = game_params.get_ability_parameters(AbilityType.Plague);
+            const plague_parameters = game_params.get_ability_parameters(AbilityType.indexOf('Plague'));
             if (plague_parameters.cast_time + 30 > left_to_aim)
               console.log(game_teams.my_her.plague(enemy_buildings[0].id))
           }
@@ -80,12 +80,12 @@ rl.on('line', (input) => {
 
       if (game_teams.my_her.hero_type === HeroType.BlackSmith) {
         //Проверяем доступность абилки Щит
-        if (state.ability_ready(AbilityType.Armor))
+        if (state.ability_ready(AbilityType.indexOf('Armor')))
           console.log(game_teams.my_her.armor(my_buildings[0].id));
 
         // Проверяем доступность абилки Разрушение
         if (enemy_squads.length > 4)
-          if (state.ability_ready(AbilityType.Area_damage)) {
+          if (state.ability_ready(AbilityType.indexOf('Area_damage'))) {
             location = game_map.get_squad_center_position(enemy_squads[2]);
             console.log(game_teams.my_her.area_damage(location))
           }
@@ -128,7 +128,7 @@ rl.on('line', (input) => {
 
       if (game_teams.my_her.hero_type === HeroType.Warrior) {
         // проверяем доступность абилки Крик
-        if (state.ability_ready(AbilityType.Growl))
+        if (state.ability_ready(AbilityType.indexOf('Growl')))
           console.log(game_teams.my_her.growl(enemy_buildings[0].id));
 
         // атака сразу используя абилку Берсерк
@@ -136,13 +136,13 @@ rl.on('line', (input) => {
           console.log(game_teams.my_her.move(my_buildings[0].id, enemy_buildings[0].id, 1));
 
         // проверяем доступность абилки Берсерк
-        if (state.ability_ready(AbilityType.Berserk)) {
+        if (state.ability_ready(AbilityType.indexOf('Berserk'))) {
           // для эффективности повышаем площадь, применяем на 5 отрядах
           if (my_squads.length > 5) {
             // сколько тиков первому отряду осталось до башни
             const left_to_aim = my_squads[0].way.left / my_squads[0].speed;
             // Если первый отряд находится в зоне инициализации абилки
-            const berserk_parameters = game_params.get_ability_parameters(AbilityType.Berserk);
+            const berserk_parameters = game_params.get_ability_parameters(AbilityType.indexOf('Berserk'));
             if (berserk_parameters.cast_time + 50 > left_to_aim) {
               location = game_map.get_squad_center_position(my_squads[2]);
               console.log(game_teams.my_her.berserk(location))
@@ -152,7 +152,7 @@ rl.on('line', (input) => {
       }
       // Применение абилки ускорение
       if (my_squads.length > 4) {
-        if (state.ability_ready(AbilityType.Speed_up)) {
+        if (state.ability_ready(AbilityType.indexOf('Speed_up'))) {
           location = game_map.get_squad_center_position(my_squads[2]);
           console.log(game_teams.my_her.speed_up(location));
         }
