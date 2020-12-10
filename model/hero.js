@@ -195,4 +195,3 @@ module.exports.Hero = Hero;
 module.exports.Warrior = Warrior;
 module.exports.Mag = Mag;
 module.exports.BlackSmith = BlackSmith;
-
