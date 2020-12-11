@@ -151,9 +151,9 @@ class Game {
                 const get_command = () => {
                     this.process.on("message", (command) => {
                         while (!this.bot_ready) {
-                            if (command === "end") {
+                            if (command.trim() === "end") {
                                 this.bot_ready = true;
-                            } else if (command) {
+                            } else if (command.trim()) {
                                 console.log("OUT >>> Send command: " + command);
                                 let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
                                 msg.send_message().then((res) => {

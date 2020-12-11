@@ -50,9 +50,9 @@ while (1) {
           // если враг применил абилку обмен башнями
           const build_exchange = state.enemy_active_abilities(AbilityType.indexOf('Build_exchange'));
           if (build_exchange.length > 0)
-            console.log(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id));
+            process.send(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id));
           else if (my_buildings[0].creeps_count < 10)
-            console.log(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id))
+            process.send(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id))
         }
         // проверяем доступность абилки Чума
         if (state.ability_ready(AbilityType.indexOf('Plague'))) {
@@ -63,13 +63,13 @@ while (1) {
             // если первый отряд находится в зоне инициализации абилки
             const plague_parameters = game_params.get_ability_parameters(AbilityType.indexOf('Plague'));
             if (plague_parameters.cast_time + 30 > left_to_aim)
-              console.log(game_teams.my_her.plague(enemy_buildings[0].id))
+              process.send(game_teams.my_her.plague(enemy_buildings[0].id))
           }
         }
         // атакуем башню противника
         my_buildings.forEach((my_building) => {
           if (my_building.creeps_count > my_building.level.player_max_count)
-            console.log(game_teams.my_her.move(my_building.id, enemy_buildings[0].id, 1))
+            process.send(game_teams.my_her.move(my_building.id, enemy_buildings[0].id, 1))
         })
       }
 
@@ -78,13 +78,13 @@ while (1) {
       if (game_teams.my_her.hero_type === HeroType.BlackSmith) {
         //Проверяем доступность абилки Щит
         if (state.ability_ready(AbilityType.indexOf('Armor')))
-          console.log(game_teams.my_her.armor(my_buildings[0].id));
+          process.send(game_teams.my_her.armor(my_buildings[0].id));
 
         // Проверяем доступность абилки Разрушение
         if (enemy_squads.length > 4)
           if (state.ability_ready(AbilityType.indexOf('Area_damage'))) {
             location = game_map.get_squad_center_position(enemy_squads[2]);
-            console.log(game_teams.my_her.area_damage(location))
+            process.send(game_teams.my_her.area_damage(location))
           }
 
         // Upgrade башни
@@ -92,7 +92,7 @@ while (1) {
           // Если хватает стоимости на upgrade
           const update_coast = game_params.get_tower_level(my_buildings[0].level.id + 1).update_coast;
           if (update_coast < my_buildings[0].creeps_count) {
-            console.log(game_teams.my_her.upgrade_tower(my_buildings[0].id));
+            process.send(game_teams.my_her.upgrade_tower(my_buildings[0].id));
             my_buildings[0].creeps_count -= update_coast;
           }
         }
@@ -118,7 +118,7 @@ while (1) {
         const enemy_defence = enemy_creeps * (1 + enemy_buildings[0].DefenseBonus);
         // если получается в моей башне крипов больше + 10 на червя - идем на врага всей толпой
         if (enemy_defence + 10 < my_buildings[0].creeps_count)
-          console.log(game_teams.my_her.move(my_buildings[0].id, enemy_buildings[0].id, 1))
+          process.send(game_teams.my_her.move(my_buildings[0].id, enemy_buildings[0].id, 1))
       }
 
       /* Играем за воина */
@@ -126,11 +126,11 @@ while (1) {
       if (game_teams.my_her.hero_type === HeroType.Warrior) {
         // проверяем доступность абилки Крик
         if (state.ability_ready(AbilityType.indexOf('Growl')))
-          console.log(game_teams.my_her.growl(enemy_buildings[0].id));
+          process.send(game_teams.my_her.growl(enemy_buildings[0].id));
 
         // атака сразу используя абилку Берсерк
         if (my_buildings[0].creeps_count > 16)
-          console.log(game_teams.my_her.move(my_buildings[0].id, enemy_buildings[0].id, 1));
+          process.send(game_teams.my_her.move(my_buildings[0].id, enemy_buildings[0].id, 1));
 
         // проверяем доступность абилки Берсерк
         if (state.ability_ready(AbilityType.indexOf('Berserk'))) {
@@ -142,7 +142,7 @@ while (1) {
             const berserk_parameters = game_params.get_ability_parameters(AbilityType.indexOf('Berserk'));
             if (berserk_parameters.cast_time + 50 > left_to_aim) {
               location = game_map.get_squad_center_position(my_squads[2]);
-              console.log(game_teams.my_her.berserk(location))
+              process.send(game_teams.my_her.berserk(location))
             }
           }
         }
@@ -151,7 +151,7 @@ while (1) {
       if (my_squads.length > 4) {
         if (state.ability_ready(AbilityType.indexOf('Speed_up'))) {
           location = game_map.get_squad_center_position(my_squads[2]);
-          console.log(game_teams.my_her.speed_up(location));
+          process.send(game_teams.my_her.speed_up(location));
         }
       }
     }
