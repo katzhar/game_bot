@@ -24,7 +24,7 @@ class Ability {
   constructor(Ability) {
     this.ability = AbilityType[Ability.Ability]; //тип абилки
     if (Ability.TargetTowerId)
-      this.target_tower_id = Ability["TargetTowerId"]; //башня к которой применена (для input type 2  )
+      this.target_tower_id = Ability["TargetTowerId"]; //башня к которой применена (для input type 2)
     if (Ability.FirstTargetTowerId)
       this.first_target_tower_id = Ability["FirstTargetTowerId"];  // башня к которой применена (для input type 3)
     if (Ability.SecondTargetTowerId)

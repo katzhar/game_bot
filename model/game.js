@@ -83,7 +83,7 @@ class Game {
                     let output_msg = new PlayerConnect(this.game_server, this.game_id, this.bot_id);
                     console.log("OUT >>> Bot connect");
                     output_msg.send_message().then((res) => {
-                        wss.send(res)
+                        wss.send(res);
                     })
                 };
                 botConnect();
@@ -172,6 +172,7 @@ class Game {
                     get_command();
                 }
             }
+
             if (input_msg.msg_type === 5) {
                 console.log("IN <<< Game cancel");
                 this.process.exit();

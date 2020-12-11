@@ -11,21 +11,21 @@ if (typeof require !== 'undefined' && require.main === module) {
         type: 'str',
         nargs: '?',
         help: 'Server IP',
-        default: process.env.SERVER_IP
+        default: process.env.IP
     });
 
     parser.add_argument('-b', '--bot', {
         type: 'str',
         nargs: '?',
         help: 'Bot Id',
-        default: process.env.BOT_ID
+        default: process.env.BOT
     });
 
     parser.add_argument('-u', '--user', {
         type: 'str',
         nargs: '?',
         help: 'User Id',
-        default: process.env.USER_ID
+        default: process.env.USER
     });
 
     parser.add_argument('-g', '--game', {
@@ -34,7 +34,7 @@ if (typeof require !== 'undefined' && require.main === module) {
         help: 'Game Id'
     });
 
-    parser.add_argument('-s', '--srv', {
+    parser.add_argument('-s', '--system', {
         action: 'store_true',
         help: 'Service argument'
     });
