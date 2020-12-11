@@ -6,22 +6,22 @@ const { Teams } = require('./model/teams');
 const { State } = require('./model/state');
 
 let game = {};
-let input;
 let game_map;
 let game_params;
 let game_teams;
 
-while (1) {
-  process.on('message', (msg) => {
-    input = msg;
-    game = JSON.parse(msg);
-    game_map = new Map(game);  // карта игрового мира
-    game_params = new Parameters(game);  // параметры игры
-    game_teams = new Teams(game);  // моя команда
-  })
+process.on('message', (msg) => {
+  game = JSON.parse(msg);
+  game_map = new Map(game);  // карта игрового мира
+  game_params = new Parameters(game);  // параметры игры
+  game_teams = new Teams(game);  // моя команда
+  Bot(game, game_params, game_teams);
+})
+
+const Bot = (game, game_params, game_teams) => {
   try {
     /* Получение состояния игры */
-    if (input && game_teams && game_params) {
+    if (game && game_teams && game_params) {
       const state = new State(input, game_teams, game_params);
       const my_buildings = state.my_buildings();
       const my_squads = state.my_squads();
@@ -160,4 +160,4 @@ while (1) {
     console.log(e);
     process.send('end');
   }
-};
+}

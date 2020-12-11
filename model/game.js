@@ -16,7 +16,9 @@ class Game {
     bot_ready = true;
 
     constructor(websocket_url, user_id, bot_id, game_id) {
-        this.process = child_process.fork(`bot.js`);
+        this.process = child_process.fork(`bot.js`, {
+            execArgv: ['--max-old-space-size=4096']
+        });
         if (!game_id) {
             this.game_id = 0;
         } else {
