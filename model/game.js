@@ -14,10 +14,9 @@ const {
 
 class Game {
     bot_ready = true;
-    constructor(websocket_url, user_id, bot_id, game_id) {
-        this.process = child_process.fork(`bot.js`, [1]);
-        this.process.send(1);
 
+    constructor(websocket_url, user_id, bot_id, game_id) {
+        this.process = child_process.fork(`bot.js`);
         if (!game_id) {
             this.game_id = 0;
         } else {
@@ -150,18 +149,19 @@ class Game {
 
             if (input_msg.msg_type === 4) {
                 const get_command = () => {
-                    //toDo добавить command = self.process.stdout.readline().decode('utf-8').strip()
-                    while (!this.bot_ready) {
-                        if (command === "end") {
-                            this.bot_ready = true;
-                        } else if (command) {
-                            console.log("OUT >>> Send command: " + command);
-                            let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
-                            msg.send_message().then((res) => {
-                                wss.send(res)
-                            })
+                    this.process.on("message", (command) => {
+                        while (!this.bot_ready) {
+                            if (command === "end") {
+                                this.bot_ready = true;
+                            } else if (command) {
+                                console.log("OUT >>> Send command: " + command);
+                                let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
+                                msg.send_message().then((res) => {
+                                    wss.send(res)
+                                })
+                            }
                         }
-                    }
+                    });
                 }
                 if (this.bot_ready) {
                     console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
@@ -184,7 +184,7 @@ class Game {
         };
 
         wss.onclose = (e) => {
-            console.log('[onClose] connection closed');
+            console.log('Connection closed');
         };
 
         wss.onerror = (err) => {
