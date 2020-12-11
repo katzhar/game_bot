@@ -27,7 +27,7 @@ class Game {
         this.user_id = user_id;
         this.bot_id = bot_id;
         this.lobby_changed = 0;
-        this.run(websocket_url, user_id, bot_id, game_id)
+        this.run(websocket_url, user_id, bot_id, game_id);
     }
 
     run = async (websocket_url, user_id, bot_id, game_id) => {

@@ -25,7 +25,7 @@ if (typeof require !== 'undefined' && require.main === module) {
         type: 'str',
         nargs: '?',
         help: 'User Id',
-        default: process.env.USER
+        default: process.env.USER_ID
     });
 
     parser.add_argument('-g', '--game', {
@@ -41,7 +41,7 @@ if (typeof require !== 'undefined' && require.main === module) {
 
     const args = parser.parse_args();
 
-    if (args.srv) {
+    if (args.system) {
         new Game(`${args.ip}/game`, null, args.bot, args.game);
     } else {
         new Game(`${args.ip}/game`, args.user, args.bot, null);
