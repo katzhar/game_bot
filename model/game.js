@@ -148,8 +148,8 @@ class Game {
             }
 
             if (input_msg.msg_type === 4) {
-                const get_command = () => {
-                    this.process.on("message", (command) => {
+                const get_command = async () => {
+                    await this.process.on("message", (command) => {
                         while (!this.bot_ready) {
                             if (command.trim() === "end") {
                                 this.bot_ready = true;
@@ -169,7 +169,7 @@ class Game {
                     this.bot_ready = false;
                     let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
                     this.process.send(msg_bytes);
-                    get_command();
+                    await get_command();
                 }
             }
 
