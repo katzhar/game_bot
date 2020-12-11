@@ -6,7 +6,7 @@ class Parameters {
     // Класс, предоставляющий доступ к параметрам игры
     constructor(game) {
         let parameters = JSON.parse(game);
-        parameters = parameters.ResponseGameParametersArgs.Parameters;
+        parameters = parameters["ResponseGameParametersArgs"]["Parameters"];
         // максимальная продолжительность игры в тиках
         this.duration = parameters["Duration"];
         // защита башен по умолчанию

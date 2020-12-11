@@ -15,7 +15,7 @@ class Teams {
 
   constructor(game) {
     game = JSON.parse(game);
-    this.teams = [...game.Teams];
+    this.teams = game.Teams;
     if (game["HeroType"] === HeroType.Mag)
       this.my_her = new Mag(game);
     if (game["HeroType"] === HeroType.Warrior)
@@ -78,43 +78,4 @@ class Teams {
   }
 }
 
-// const hero = {
-//   'HeroType': 3,
-//   'PlayerColor': 1,
-//   'Teams': [{
-//     'TeamId': 2,
-//     'Players': [
-//       {
-//         'TeamId': 2,
-//         'PlayerColor': 2,
-//         'HeroType': 1,
-//       },
-//       {
-//         'TeamId': 2,
-//         'PlayerColor': 2,
-//         'HeroType': 3,
-//       },
-//     ],
-//   },
-//     {
-//       'TeamId': 1,
-//       'Players': [
-//         {
-//           'TeamId': 1,
-//           'PlayerColor': 1,
-//           'HeroType': 3,
-//         },
-//         {
-//           'TeamId': 1,
-//           'PlayerColor': 1,
-//           'HeroType': 2,
-//         },
-//       ],
-//     },
-//   ],
-// }
-//
-// const test = new Teams(hero);
-
 module.exports.Teams = Teams;
-

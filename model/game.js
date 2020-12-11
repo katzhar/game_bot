@@ -45,7 +45,6 @@ class Game {
 
         wss.onmessage = async (event) => {
             let input_msg = await new Message(event.data);
-
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
                 input_msg.msg_type = 0;
@@ -78,6 +77,7 @@ class Game {
                 this.game_server = input_msg.json.ResponseGameParametersArgs.GameServer;
                 this.game_parameters = input_msg;
                 let player_color = null;
+
                 // Выбор цвета игрока
                 let team_players = this.game_parameters.json.ResponseGameParametersArgs.TeamPlayers;
 
@@ -167,6 +167,7 @@ class Game {
                 }
                 if (this.bot_ready) {
                     console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
+
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
                     let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';

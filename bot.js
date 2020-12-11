@@ -10,19 +10,11 @@ let game_map;
 let game_params;
 let game_teams;
 
-process.on('message', (msg) => {
-  game = JSON.parse(msg);
-  game_map = new Map(game);  // карта игрового мира
-  game_params = new Parameters(game);  // параметры игры
-  game_teams = new Teams(game);  // моя команда
-  Bot(game, game_params, game_teams);
-})
-
-const Bot = (game, game_params, game_teams) => {
+const Bot = (game, game_teams, game_params) => {
   try {
     /* Получение состояния игры */
     if (game && game_teams && game_params) {
-      const state = new State(input, game_teams, game_params);
+      const state = new State(game, game_teams, game_params);
       const my_buildings = state.my_buildings();
       const my_squads = state.my_squads();
       // сортируем по остаточному пути
@@ -51,7 +43,7 @@ const Bot = (game, game_params, game_teams) => {
           const build_exchange = state.enemy_active_abilities(AbilityType.indexOf('Build_exchange'));
           if (build_exchange.length > 0)
             process.send(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id));
-          else if (my_buildings[0].creeps_count < 10)
+          else if (my_buildings[0] && my_buildings[0].creeps_count < 10)
             process.send(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id))
         }
         // проверяем доступность абилки Чума
@@ -157,7 +149,14 @@ const Bot = (game, game_params, game_teams) => {
     }
   }
   catch (e) {
-    console.log(e);
     process.send('end');
   }
-}
+};
+
+process.on('message', (msg) => {
+  game = JSON.parse(msg);
+  game_map = new Map(game);  // карта игрового мира
+  game_params = new Parameters(game);  // параметры игры
+  game_teams = new Teams(game);  // моя команда
+  Bot(game, game_teams, game_params);
+});
