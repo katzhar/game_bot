@@ -18,7 +18,7 @@ if (typeof require !== 'undefined' && require.main === module) {
         type: 'str',
         nargs: '?',
         help: 'Bot Id',
-        default: process.env.BOT
+        default: process.env.BOT_ID
     });
 
     parser.add_argument('-u', '--user', {
