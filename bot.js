@@ -5,17 +5,16 @@ const { AbilityType } = require('./model/abilites');
 const { Teams } = require('./model/teams');
 const { State } = require('./model/state');
 
-let game_map;
-let game_params;
-let game_teams;
+
 let processingMsg = false;
 
-const Bot = (game, game_teams, game_params) => {
+const Bot = (game, game_teams, game_params, game_map) => {
   try {
     /* Получение состояния игры */
     processingMsg = true;
     if (game && game_teams && game_params) {
       const state = new State(game, game_teams, game_params);
+      console.log(state);
       const my_buildings = state.my_buildings();
       const my_squads = state.my_squads();
       // сортируем по остаточному пути
@@ -156,11 +155,9 @@ const Bot = (game, game_teams, game_params) => {
 };
 
 if (!processingMsg) {
+  console.log('set data');
   process.on('message', async (game) => {
     processingMsg = true;
-    game_map = new Map(game);  // карта игрового мира
-    game_params = new Parameters(game);  // параметры игры
-    game_teams = new Teams(game);  // моя команда
-    await Bot(game, game_teams, game_params);
+    await Bot(game.data, game.params.game_teams, game.params.game_params,game.params.game_map);
   })
 };

@@ -1,5 +1,4 @@
 
-require('dotenv/config');
 const child_process = require('child_process');
 const WebSocket = require('ws');
 const {
@@ -12,6 +11,19 @@ const {
     PlayerPrepared,
     PlayerReady,
 } = require('./message.js');
+
+const {Map} = require('./map.js');
+const {Parameters} = require('./parameters.js');
+const {Teams} = require('./teams.js');
+
+
+class InitialGame {
+    constructor(game) {
+        this.game_map = new Map(game);  // карта игрового мира
+        this.game_params = new Parameters(game);  // параметры игры
+        this.game_teams = new Teams(game);  // моя команда
+    }
+}
 
 class Game {
     bot_ready = true;
@@ -139,7 +151,8 @@ class Game {
                 // Передача боту параметров игры
                 this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
                 let msg_bytes = this.game_parameters.json;
-                this.process.send(msg_bytes);
+                this.initial = new InitialGame(msg_bytes);
+                // this.process.send(msg_bytes);
             }
 
             if (input_msg.msg_type === 2) {
@@ -154,6 +167,7 @@ class Game {
                 const get_command = async () => {
                     await this.process.on("message", (command) => {
                         while (!this.bot_ready) {
+                            console.log('this not bot_ready')
                             if (command.trim() === "end") {
                                 this.bot_ready = true;
                             } else if (command.trim()) {
@@ -171,7 +185,7 @@ class Game {
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
                     let msg_bytes = input_msg.json["GameStateArgs"];
-                    this.process.send(msg_bytes);
+                    await this.process.send({data: msg_bytes, params:this.initial});
                     await get_command();
                 }
             }
