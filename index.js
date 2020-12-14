@@ -1,6 +1,8 @@
-require('dotenv/config');
 const Game = require('./model/game');
 const { ArgumentParser } = require('argparse');
+IP = 'wss://ift.gameapi.it-god.ru';
+USERID = '7568130b-216f-46f6-b9f5-e9f33be1f80d';
+BOTID = 'dfdce4b2-9744-406b-87e0-f92eb13339e5';
 
 if (typeof require !== 'undefined' && require.main === module) {
     const parser = new ArgumentParser({
@@ -11,21 +13,21 @@ if (typeof require !== 'undefined' && require.main === module) {
         type: 'str',
         nargs: '?',
         help: 'Server IP',
-        default: process.env.IP
+        default: IP
     });
 
     parser.add_argument('-b', '--bot', {
         type: 'str',
         nargs: '?',
         help: 'Bot Id',
-        default: process.env.BOT_ID
+        default: BOTID
     });
 
     parser.add_argument('-u', '--user', {
         type: 'str',
         nargs: '?',
         help: 'User Id',
-        default: process.env.USER_ID
+        default: USERID
     });
 
     parser.add_argument('-g', '--game', {
@@ -40,7 +42,7 @@ if (typeof require !== 'undefined' && require.main === module) {
     });
 
     const args = parser.parse_args();
-
+    
     if (args.system) {
         new Game(`${args.ip}/game`, null, args.bot, args.game);
     } else {

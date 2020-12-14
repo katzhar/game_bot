@@ -9,7 +9,6 @@
     "@babel/node": "^7.12.6",
     "@babel/preset-env": "^7.12.7",
     "argparse": "^2.0.1",
-    "dotenv": "^8.2.0",
     "child_process": "^1.0.2",
     "js-base64": "^3.6.0",
     "node-gzip": "^1.1.2",

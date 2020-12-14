@@ -4,6 +4,7 @@ const { Base64 } = require('js-base64');
 class ParentsMessage {
   json = {};
   send_message = async (json = this.json) => {
+    // console.log(1, json);
     json = JSON.stringify(json);
     this.json = Buffer.from(json, 'utf8');
     const compressed = await gzip(this.json);
@@ -20,6 +21,7 @@ class Message extends ParentsMessage {
   json = {};
 
   constructor(strBase64) {
+    // console.log(4, strBase64);
     super();
     this.strBase64 = strBase64;
     return (async () => {
@@ -51,6 +53,7 @@ class RequestGame extends ParentsMessage {
   };
 
   constructor(user_id, bot_id, game_id) {
+    console.log
     super();
     if (user_id)
       this.json["RequestGameParametersArgs"]["UserId"] = user_id;
