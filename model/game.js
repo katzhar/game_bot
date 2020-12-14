@@ -1,3 +1,5 @@
+
+require('dotenv/config');
 const child_process = require('child_process');
 const WebSocket = require('ws');
 const {
@@ -75,7 +77,7 @@ class Game {
                 this.game_server = input_msg.json.ResponseGameParametersArgs.GameServer;
                 this.game_parameters = input_msg;
                 let player_color = null;
-                let hero_type = null;
+                this.hero_type = null;                  
 
                 // Выбор цвета игрока
                 let team_players = this.game_parameters.json.ResponseGameParametersArgs.TeamPlayers;
@@ -121,14 +123,13 @@ class Game {
                 botPlayerChangeColor();
 
                 // Передача боту параметров игры
-                this.game_parameters.json["HeroType"] = hero_type;
+                this.game_parameters.json["HeroType"] = this.hero_type;
                 this.game_parameters.json["PlayerColor"] = player_color;
             }
 
-            if (input_msg.msg_type === 10) { 
+            if (input_msg.msg_type === 10) {
                 console.log("IN <<< All players connected");
                 let output_msg = new PlayerPrepared(this.game_server, this.game_id, this.bot_id);
-
                 console.log("OUT >>> Bot prepared");
                 output_msg.send_message().then((res) => {
                     wss.send(res)
@@ -166,7 +167,6 @@ class Game {
                 }
                 if (this.bot_ready) {
                     console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
-
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
                     let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
@@ -186,10 +186,9 @@ class Game {
             }
         };
 
-        // wss.onclose = (e) => {
-        //     console.log(e);
-        //     console.log('Connection closed');
-        // };
+        wss.onclose = (e) => {
+            console.log('Connection closed');
+        };
 
         wss.onerror = (err) => {
             console.log(err);
