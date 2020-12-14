@@ -43,7 +43,7 @@ class Game {
 
         wss.onmessage = async (event) => {
             let input_msg = await new Message(event.data);
-            console.log(input_msg);
+            // console.log(input_msg);
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
                 input_msg.msg_type = 0;
@@ -121,11 +121,11 @@ class Game {
                 botPlayerChangeColor();
 
                 // Передача боту параметров игры
-                this.game_parameters.json["HeroType"] = hero_type;
-                this.game_parameters.json["PlayerColor"] = player_color;
+                this.game_parameters.json["ResponseGameParametersArgs"]["HeroType"] = hero_type;
+                this.game_parameters.json["ResponseGameParametersArgs"]["PlayerColor"] = player_color;
             }
 
-            if (input_msg.msg_type === 10) {
+            if (input_msg.msg_type === 10) { 
                 console.log("IN <<< All players connected");
                 let output_msg = new PlayerPrepared(this.game_server, this.game_id, this.bot_id);
 
