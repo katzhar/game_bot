@@ -91,8 +91,8 @@ class Game {
 
                 // Определение героя бота
                 const botChooseHero = () => {
-                    const hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
-                    let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
+                    this.hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
+                    let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, this.hero_type);
                     console.log("OUT >>> Bot choose hero");
                     output_msg.send_message().then((res) => {
                         wss.send(res)
@@ -115,13 +115,14 @@ class Game {
                     let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
                     console.log("OUT >>> Bot choose color");
                     output_msg.send_message().then((res) => {
+                      console.log(res);
                         wss.send(res)
                     })
                 };
                 botPlayerChangeColor();
 
                 // Передача боту параметров игры
-                this.game_parameters.json["ResponseGameParametersArgs"]["HeroType"] = hero_type;
+                this.game_parameters.json["ResponseGameParametersArgs"]["HeroType"] = this.hero_type;
                 this.game_parameters.json["ResponseGameParametersArgs"]["PlayerColor"] = player_color;
             }
 

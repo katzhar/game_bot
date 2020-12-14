@@ -8,6 +8,7 @@ class ParentsMessage {
     this.json = Buffer.from(json, 'utf8');
     const compressed = await gzip(this.json);
     let byte = compressed.toString('base64')
+    byte =  Buffer.from(byte, 'utf8');
     return byte;
   }
 
