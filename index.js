@@ -42,7 +42,7 @@ if (typeof require !== 'undefined' && require.main === module) {
     });
 
     const args = parser.parse_args();
-    
+
     if (args.system) {
         new Game(`${args.ip}/game`, null, args.bot, args.game);
     } else {

@@ -9,10 +9,12 @@ let game = {};
 let game_map;
 let game_params;
 let game_teams;
+const processingMsg = false;
 
 const Bot = (game, game_teams, game_params) => {
   try {
     /* Получение состояния игры */
+    processingMsg = true;
     if (game && game_teams && game_params) {
       const state = new State(game, game_teams, game_params);
       const my_buildings = state.my_buildings();
@@ -68,7 +70,7 @@ const Bot = (game, game_teams, game_params) => {
       /* Играем за рунного кузнеца */
 
       if (game_teams.my_her.hero_type === HeroType.BlackSmith) {
-        //Проверяем доступность абилки Щит
+        // Проверяем доступность абилки Щит
         if (state.ability_ready(AbilityType.indexOf('Armor')))
           process.send(game_teams.my_her.armor(my_buildings[0].id));
 
@@ -147,16 +149,20 @@ const Bot = (game, game_teams, game_params) => {
         }
       }
     }
-  }
-  catch (e) {
+  } catch (e) {
     process.send('end');
+  } finally {
+    processingMsg = false;
   }
 };
 
-process.on('message', (msg) => {
-  game = JSON.parse(msg);
-  game_map = new Map(game);  // карта игрового мира
-  game_params = new Parameters(game);  // параметры игры
-  game_teams = new Teams(game);  // моя команда
-  Bot(game, game_teams, game_params);
-});
+if (!processingMsg) {
+  process.on('message', async (msg) => {
+    processingMsg = true;
+    game = JSON.parse(msg);
+    game_map = new Map(game);  // карта игрового мира
+    game_params = new Parameters(game);  // параметры игры
+    game_teams = new Teams(game);  // моя команда
+    await Bot(game, game_teams, game_params);
+  })
+};
