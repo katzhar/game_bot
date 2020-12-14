@@ -10,6 +10,19 @@ const {
     PlayerPrepared,
 } = require('./message.js');
 
+const {Map} = require('./map.js');
+const {Parameters} = require('./parameters.js');
+const {Teams} = require('./tems.js');
+
+
+export class InitialGame {
+    constructor(game) {
+        this.game_map = new Map(game);  // карта игрового мира
+        this.game_params = new Parameters(game);  // параметры игры
+        this.game_teams = new Teams(game);  // моя команда
+    }
+}
+
 class Game {
     bot_ready = true;
 
@@ -42,6 +55,7 @@ class Game {
         };
 
         wss.onmessage = async (event) => {
+          console.log(10,event);
             let input_msg = await new Message(event.data);
             console.log(input_msg.msg_type);
             if (input_msg.game_id === 0 || (this.game_id !== 0
@@ -138,8 +152,8 @@ class Game {
 
                 // Передача боту параметров игры
                 this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
-                let msg_bytes = this.game_parameters.toString().encode() + '/n';
-                this.process.send(msg_bytes);
+                this.initial = new InitialGame(this.game_parameters.json);
+              //  this.process.send(this.game_parameters.json);
             }
 
             if (input_msg.msg_type === 2) {
@@ -172,7 +186,7 @@ class Game {
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
                     let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
-                    this.process.send(msg_bytes);
+                    this.process.send(this.initial);
                     await get_command();
                 }
             }

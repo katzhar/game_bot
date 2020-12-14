@@ -137,7 +137,7 @@ class PlayerPrepared extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id) {
     super();
-    this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
+    this.json["Subscribers"] = [ ...this.json["Subscribers"], game_server ];
     this.json["GameId"] = game_id;
     this.json["PlayerPreparedArgs"]["PlayerId"] = bot_id;
   }
@@ -155,7 +155,7 @@ class PlayerReady extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id) {
     super();
-    this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
+    this.json["Subscribers"] = [ ...this.json["Subscribers"], game_server ];
     this.json["GameId"] = game_id;
     this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
   }
@@ -173,7 +173,7 @@ class GameActions extends ParentsMessage {
 
   constructor(game_server, game_id, action) {
     super();
-    this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
+    this.json["Subscribers"] = [ ...this.json["Subscribers"], game_server ];
     this.json["GameId"] = game_id;
     this.json["GameActionsArgs"]["Action"] = action;
   }

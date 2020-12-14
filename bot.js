@@ -1,17 +1,10 @@
 const { HeroType } = require('./model/hero');
-const { Map } = require('./model/map');
-const { Parameters } = require('./model/parameters');
 const { AbilityType } = require('./model/abilites');
-const { Teams } = require('./model/teams');
 const { State } = require('./model/state');
 
-let game = {};
-let game_map;
-let game_params;
-let game_teams;
 const processingMsg = false;
 
-const Bot = (game, game_teams, game_params) => {
+const Bot = (game, game_teams, game_params,game_map) => {
   try {
     /* Получение состояния игры */
     processingMsg = true;
@@ -159,10 +152,7 @@ const Bot = (game, game_teams, game_params) => {
 if (!processingMsg) {
   process.on('message', async (msg) => {
     processingMsg = true;
-    game = JSON.parse(msg);
-    game_map = new Map(game);  // карта игрового мира
-    game_params = new Parameters(game);  // параметры игры
-    game_teams = new Teams(game);  // моя команда
-    await Bot(game, game_teams, game_params);
+    await Bot(msg, msg.game_teams, msg.game_params,msg.game_map);
   })
 };
+
