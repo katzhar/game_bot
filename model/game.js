@@ -43,7 +43,6 @@ class Game {
 
         wss.onmessage = async (event) => {
             let input_msg = await new Message(event.data);
-            console.log(input_msg);
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
                 input_msg.msg_type = 0;
@@ -88,17 +87,16 @@ class Game {
                     })
                 };
                 botConnect();
-
                 // Определение героя бота
                 const botChooseHero = () => {
-                    const hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
+                   const hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
                     let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
                     console.log("OUT >>> Bot choose hero");
                     output_msg.send_message().then((res) => {
                         wss.send(res)
                     })
                 };
-                botChooseHero();
+                await botChooseHero();
 
                 team_players.forEach((team) => {
                     if (team.PlayerId === this.bot_id)
