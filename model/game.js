@@ -1,5 +1,3 @@
-
-require('dotenv/config');
 const child_process = require('child_process');
 const WebSocket = require('ws');
 const {
@@ -35,12 +33,10 @@ class Game {
             rejectUnauthorized: false
         });
         let message = new RequestGame(user_id, bot_id, game_id);
-        console.log(1, message);
 
         wss.onopen = (e) => {
             console.log(">>> Request Game");
             message.send_message().then((res) => {
-                console.log(2, res);
                 wss.send(res);
             });
         };
