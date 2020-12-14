@@ -7,9 +7,7 @@ class ParentsMessage {
     json = JSON.stringify(json);
     this.json = Buffer.from(json, 'utf8');
     const compressed = await gzip(this.json);
-    let byte = compressed.toString('base64')
-    byte =  Buffer.from(byte, 'utf8');
-    return byte;
+    return compressed.toString('base64');
   }
 
   to_string = () => {
@@ -120,10 +118,10 @@ class PlayerChangeColor extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id, player_color) {
     super();
-    this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
-    this.json["GameId"] = game_id;
-    this.json["PlayerChangeColorArgs"]["PlayerId"] = bot_id;
-    this.json["PlayerChangeColorArgs"]["PlayerColor"] = player_color;
+    this.json.Subscribers = [ ...this.json.Subscribers, game_server ];
+    this.json.GameId = game_id;
+    this.json.PlayerChangeColorArgs.PlayerId = bot_id;
+    this.json.PlayerChangeColorArgs.PlayerColor = player_color;
   }
 }
 

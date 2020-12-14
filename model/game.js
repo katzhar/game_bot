@@ -43,15 +43,16 @@ class Game {
 
         wss.onmessage = async (event) => {
             let input_msg = await new Message(event.data);
-            // console.log(input_msg);
+            console.log(input_msg.msg_type);
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
                 input_msg.msg_type = 0;
             }
 
             if (input_msg.msg_type === 24) {
-                console.log("IN <<< Lobby changed");
-                this.lobby_changed++;
+              console.log("IN <<< Lobby changed");
+                this.lobby_changed = this.lobby_changed + 1;
+                console.log(this.lobby_changed)
                 if (this.lobby_changed > 2) {
                     console.log(">>> GAME READY <<<");
                 }
@@ -111,12 +112,12 @@ class Game {
                     })
                 }
 
-                const botPlayerChangeColor = () => {
+                const  botPlayerChangeColor = () => {
                     let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
                     console.log("OUT >>> Bot choose color");
                     output_msg.send_message().then((res) => {
-                      console.log(res);
-                        wss.send(res)
+                      console.log(1,res)
+                        wss.send(1)
                     })
                 };
                 botPlayerChangeColor();
