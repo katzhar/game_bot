@@ -43,7 +43,6 @@ class Game {
 
         wss.onmessage = async (event) => {
             let input_msg = await new Message(event.data);
-            // console.log(input_msg);
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
                 input_msg.msg_type = 0;
@@ -76,6 +75,7 @@ class Game {
                 this.game_server = input_msg.json.ResponseGameParametersArgs.GameServer;
                 this.game_parameters = input_msg;
                 let player_color = null;
+                let hero_type = null;
 
                 // Выбор цвета игрока
                 let team_players = this.game_parameters.json.ResponseGameParametersArgs.TeamPlayers;
@@ -91,7 +91,7 @@ class Game {
 
                 // Определение героя бота
                 const botChooseHero = () => {
-                    const hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
+                    hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
                     let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
                     console.log("OUT >>> Bot choose hero");
                     output_msg.send_message().then((res) => {
@@ -121,8 +121,8 @@ class Game {
                 botPlayerChangeColor();
 
                 // Передача боту параметров игры
-                this.game_parameters.json["ResponseGameParametersArgs"]["HeroType"] = hero_type;
-                this.game_parameters.json["ResponseGameParametersArgs"]["PlayerColor"] = player_color;
+                this.game_parameters.json["HeroType"] = hero_type;
+                this.game_parameters.json["PlayerColor"] = player_color;
             }
 
             if (input_msg.msg_type === 10) { 
@@ -186,9 +186,10 @@ class Game {
             }
         };
 
-        wss.onclose = (e) => {
-            console.log('Connection closed');
-        };
+        // wss.onclose = (e) => {
+        //     console.log(e);
+        //     console.log('Connection closed');
+        // };
 
         wss.onerror = (err) => {
             console.log(err);
