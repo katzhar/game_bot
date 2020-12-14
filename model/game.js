@@ -43,6 +43,7 @@ class Game {
 
         wss.onmessage = async (event) => {
             let input_msg = await new Message(event.data);
+            console.log(input_msg);
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
                 input_msg.msg_type = 0;

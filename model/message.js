@@ -20,18 +20,18 @@ class Message extends ParentsMessage {
   json = {};
 
   constructor(strBase64) {
-    console.log(4, strBase64);
     super();
     this.strBase64 = strBase64;
     return (async () => {
-      let decodeBase64 = Base64.atob(this.strBase64);
+      let utfstr = this.strBase64.toString('utf8');
+      let decodeBase64 = Base64.atob(utfstr);
       let rawLength = decodeBase64.length;
       let array = new Uint8Array(new ArrayBuffer(rawLength));
       for (let i = 0; i < rawLength; i++) {
         array[i] = decodeBase64.charCodeAt(i);
       }
       let async_result = await ungzip(array);
-      this.json = JSON.parse(async_result.toString())
+      this.json = JSON.parse(async_result.toString('utf8'))
       this.msg_type = this.json["MsgType"];
       if (this.json.GameId)
         this.game_id = this.json["GameId"];
@@ -52,7 +52,6 @@ class RequestGame extends ParentsMessage {
   };
 
   constructor(user_id, bot_id, game_id) {
-    console.log
     super();
     if (user_id)
       this.json["RequestGameParametersArgs"]["UserId"] = user_id;
