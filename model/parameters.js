@@ -5,7 +5,7 @@ const { CreepParameters } = require('./squads.js');
 class Parameters {
     // Класс, предоставляющий доступ к параметрам игры
     constructor(game) {
-        let parameters = JSON.parse(game);
+        let parameters = game;
         parameters = parameters["ResponseGameParametersArgs"]["Parameters"];
         // максимальная продолжительность игры в тиках
         this.duration = parameters["Duration"];

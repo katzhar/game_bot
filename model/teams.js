@@ -14,7 +14,7 @@ class Teams {
   enemy_team = [];  // массив игроков команд противников
 
   constructor(game) {
-    game = JSON.parse(game);
+    game = game;
     this.teams = game.Teams;
     if (game["HeroType"] === HeroType.Mag)
       this.my_her = new Mag(game);

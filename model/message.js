@@ -7,9 +7,7 @@ class ParentsMessage {
     json = JSON.stringify(json);
     this.json = Buffer.from(json, 'utf8');
     const compressed = await gzip(this.json);
-    let byte = compressed.toString('base64')
-    byte =  Buffer.from(byte, 'utf8');
-    return byte;
+    return compressed.toString('base64');
   }
 
   to_string = () => {
@@ -34,10 +32,10 @@ class Message extends ParentsMessage {
       }
       let async_result = await ungzip(array);
       this.json = JSON.parse(async_result)
-      if(this.json.ResponseGameParametersArgs && this.json.ResponseGameParametersArgs.Map)
-      this.json.ResponseGameParametersArgs.Map = JSON.parse(this.json.ResponseGameParametersArgs.Map);
-      if(this.json.ResponseGameParametersArgs && this.json.ResponseGameParametersArgs.Parameters)
-      this.json.ResponseGameParametersArgs.Parameters = JSON.parse(this.json.ResponseGameParametersArgs.Parameters);
+      if (this.json.ResponseGameParametersArgs && this.json.ResponseGameParametersArgs.Map)
+        this.json.ResponseGameParametersArgs.Map = JSON.parse(this.json.ResponseGameParametersArgs.Map);
+      if (this.json.ResponseGameParametersArgs && this.json.ResponseGameParametersArgs.Parameters)
+        this.json.ResponseGameParametersArgs.Parameters = JSON.parse(this.json.ResponseGameParametersArgs.Parameters);
       this.msg_type = this.json["MsgType"];
       if (this.json.GameId)
         this.game_id = this.json["GameId"];
@@ -120,10 +118,10 @@ class PlayerChangeColor extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id, player_color) {
     super();
-    this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
-    this.json["GameId"] = game_id;
-    this.json["PlayerChangeColorArgs"]["PlayerId"] = bot_id;
-    this.json["PlayerChangeColorArgs"]["PlayerColor"] = player_color;
+    this.json.Subscribers = [...this.json.Subscribers, game_server];
+    this.json.GameId = game_id;
+    this.json.PlayerChangeColorArgs.PlayerId = bot_id;
+    this.json.PlayerChangeColorArgs.PlayerColor = player_color;
   }
 }
 
@@ -139,7 +137,7 @@ class PlayerPrepared extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id) {
     super();
-    this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
+    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
     this.json["GameId"] = game_id;
     this.json["PlayerPreparedArgs"]["PlayerId"] = bot_id;
   }
@@ -157,7 +155,7 @@ class PlayerReady extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id) {
     super();
-    this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
+    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
     this.json["GameId"] = game_id;
     this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
   }
@@ -175,7 +173,7 @@ class GameActions extends ParentsMessage {
 
   constructor(game_server, game_id, action) {
     super();
-    this.json["Subscribers"] = { ...this.json["Subscribers"], game_server };
+    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
     this.json["GameId"] = game_id;
     this.json["GameActionsArgs"]["Action"] = action;
   }

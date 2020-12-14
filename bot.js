@@ -5,7 +5,6 @@ const { AbilityType } = require('./model/abilites');
 const { Teams } = require('./model/teams');
 const { State } = require('./model/state');
 
-let game = {};
 let game_map;
 let game_params;
 let game_teams;
@@ -157,9 +156,8 @@ const Bot = (game, game_teams, game_params) => {
 };
 
 if (!processingMsg) {
-  process.on('message', async (msg) => {
+  process.on('message', async (game) => {
     processingMsg = true;
-    game = JSON.parse(msg);
     game_map = new Map(game);  // карта игрового мира
     game_params = new Parameters(game);  // параметры игры
     game_teams = new Teams(game);  // моя команда

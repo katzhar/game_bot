@@ -10,6 +10,7 @@ const {
     PlayerChangeHero,
     PlayerChangeColor,
     PlayerPrepared,
+    PlayerReady,
 } = require('./message.js');
 
 class Game {
@@ -44,7 +45,6 @@ class Game {
         };
 
         wss.onmessage = async (event) => {
-            console.log(event);
             let input_msg = await new Message(event.data);
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
@@ -52,8 +52,8 @@ class Game {
             }
 
             if (input_msg.msg_type === 24) {
-                console.log("IN <<< Lobby changed");
-                this.lobby_changed++;
+              console.log("IN <<< Lobby changed");
+                this.lobby_changed = this.lobby_changed + 1;
                 if (this.lobby_changed > 2) {
                     console.log(">>> GAME READY <<<");
                 }
@@ -114,7 +114,7 @@ class Game {
                     })
                 }
 
-                const botPlayerChangeColor = () => {
+                const  botPlayerChangeColor = () => {
                     let output_msg = new PlayerChangeColor(this.game_server, this.game_id, this.bot_id, player_color);
                     console.log("OUT >>> Bot choose color");
                     output_msg.send_message().then((res) => {
@@ -138,7 +138,7 @@ class Game {
 
                 // Передача боту параметров игры
                 this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
-                let msg_bytes = this.game_parameters.toString().encode() + '/n';
+                let msg_bytes = this.game_parameters.json;
                 this.process.send(msg_bytes);
             }
 
@@ -170,7 +170,7 @@ class Game {
                     console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
                     // Если бот готов, отправляем ему стейт
                     this.bot_ready = false;
-                    let msg_bytes = escape(JSON.stringify(input_msg.json["GameStateArgs"])) + '\n';
+                    let msg_bytes = input_msg.json["GameStateArgs"];
                     this.process.send(msg_bytes);
                     await get_command();
                 }

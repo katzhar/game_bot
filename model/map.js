@@ -1,7 +1,7 @@
 class Map {
   /* Класс предоставляяющий вспомогательные методы работы с картой */
   constructor(game) {
-    this.map = JSON.parse(game);
+    this.map = game;
     this.map = this.map["ResponseGameParametersArgs"]["Map"];
     this.links = this.map["Links"];
     //Вычисляем и добавляем расстояние между башнями
