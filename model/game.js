@@ -44,6 +44,7 @@ class Game {
         };
 
         wss.onmessage = async (event) => {
+            console.log(event);
             let input_msg = await new Message(event.data);
             if (input_msg.game_id === 0 || (this.game_id !== 0
                 && this.game_id !== input_msg.game_id)) {
@@ -76,8 +77,8 @@ class Game {
                 this.game_id = input_msg.game_id;
                 this.game_server = input_msg.json.ResponseGameParametersArgs.GameServer;
                 this.game_parameters = input_msg;
-                let player_color = null;
-                this.hero_type = null;                  
+                this.hero_type = null;       
+                let player_color = null;           
 
                 // Выбор цвета игрока
                 let team_players = this.game_parameters.json.ResponseGameParametersArgs.TeamPlayers;
@@ -93,8 +94,8 @@ class Game {
 
                 // Определение героя бота
                 const botChooseHero = () => {
-                    hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
-                    let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, hero_type);
+                    this.hero_type = this.game_parameters.json.ResponseGameParametersArgs.HeroType;
+                    let output_msg = new PlayerChangeHero(this.game_server, this.game_id, this.bot_id, this.hero_type);
                     console.log("OUT >>> Bot choose hero");
                     output_msg.send_message().then((res) => {
                         wss.send(res)

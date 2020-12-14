@@ -9,7 +9,7 @@ let game = {};
 let game_map;
 let game_params;
 let game_teams;
-const processingMsg = false;
+let processingMsg = false;
 
 const Bot = (game, game_teams, game_params) => {
   try {

@@ -8,6 +8,7 @@ class ParentsMessage {
     this.json = Buffer.from(json, 'utf8');
     const compressed = await gzip(this.json);
     let byte = compressed.toString('base64')
+    byte =  Buffer.from(byte, 'utf8');
     return byte;
   }
 
@@ -33,9 +34,9 @@ class Message extends ParentsMessage {
       }
       let async_result = await ungzip(array);
       this.json = JSON.parse(async_result)
-      if(this.json.ResponseGameParametersArgs.Map)
+      if(this.json.ResponseGameParametersArgs && this.json.ResponseGameParametersArgs.Map)
       this.json.ResponseGameParametersArgs.Map = JSON.parse(this.json.ResponseGameParametersArgs.Map);
-      if( this.json.ResponseGameParametersArgs.Parameters)
+      if(this.json.ResponseGameParametersArgs && this.json.ResponseGameParametersArgs.Parameters)
       this.json.ResponseGameParametersArgs.Parameters = JSON.parse(this.json.ResponseGameParametersArgs.Parameters);
       this.msg_type = this.json["MsgType"];
       if (this.json.GameId)
