@@ -1,4 +1,5 @@
 const { AbilityType } = require('./abilites.js');
+
 class Cooldown {
   /* Фриз на применение абилок*/
   constructor(cooldown) {

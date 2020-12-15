@@ -27,6 +27,7 @@ const Bot = (game, game_teams, game_params, game_map) => {
         }
         return 0;
       });
+
       const enemy_buildings = state.enemy_buildings();
       const enemy_squads = state.enemy_squads();
 

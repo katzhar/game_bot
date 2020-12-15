@@ -1,12 +1,12 @@
 class Map {
-  /* Класс предоставляяющий вспомогательные методы работы с картой */
+  /* Класс, предоставляяющий вспомогательные методы работы с картой */
   constructor(game) {
     this.map = game;
     this.map = this.map["ResponseGameParametersArgs"]["Map"];
     this.links = this.map["Links"];
-    //Вычисляем и добавляем расстояние между башнями
+    // Вычисляем и добавляем расстояние между башнями
     this.links.map((link) => {
-      link["Distance"] = this.__towers_distance(link["From"], link["To"])
+      link["Distance"] = this.__towers_distance(link["From"], link["To"]);
     })
   }
 
@@ -24,7 +24,7 @@ class Map {
 
   points_distance = (point1, point2) => {
     /* Вычиляет расстояние между двумя точками */
-    return Math.sqrt((point1["x"] - point2["x"]) ** 2 + (point1["y"] - point2["y"]) ** 2)
+    return Math.sqrt((point1["x"] - point2["x"]) ** 2 + (point1["y"] - point2["y"]) ** 2);
   };
 
   __towers_distance = (from_id, to_id) => {
@@ -48,7 +48,7 @@ class Map {
       from_id = [to_id, to_id = from_id][0];
     this.links.forEach((link) => {
       if (link["From"] === from_id && link["To"] === to_id)
-        res = link["Vectors"]
+        res = link["Vectors"];
     },
     );
     return res;

@@ -1,6 +1,6 @@
-const { AbilityParameters, GameEventParameters } = require('./abilites.js');
-const { TowerLevelParameters, ForgeParameters } = require('./buildings.js');
-const { CreepParameters } = require('./squads.js');
+const { AbilityParameters, GameEventParameters } = require('./abilites');
+const { TowerLevelParameters, ForgeParameters } = require('./buildings');
+const { CreepParameters } = require('./squads');
 
 class Parameters {
     // Класс, предоставляющий доступ к параметрам игры

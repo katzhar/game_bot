@@ -1,4 +1,9 @@
-const { Mag, Warrior, BlackSmith, HeroType } = require('./hero.js');
+const {
+  Mag,
+  Warrior,
+  BlackSmith,
+  HeroType
+} = require('./hero');
 
 class PLayer {
   /* Класс с необходимой информацией об иргроках */

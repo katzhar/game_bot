@@ -1,7 +1,7 @@
-const { Ability } = require('./abilites.js');
-const { Building, BuildingType } = require('./buildings.js');
-const { Squad } = require('./squads.js');
-const { Cooldown } = require('./cooldowns.js')
+const { Ability } = require('./abilites');
+const { Building, BuildingType } = require('./buildings');
+const { Squad } = require('./squads');
+const { Cooldown } = require('./cooldowns')
 
 class State {
   /* Класс, предоставляющий доступ к состоянию игры */
@@ -15,16 +15,19 @@ class State {
     this.state.buildingStates.forEach((building) => {
       this.buildings = [...this.buildings, new Building(building, parameters)];
     });
+
     // получаем список всех отрядов
     this.squads = [];
     this.state.squadStates.forEach((squad) => {
       this.squads = [...this.squads, new Squad(squad)];
     });
+
     // получаем список всех примененных абилок
     this.abilities = [];
     this.state.AbilityStates.forEach((ability) => {
       this.abilities = [...this.abilities, new Ability(ability)];
     });
+
     // получаем список всех фризов на применение абилок
     this.cooldowns = [];
     this.state.CooldownState.forEach((cooldown) => {
@@ -53,13 +56,14 @@ class State {
 
   my_buildings = () => {
     // Мои здания
-    let res = this.buildings.filter((x) => x.type === BuildingType[1] && x.player_color === this.__player_color);
-    return res;
+    return this.buildings.filter((x) => x.type === BuildingType[1]
+      && x.player_color === this.__player_color);
   };
 
   enemy_buildings = () => {
-    let res = this.buildings.filter(x => !this.__my_team_players_color.includes(x.player_color) && x.player_color !== 0 && x.type === BuildingType[1])
-    return res;
+    // Вражеские здания
+    return this.buildings.filter(x => !this.__my_team_players_color.includes(x.player_color)
+      && x.player_color !== 0 && x.type === BuildingType[1])
   };
 
   neutral_buildings = () => {
@@ -91,7 +95,6 @@ class State {
 
   enemy_active_abilities = (ability = null) => {
     // Активные абилки примененные врагом
-
     if (ability) {
       return this.abilities.filter((x) => {
         !this.__my_team_players_color.includes(x.player_color) && x.ability === ability

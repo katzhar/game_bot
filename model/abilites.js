@@ -42,13 +42,13 @@ class Ability {
 }
 
 class AbilityParameters {
-  /*Класс предоставляющий праматеры абилок по умолчанию, которые передаются в игровых параметрах при
-  инициализации игры*/
+  /* Класс предоставляющий праматеры абилок по умолчанию, которые передаются в игровых параметрах при
+  инициализации игры */
 
   constructor(params) {
     // тип абилки
     this.ability = AbilityType[params.Id];
-    //тип действия 0 - общие, 1 - площадные, 2 - на 1 башню, 3 - на 2 башни
+    // тип действия 0 - общие, 1 - площадные, 2 - на 1 башню, 3 - на 2 башни
     this.input_type = AbilityInputType[params.InputType];
     // сколько длится в тиках
     this.duration = params["Duration"];
@@ -56,7 +56,7 @@ class AbilityParameters {
     this.cooldown = params["Cooldown"];
     // время для иницилизации обилки
     this.cast_time = params["CastTime"];
-    //для площадных не равен нулю
+    // для площадных не равен нулю
     this.radius = params["Radius"];
     // кастомные параметры абилки
     this.ability_data = params["AbilityData"];
@@ -64,9 +64,10 @@ class AbilityParameters {
 }
 
 class GameEventParameters {
-  /*Класс предоставляющий праматеры глобальных событий игры,
-   которые передаются в игровых параметрах при инициализации игры
-   */
+  /* 
+  Класс предоставляющий праматеры глобальных событий игры,
+  которые передаются в игровых параметрах при инициализации игры
+  */
 
   constructor(params) {
     // с какого тика начинается
@@ -77,7 +78,7 @@ class GameEventParameters {
     this.LoopMode = params["LoopMode"];
     // 0 - на игрока, 1 - на всех
     this.UseMode = params["UseMode"];
-    //тип абилки
+    // тип абилки
     this.Ability = AbilityType[params.Ability];
     // начальный цвет цели
     this.TargetColor = params["TargetColor"];

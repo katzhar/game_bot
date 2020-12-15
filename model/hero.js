@@ -1,4 +1,4 @@
-const { AbilityType } = require('./abilites.js');
+const { AbilityType } = require('./abilites');
 
 const HeroType = {
   /* Типы героев */
@@ -9,7 +9,7 @@ const HeroType = {
 };
 
 class Hero {
-  /*Общий класс для всех героев. Содержит общий набор возможностей*/
+  /* Общий класс для всех героев. Содержит общий набор возможностей */
   hero_type = HeroType.Nobody;
   player_color = 0;
 
@@ -28,11 +28,11 @@ class Hero {
   // Проверка соответствия типа героя
   move = (source_tower_id, target_tower_id, part) => {
     /*
- Передвижение войск
- source_tower_id - идентификатор исходной башни
- target_tower_id - идентификатор целевой башни
- part - направляемая часть войск [0,1]
- */
+    Передвижение войск
+    source_tower_id - идентификатор исходной башни
+    target_tower_id - идентификатор целевой башни
+    part - направляемая часть войск [0,1]
+    */
     const action = {
       "FromId": source_tower_id,
       "ToId": target_tower_id,
@@ -44,7 +44,7 @@ class Hero {
   };
 
   speed_up = (location) => {
-    /*Ускорение союзных войск
+    /* Ускорение союзных войск
     location - координата точки применения */
     const action = {
       "X": location.x,
@@ -73,7 +73,7 @@ class Hero {
 }
 
 class Mag extends Hero {
-  /*Возможности героя Маг*/
+  /* Возможности героя Маг */
   hero_type = HeroType.Mag;
 
   plague = (enemy_tower_id) => {
@@ -188,7 +188,7 @@ class BlackSmith extends Hero {
     };
     return (JSON.stringify(action));
   }
-}
+};
 
 module.exports.HeroType = HeroType;
 module.exports.Hero = Hero;
