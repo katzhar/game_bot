@@ -2,6 +2,14 @@ const { HeroType } = require('./model/hero');
 const { AbilityType } = require('./model/abilites');
 const { State } = require('./model/state');
 
+const { Map } = require('./model/map.js');
+const { Parameters } = require('./model/parameters.js');
+const { Teams } = require('./model/teams.js');
+
+
+let game_map =null;
+let game_params = null;
+let game_teams = null;
 
 
 const Bot = (game, game_teams, game_params, game_map) => {
@@ -9,7 +17,6 @@ const Bot = (game, game_teams, game_params, game_map) => {
     /* Получение состояния игры */
     if (game && game_teams && game_params) {
       const state = new State(game, game_teams, game_params);
-      console.log(3,state);
       const my_buildings = state.my_buildings();
       const my_squads = state.my_squads();
       // сортируем по остаточному пути
@@ -146,11 +153,17 @@ const Bot = (game, game_teams, game_params, game_map) => {
   }
   catch (e) {
     process.send('end');
+     console.log('error',e)
   } finally {
   }
 };
 
   process.on('message', async (game) => {
-    console.log(3,game.params.game_teams);
-    await Bot(game.data, game.params.game_teams, game.params.game_params, game.params.game_map);
+    if(game.initial) {
+     game_map = new Map(game.data);  // карта игрового мира
+    game_params = new Parameters(game.data);  // параметры игры
+     game_teams = new Teams(game.data);  // моя команда
+    }
+    else
+    await Bot(game.data, game_teams, game_params,game_map);
   });

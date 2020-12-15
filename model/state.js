@@ -12,6 +12,7 @@ class State {
 
     // получаем список всех зданий
     this.buildings = [];
+    console.log( this.state)
     this.state.buildingStates.forEach((building) => {
       this.buildings = [...this.buildings, new Building(building, parameters)];
     });

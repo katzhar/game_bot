@@ -34,7 +34,7 @@ class Teams {
     })
   }
 
-  static my_team_players_color = () => {
+  my_team_players_color = () => {
     /* Возвращает массив цветов игроков команды моего бота */
     let result = [];
     this.my_team.forEach((player) =>
@@ -42,7 +42,7 @@ class Teams {
     return result;
   };
 
-  static enemy_players_have_hero = (hero_type) => {
+  enemy_players_have_hero = (hero_type) => {
     /* Возвращает True если в команде противника найден тип героя hero_type */
     let res = null;
     this.enemy_team.forEach((player) => {
@@ -52,7 +52,7 @@ class Teams {
     return res;
   };
 
-  static get_team_colors_by_color = (player_color) => {
+  get_team_colors_by_color = (player_color) => {
     /* Возвращает массив игроков команды игрока player_color */
     let team_id = this.__get_team_id(player_color);
     let result = [];
@@ -65,7 +65,7 @@ class Teams {
     return result;
   };
 
-   __get_team_id = (player_color) => {
+  __get_team_id = (player_color) => {
     /* Возвращает идентификатор команды бота игрока player_color */
     let res = null;
     this.teams.forEach((team) => {

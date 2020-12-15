@@ -11,18 +11,18 @@ const {
   PlayerReady,
 } = require('./message.js');
 
-const { Map } = require('./map.js');
-const { Parameters } = require('./parameters.js');
-const { Teams } = require('./teams.js');
-
-
-class InitialGame {
-  constructor(game) {
-    this.game_map = new Map(game);  // карта игрового мира
-    this.game_params = new Parameters(game);  // параметры игры
-    this.game_teams = new Teams(game);  // моя команда
-  }
-}
+// const { Map } = require('./map.js');
+// const { Parameters } = require('./parameters.js');
+// const { Teams } = require('./teams.js');
+//
+//
+// class InitialGame {
+//   constructor(game) {
+//     this.game_map = new Map(game);  // карта игрового мира
+//     this.game_params = new Parameters(game);  // параметры игры
+//     this.game_teams = new Teams(game);  // моя команда
+//   }
+// }
 
 class Game {
   bot_ready = true;
@@ -156,8 +156,8 @@ class Game {
         // Передача боту параметров игры
         this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
         let msg_bytes = this.game_parameters.json;
-        this.initial = new InitialGame(msg_bytes);
-        // this.process.send(msg_bytes);
+        // this.initial = new InitialGame(msg_bytes);
+         this.process.send({data:msg_bytes,initial:true});
       }
 
       if (input_msg.msg_type === 2) {
@@ -189,9 +189,9 @@ class Game {
           console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
           // Если бот готов, отправляем ему стейт
           this.bot_ready = false;
-          let initial = this.initial;
           let msg_bytes = input_msg.json["GameStateArgs"];
-          await this.process.send({ data: msg_bytes, params: initial });
+          // await this.process.send({ data: msg_bytes, params: this.initial });
+           await this.process.send({ data: msg_bytes, initial: false });
           await get_command();
         }
       }
