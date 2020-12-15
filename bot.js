@@ -48,11 +48,12 @@ const Bot = (game, game_teams, game_params, game_map) => {
         if (state.ability_ready(AbilityType[5])) {
           // для эффективности применяем ближе к башне
           if (my_squads.length > 1) {
-            //сколько тиков первому отряду осталось до башни
+            // сколько тиков первому отряду осталось до башни
             const left_to_aim = my_squads[0].way.left / my_squads[0].speed;
             // если первый отряд находится в зоне инициализации абилки
             const plague_parameters = game_params.get_ability_parameters(AbilityType[5]);
-            if (plague_parameters.cast_time + 30 > left_to_aim)
+            if (plague_parameters.cast_time + 30 > left_to_aim
+              && enemy_buildings[0] && enemy_buildings[0].id)
               process.send(game_teams.my_her.plague(enemy_buildings[0].id));
           }
         }
@@ -75,7 +76,6 @@ const Bot = (game, game_teams, game_params, game_map) => {
             location = game_map.get_squad_center_position(enemy_squads[2]);
             process.send(game_teams.my_her.area_damage(location));
           }
-
         // Upgrade башни
         if (my_buildings[0].level.id < game_params.tower_levels.length - 1) {
           // Если хватает стоимости на upgrade
@@ -85,7 +85,6 @@ const Bot = (game, game_teams, game_params, game_map) => {
             my_buildings[0].creeps_count -= update_coast;
           }
         }
-
         // Атакуем башню противника
         // определяем расстояние между башнями
         const distance = game_map.towers_distance(my_buildings[0].id, enemy_buildings[0].id);

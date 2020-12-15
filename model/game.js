@@ -153,7 +153,7 @@ class Game {
 
       if (input_msg.msg_type === 9) {
         console.log("IN <<< Player disconnected");
-        this.process.exit();
+        process.exit();
       }
 
       if (input_msg.msg_type === 4) {
