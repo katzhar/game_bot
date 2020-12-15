@@ -1,20 +1,15 @@
 const { HeroType } = require('./model/hero');
-const { Map } = require('./model/map');
-const { Parameters } = require('./model/parameters');
 const { AbilityType } = require('./model/abilites');
-const { Teams } = require('./model/teams');
 const { State } = require('./model/state');
 
 
-let processingMsg = false;
 
 const Bot = (game, game_teams, game_params, game_map) => {
   try {
     /* Получение состояния игры */
-    processingMsg = true;
     if (game && game_teams && game_params) {
       const state = new State(game, game_teams, game_params);
-      console.log(state);
+      console.log(3,state);
       const my_buildings = state.my_buildings();
       const my_squads = state.my_squads();
       // сортируем по остаточному пути
@@ -33,7 +28,6 @@ const Bot = (game, game_teams, game_params, game_map) => {
 
       const neutral_buildings = state.neutral_buildings();
       const forges_buildings = state.forges_buildings();
-
       /* Играем за мага */
 
       if (game_teams.my_her.hero_type === HeroType.Mag) {
@@ -53,7 +47,8 @@ const Bot = (game, game_teams, game_params, game_map) => {
             //сколько тиков первому отряду осталось до башни
             const left_to_aim = my_squads[0].way.left / my_squads[0].speed;
             // если первый отряд находится в зоне инициализации абилки
-            const plague_parameters = game_params.get_ability_parameters(AbilityType.indexOf('Plague'));
+            const plague_parameters = game_params.get_ability_parameters(AbilityType.indexOf(
+              'Plague'));
             if (plague_parameters.cast_time + 30 > left_to_aim)
               process.send(game_teams.my_her.plague(enemy_buildings[0].id))
           }
@@ -131,7 +126,8 @@ const Bot = (game, game_teams, game_params, game_map) => {
             // сколько тиков первому отряду осталось до башни
             const left_to_aim = my_squads[0].way.left / my_squads[0].speed;
             // Если первый отряд находится в зоне инициализации абилки
-            const berserk_parameters = game_params.get_ability_parameters(AbilityType.indexOf('Berserk'));
+            const berserk_parameters = game_params.get_ability_parameters(AbilityType.indexOf(
+              'Berserk'));
             if (berserk_parameters.cast_time + 50 > left_to_aim) {
               location = game_map.get_squad_center_position(my_squads[2]);
               process.send(game_teams.my_her.berserk(location))
@@ -147,17 +143,14 @@ const Bot = (game, game_teams, game_params, game_map) => {
         }
       }
     }
-  } catch (e) {
+  }
+  catch (e) {
     process.send('end');
   } finally {
-    processingMsg = false;
   }
 };
 
-if (!processingMsg) {
-  console.log('set data');
   process.on('message', async (game) => {
-    processingMsg = true;
-    await Bot(game.data, game.params.game_teams, game.params.game_params,game.params.game_map);
-  })
-};
+    console.log(3,game.params.game_teams);
+    await Bot(game.data, game.params.game_teams, game.params.game_params, game.params.game_map);
+  });

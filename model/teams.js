@@ -14,14 +14,14 @@ class Teams {
   enemy_team = [];  // массив игроков команд противников
 
   constructor(game) {
-    game = game;
-    this.teams = game.Teams;
+    this.game = game;
+    this.teams = this.game.Teams;
     if (game["HeroType"] === HeroType.Mag)
-      this.my_her = new Mag(game);
+      this.my_her = new Mag(this.game);
     if (game["HeroType"] === HeroType.Warrior)
-      this.my_her = new Warrior(game);
+      this.my_her = new Warrior(this.game);
     if (game["HeroType"] === HeroType.BlackSmith)
-      this.my_her = new BlackSmith(game);
+      this.my_her = new BlackSmith(this.game);
     let my_team_id = this.__get_team_id(this.my_her.player_color);
     this.teams.forEach((team) => {
       team.Players.forEach((player) => {
@@ -34,7 +34,7 @@ class Teams {
     })
   }
 
-  my_team_players_color = () => {
+  static my_team_players_color = () => {
     /* Возвращает массив цветов игроков команды моего бота */
     let result = [];
     this.my_team.forEach((player) =>
@@ -42,7 +42,7 @@ class Teams {
     return result;
   };
 
-  enemy_players_have_hero = (hero_type) => {
+  static enemy_players_have_hero = (hero_type) => {
     /* Возвращает True если в команде противника найден тип героя hero_type */
     let res = null;
     this.enemy_team.forEach((player) => {
@@ -52,7 +52,7 @@ class Teams {
     return res;
   };
 
-  get_team_colors_by_color = (player_color) => {
+  static get_team_colors_by_color = (player_color) => {
     /* Возвращает массив игроков команды игрока player_color */
     let team_id = this.__get_team_id(player_color);
     let result = [];
@@ -65,7 +65,7 @@ class Teams {
     return result;
   };
 
-  __get_team_id = (player_color) => {
+   __get_team_id = (player_color) => {
     /* Возвращает идентификатор команды бота игрока player_color */
     let res = null;
     this.teams.forEach((team) => {
