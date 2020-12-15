@@ -53,12 +53,12 @@ class State {
 
   my_buildings = () => {
     // Мои здания
- let res = this.buildings.filter((x) => x.type === BuildingType[1] && x.player_color === this.__player_color);
+    let res = this.buildings.filter((x) => x.type === BuildingType[1] && x.player_color === this.__player_color);
     return res;
   };
 
   enemy_buildings = () => {
-   let res = this.buildings.filter(x => !this.__my_team_players_color.includes(x.player_color) && x.player_color !== 0 && x.type === BuildingType[1])
+    let res = this.buildings.filter(x => !this.__my_team_players_color.includes(x.player_color) && x.player_color !== 0 && x.type === BuildingType[1])
     return res;
   };
 
