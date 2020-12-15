@@ -11,27 +11,15 @@ const {
   PlayerReady,
 } = require('./message.js');
 
-// const { Map } = require('./map.js');
-// const { Parameters } = require('./parameters.js');
-// const { Teams } = require('./teams.js');
-//
-//
-// class InitialGame {
-//   constructor(game) {
-//     this.game_map = new Map(game);  // карта игрового мира
-//     this.game_params = new Parameters(game);  // параметры игры
-//     this.game_teams = new Teams(game);  // моя команда
-//   }
-// }
-
 class Game {
   bot_ready = true;
+  message_listener_is_active = false;
 
   constructor(websocket_url, user_id, bot_id, game_id) {
     this.process = child_process.fork(`bot.js`, {
       execArgv: ['--max-old-space-size=4096'],
     });
-    if (!game_id) {
+    if (! game_id) {
       this.game_id = 0;
     } else {
       this.game_id = game_id;
@@ -120,7 +108,7 @@ class Game {
         team_players.forEach((team) => {
           if (team.PlayerId === this.bot_id)
             player_color = team.PlayerColor;
-        })
+        });
         if (!player_color) {
           team_players.forEach((team) => {
             if (!team.PlayerId)
@@ -151,7 +139,7 @@ class Game {
         console.log("OUT >>> Bot prepared");
         output_msg.send_message().then((res) => {
           wss.send(res)
-        })
+        });
 
         // Передача боту параметров игры
         this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
@@ -170,20 +158,24 @@ class Game {
 
       if (input_msg.msg_type === 4) {
         const get_command = async () => {
-          await this.process.on("message",async (command) => {
-            while (!this.bot_ready) {
+          this.process.on("message", async (command) => {
+            while (! this.bot_ready) {
               if (command.trim() === "end") {
                 this.bot_ready = true;
+                break;
               } else if (command.trim()) {
                 console.log("OUT >>> Send command: " + command);
                 let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
-               await msg.send_message().then((res) => {
-                  wss.send(res)
-                })
+                try {
+                  const res = await msg.send_message();
+                  wss.send(res);
+                } catch (e) {
+                  console.log('==shit_happens', e);
+                }
               }
             }
           });
-        }
+        };
 
         if (this.bot_ready) {
           console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
@@ -191,8 +183,11 @@ class Game {
           this.bot_ready = false;
           let msg_bytes = input_msg.json["GameStateArgs"]['State'];
           // await this.process.send({ data: msg_bytes, params: this.initial });
-           await this.process.send({ data: msg_bytes, initial: false });
-          await get_command();
+          await this.process.send({ data: msg_bytes, initial: false });
+          if (! this.message_listener_is_active) {
+            await get_command();
+            this.message_listener_is_active = true;
+          }
         }
       }
 
@@ -215,6 +210,6 @@ class Game {
       console.log(err);
     };
   };
-};
+}
 
 module.exports = Game;

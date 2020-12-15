@@ -42,10 +42,15 @@ if (typeof require !== 'undefined' && require.main === module) {
     });
 
     const args = parser.parse_args();
+    const wsUrl = `${args.ip}/game`;
 
+    let userId, gameId;
     if (args.system) {
-        new Game(`${args.ip}/game`, null, args.bot, args.game);
+        userId = null;
+        gameId = args.game;
     } else {
-        new Game(`${args.ip}/game`, args.user, args.bot, null);
+        userId = args.user;
+        gameId = null;
     }
+    new Game(wsUrl, userId, args.bot, gameId);
 }
