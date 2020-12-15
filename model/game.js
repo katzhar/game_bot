@@ -170,14 +170,14 @@ class Game {
 
       if (input_msg.msg_type === 4) {
         const get_command = async () => {
-          await this.process.on("message", (command) => {
+          await this.process.on("message",async (command) => {
             while (!this.bot_ready) {
               if (command.trim() === "end") {
                 this.bot_ready = true;
               } else if (command.trim()) {
                 console.log("OUT >>> Send command: " + command);
                 let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
-                msg.send_message().then((res) => {
+               await msg.send_message().then((res) => {
                   wss.send(res)
                 })
               }
@@ -189,7 +189,7 @@ class Game {
           console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
           // Если бот готов, отправляем ему стейт
           this.bot_ready = false;
-          let msg_bytes = input_msg.json["GameStateArgs"];
+          let msg_bytes = input_msg.json["GameStateArgs"]['State'];
           // await this.process.send({ data: msg_bytes, params: this.initial });
            await this.process.send({ data: msg_bytes, initial: false });
           await get_command();

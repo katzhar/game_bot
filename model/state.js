@@ -12,7 +12,6 @@ class State {
 
     // получаем список всех зданий
     this.buildings = [];
-    console.log( this.state)
     this.state.buildingStates.forEach((building) => {
       this.buildings = [...this.buildings, new Building(building, parameters)];
     });
@@ -54,27 +53,24 @@ class State {
 
   my_buildings = () => {
     // Мои здания
-    return this.buildings.filter((x) => x.type === BuildingType[1]
-      && x.player_color === this.__player_color);
+ let res = this.buildings.filter((x) => x.type === BuildingType[1] && x.player_color === this.__player_color);
+    return res;
   };
 
   enemy_buildings = () => {
-    // Вражеские здания
-    return this.buildings.filter((x) => {
-      !this.__my_team_players_color.includes(x.player_color) &&
-        x.player_color !== 0 && x.type === BuildingType[2]
-    })
+   let res = this.buildings.filter(x => !this.__my_team_players_color.includes(x.player_color) && x.player_color !== 0 && x.type === BuildingType[1])
+    return res;
   };
 
   neutral_buildings = () => {
     // Нейтральные здания
     return this.buildings.filter((x) =>
-      x.player_color === 0 && x.type === BuildingType[2]);
+      x.player_color === 0 && x.type === BuildingType[1]);
   };
 
   forges_buildings = () => {
     // Кузницы
-    return this.buildings.filter((x) => x.type === BuildingType[1]);
+    return this.buildings.filter((x) => x.type === BuildingType[2]);
   };
 
   my_squads = () => {

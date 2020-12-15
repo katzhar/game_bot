@@ -40,7 +40,7 @@ class Hero {
       "PlayerColor": this.player_color,
       "Type": 1,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   };
 
   speed_up = (location) => {
@@ -55,7 +55,7 @@ class Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   };
 
   upgrade_tower = (tower_id) => {
@@ -68,7 +68,7 @@ class Hero {
       "PlayerColor": this.player_color,
       "Type": 4,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   }
 }
 
@@ -90,7 +90,7 @@ class Mag extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   };
 
   exchange = (enemy_tower_id, my_tower_id) => {
@@ -108,7 +108,7 @@ class Mag extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   }
 }
 
@@ -130,7 +130,7 @@ class Warrior extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   };
 
   growl = (enemy_tower_id) => {
@@ -147,7 +147,7 @@ class Warrior extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   }
 }
 
@@ -169,7 +169,7 @@ class BlackSmith extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   };
 
   armor = (my_tower_id) => {
@@ -186,7 +186,7 @@ class BlackSmith extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return escape(JSON.stringify(action));
+    return (JSON.stringify(action));
   }
 }
 

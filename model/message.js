@@ -11,7 +11,7 @@ class ParentsMessage {
   }
 
   to_string = () => {
-    return escape(JSON.stringify(this.json));
+    return (JSON.stringify(this.json));
   }
 }
 
