@@ -36,9 +36,9 @@ class Message extends ParentsMessage {
         this.json.ResponseGameParametersArgs.Map = JSON.parse(this.json.ResponseGameParametersArgs.Map);
       if (this.json.ResponseGameParametersArgs && this.json.ResponseGameParametersArgs.Parameters)
         this.json.ResponseGameParametersArgs.Parameters = JSON.parse(this.json.ResponseGameParametersArgs.Parameters);
-      this.msg_type = this.json["MsgType"];
+      this.msg_type = this.json.MsgType;
       if (this.json.GameId)
-        this.game_id = this.json["GameId"];
+        this.game_id = this.json.GameId;
       else
         this.game_id = 0;
       this.value = await ungzip(array);
@@ -58,12 +58,11 @@ class RequestGame extends ParentsMessage {
   constructor(user_id, bot_id, game_id) {
     super();
     if (user_id)
-      this.json["RequestGameParametersArgs"]["UserId"] = user_id;
+      this.json.RequestGameParametersArgs.UserId = user_id;
     if (bot_id)
-      this.json["RequestGameParametersArgs"]["BotId"] = bot_id;
+      this.json.RequestGameParametersArgs.BotId = bot_id;
     if (game_id)
-      this.json["RequestGameParametersArgs"]["GameId"] = game_id;
-
+      this.json.RequestGameParametersArgs.GameId = game_id;
   }
 }
 
@@ -79,9 +78,9 @@ class PlayerConnect extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id) {
     super();
-    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
-    this.json["GameId"] = game_id;
-    this.json["PlayerConnectArgs"]["PlayerId"] = bot_id;
+    this.json.Subscribers = [...this.json.Subscribers, game_server];
+    this.json.GameId = game_id;
+    this.json.PlayerConnectArgs.PlayerId = bot_id;
   }
 }
 
@@ -98,10 +97,10 @@ class PlayerChangeHero extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id, hero_type) {
     super();
-    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
-    this.json["GameId"] = game_id;
-    this.json["PlayerChangeHeroTypeArgs"]["PlayerId"] = bot_id;
-    this.json["PlayerChangeHeroTypeArgs"]["HeroType"] = hero_type;
+    this.json.Subscribers = [...this.json.Subscribers, game_server];
+    this.json.GameId = game_id;
+    this.json.PlayerChangeHeroTypeArgs.PlayerId = bot_id;
+    this.json.PlayerChangeHeroTypeArgs.HeroType = hero_type;
   }
 }
 
@@ -137,9 +136,9 @@ class PlayerPrepared extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id) {
     super();
-    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
+    this.json.Subscribers = [...this.json.Subscribers, game_server];
     this.json["GameId"] = game_id;
-    this.json["PlayerPreparedArgs"]["PlayerId"] = bot_id;
+    this.json.PlayerPreparedArgs.PlayerId = bot_id;
   }
 }
 
@@ -155,9 +154,9 @@ class PlayerReady extends ParentsMessage {
 
   constructor(game_server, game_id, bot_id) {
     super();
-    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
-    this.json["GameId"] = game_id;
-    this.json["PlayerReadyArgs"]["PlayerId"] = bot_id;
+    this.json.Subscribers = [...this.json.Subscribers, game_server];
+    this.json.GameId = game_id;
+    this.json.PlayerReadyArgs.PlayerId = bot_id;
   }
 }
 
@@ -173,9 +172,9 @@ class GameActions extends ParentsMessage {
 
   constructor(game_server, game_id, action) {
     super();
-    this.json["Subscribers"] = [...this.json["Subscribers"], game_server];
-    this.json["GameId"] = game_id;
-    this.json["GameActionsArgs"]["Action"] = action;
+    this.json.Subscribers = [...this.json.Subscribers, game_server];
+    this.json.GameId = game_id;
+    this.json.GameActionsArgs.Action = action;
   }
 }
 

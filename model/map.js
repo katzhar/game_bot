@@ -2,11 +2,11 @@ class Map {
   /* Класс, предоставляяющий вспомогательные методы работы с картой */
   constructor(game) {
     this.map = game;
-    this.map = this.map["ResponseGameParametersArgs"]["Map"];
-    this.links = this.map["Links"];
+    this.map = this.map.ResponseGameParametersArgs.Map;
+    this.links = this.map.Links;
     // Вычисляем и добавляем расстояние между башнями
     this.links.map((link) => {
-      link["Distance"] = this.__towers_distance(link["From"], link["To"]);
+      link.Distance = this.__towers_distance(link.From, link.To);
     })
   }
 
@@ -16,15 +16,15 @@ class Map {
     if (from_id > to_id)
       from_id = [to_id, to_id = from_id][0];
     this.links.forEach((link) => {
-      if (link["From"] === from_id && link["To"] === to_id)
-        res = link["Distance"];
+      if (link.From === from_id && link.To === to_id)
+        res = link.Distance;
     });
     return res;
   };
 
   points_distance = (point1, point2) => {
     /* Вычиляет расстояние между двумя точками */
-    return Math.sqrt((point1["x"] - point2["x"]) ** 2 + (point1["y"] - point2["y"]) ** 2);
+    return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
   };
 
   __towers_distance = (from_id, to_id) => {
@@ -47,8 +47,8 @@ class Map {
     if (from_id > to_id)
       from_id = [to_id, to_id = from_id][0];
     this.links.forEach((link) => {
-      if (link["From"] === from_id && link["To"] === to_id)
-        res = link["Vectors"];
+      if (link.From === from_id && link.To === to_id)
+        res = link.Vectors;
     },
     );
     return res;
@@ -101,7 +101,7 @@ class Map {
     });
     let result = [];
     distances.forEach((item) => {
-      result = [...result, item["tower"]];
+      result = [...result, item.tower];
     })
     return result;
   };
@@ -109,7 +109,7 @@ class Map {
   get_tower_location = (tower_id) => {
     /* Возвращает location башни */
     this.links.forEach((link) => {
-      if (link["From"] === tower_id)
+      if (link.From === tower_id)
         return {
           "x": link["Vectors"][0]["x"],
           "y": link["Vectors"][0]["y"],

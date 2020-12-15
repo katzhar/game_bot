@@ -153,7 +153,6 @@ process.on('message', async (game) => {
     game_map = new Map(game.data);  // карта игрового мира
     game_params = new Parameters(game.data);  // параметры игры
     game_teams = new Teams(game.data);  // моя команда
-  }
-  else
+  } else
     await Bot(game.data, game_teams, game_params, game_map);
 });

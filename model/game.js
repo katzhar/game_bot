@@ -163,13 +163,14 @@ class Game {
               if (command.trim() === "end") {
                 this.bot_ready = true;
                 break;
-              } else if (command.trim()) {
+              } else {
                 console.log("OUT >>> Send command: " + command);
                 let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
                 try {
                   const res = await msg.send_message();
                   wss.send(res);
-                } catch (e) {
+                }
+                catch (e) {
                   console.log(e);
                 }
               }

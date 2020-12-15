@@ -32,19 +32,19 @@ class TowerLevelParameters {
     // номер уровня
     this.id = id;
     // цена перехода
-    this.update_coast = params["UpdateCoast"];
+    this.update_coast = params.UpdateCoast;
     // бонус защиты в абсолютном значении + 1
-    this.defense_bonus = params["DefenseBonus"];
+    this.defense_bonus = params.DefenseBonus;
     // время в тиках за котрое создается 1 крип
-    this.creep_creation_time = params["CreepCreationTime"];
+    this.creep_creation_time = params.CreepCreationTime;
     // начальное дефолтное занчение количества крипов для игрока
-    this.default_player_count = params["DefaultPlayerCount"];
+    this.default_player_count = params.DefaultPlayerCount;
     // начальное дефолтное занчение количества крипов для нейтрального
-    this.default_neutral_count = params["DefaultNeutralCount"];
+    this.default_neutral_count = params.DefaultNeutralCount;
     // максимальное количество крипов для игрока после которого останавливается рост
-    this.player_max_count = params["PlayerMaxCount"];
+    this.player_max_count = params.PlayerMaxCount;
     // максимальное количество крипов для нейтрального игрока после которого останавливается рост
-    this.neutral_max_count = params["NeutralMaxCount"]
+    this.neutral_max_count = params.NeutralMaxCount;
   }
 };
 
@@ -55,15 +55,15 @@ class ForgeParameters {
   */
   constructor(params) {
     // дает бонус к защите башен
-    this.defence_bonus = params["DefenseBonus"];
+    this.defence_bonus = params.DefenseBonus;
     // начальное дефолтное занчение количества крипов для игрока
-    this.default_player_count = params["DefaultPlayerCount"];
+    this.default_player_count = params.DefaultPlayerCount;
     // начальное дефолтное занчение количества крипов для нейтрального
-    this.default_neutral_count = params["DefaultNeutralCount"];
+    this.default_neutral_count = params.DefaultNeutralCount;
     // максимальное количество крипов для игрока после которого останавливается рост
-    this.player_max_count = params["PlayerMaxCount"];
+    this.player_max_count = params.PlayerMaxCount;
     // максимальное количество крипов для нейтрального игрока после которого останавливается рост
-    this.neutral_max_count = params["NeutralMaxCount"]
+    this.neutral_max_count = params.NeutralMaxCount;
   }
 };
 
