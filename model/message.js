@@ -136,7 +136,7 @@ class PlayerPrepared extends ParentsMessage {
   constructor(game_server, game_id, bot_id) {
     super();
     this.json.Subscribers = [...this.json.Subscribers, game_server];
-    this.json["GameId"] = game_id;
+    this.json.GameId = game_id;
     this.json.PlayerPreparedArgs.PlayerId = bot_id;
   }
 }

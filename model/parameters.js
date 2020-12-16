@@ -15,7 +15,7 @@ class Parameters {
         this.tower_levels = [];
         for (let tower in parameters.Towers) {
             this.tower_levels = [...this.tower_levels, new TowerLevelParameters(+tower,
-                parameters.Towers.tower)];
+                parameters.Towers[tower])];
         }
         // параметры кузницы
         this.forge = new ForgeParameters(parameters.Forges);
