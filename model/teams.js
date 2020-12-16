@@ -1,10 +1,15 @@
-const { Mag, Warrior, BlackSmith, HeroType } = require('./hero.js');
+const {
+  Mag,
+  Warrior,
+  BlackSmith,
+  HeroType,
+} = require('./hero');
 
 class PLayer {
   /* Класс с необходимой информацией об иргроках */
   constructor(player_color, hero_type) {
     this.player_color = player_color;
-    this.hero_type = hero_type
+    this.hero_type = hero_type;
   }
 }
 
@@ -16,20 +21,27 @@ class Teams {
   constructor(game) {
     this.game = game;
     this.teams = this.game.Teams;
-    if (game["HeroType"] === HeroType.Mag)
-      this.my_her = new Mag(this.game);
-    if (game["HeroType"] === HeroType.Warrior)
-      this.my_her = new Warrior(this.game);
-    if (game["HeroType"] === HeroType.BlackSmith)
-      this.my_her = new BlackSmith(this.game);
+    switch (game.HeroType) {
+      case HeroType.Mag:
+        this.my_her = new Mag(this.game);
+        break;
+      case HeroType.Warrior:
+        this.my_her = new Warrior(this.game);
+        break;
+      case HeroType.BlackSmith:
+        this.my_her = new BlackSmith(this.game);
+        break
+      default:
+        this.my_her = null;
+    }
     let my_team_id = this.__get_team_id(this.my_her.player_color);
     this.teams.forEach((team) => {
       team.Players.forEach((player) => {
         if (team.TeamId === my_team_id)
-          this.my_team = [...this.my_team, new PLayer(player["PlayerColor"], player["HeroType"])];
+          this.my_team = [...this.my_team, new PLayer(player.PlayerColor, player.HeroType)];
         else
-          this.enemy_team = [...this.enemy_team, new PLayer(player["PlayerColor"],
-            player["HeroType"])];
+          this.enemy_team = [...this.enemy_team, new PLayer(player.PlayerColor,
+            player.HeroType)];
       })
     })
   }
@@ -58,8 +70,8 @@ class Teams {
     let result = [];
     this.teams.forEach((team) => {
       team.Players.forEach((player) => {
-        if (team["TeamId"] === team_id)
-          result = [...result, player["PlayerColor"]]
+        if (team.TeamId === team_id)
+          result = [...result, player.PlayerColor];
       })
     });
     return result;

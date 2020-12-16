@@ -1,4 +1,4 @@
-const { AbilityType } = require('./abilites.js');
+const { AbilityType } = require('./abilites');
 
 const HeroType = {
   /* Типы героев */
@@ -9,14 +9,14 @@ const HeroType = {
 };
 
 class Hero {
-  /*Общий класс для всех героев. Содержит общий набор возможностей*/
+  /* Общий класс для всех героев. Содержит общий набор возможностей */
   hero_type = HeroType.Nobody;
   player_color = 0;
 
   constructor(game_parameters) {
-    if (game_parameters["HeroType"] !== this.hero_type)
+    if (game_parameters.HeroType !== this.hero_type)
       new Error('Hero type in game parameters init hero type');
-    this.player_color = game_parameters["PlayerColor"];
+    this.player_color = game_parameters.PlayerColor;
   }
 
   /*
@@ -28,11 +28,11 @@ class Hero {
   // Проверка соответствия типа героя
   move = (source_tower_id, target_tower_id, part) => {
     /*
- Передвижение войск
- source_tower_id - идентификатор исходной башни
- target_tower_id - идентификатор целевой башни
- part - направляемая часть войск [0,1]
- */
+    Передвижение войск
+    source_tower_id - идентификатор исходной башни
+    target_tower_id - идентификатор целевой башни
+    part - направляемая часть войск [0,1]
+    */
     const action = {
       "FromId": source_tower_id,
       "ToId": target_tower_id,
@@ -40,11 +40,11 @@ class Hero {
       "PlayerColor": this.player_color,
       "Type": 1,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   };
 
   speed_up = (location) => {
-    /*Ускорение союзных войск
+    /* Ускорение союзных войск
     location - координата точки применения */
     const action = {
       "X": location.x,
@@ -55,7 +55,7 @@ class Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   };
 
   upgrade_tower = (tower_id) => {
@@ -68,12 +68,12 @@ class Hero {
       "PlayerColor": this.player_color,
       "Type": 4,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   }
 }
 
 class Mag extends Hero {
-  /*Возможности героя Маг*/
+  /* Возможности героя Маг */
   hero_type = HeroType.Mag;
 
   plague = (enemy_tower_id) => {
@@ -90,7 +90,7 @@ class Mag extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   };
 
   exchange = (enemy_tower_id, my_tower_id) => {
@@ -108,7 +108,7 @@ class Mag extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   }
 }
 
@@ -130,7 +130,7 @@ class Warrior extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   };
 
   growl = (enemy_tower_id) => {
@@ -147,7 +147,7 @@ class Warrior extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   }
 }
 
@@ -169,7 +169,7 @@ class BlackSmith extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   };
 
   armor = (my_tower_id) => {
@@ -186,9 +186,9 @@ class BlackSmith extends Hero {
       "PlayerColor": this.player_color,
       "Type": 2,
     };
-    return (JSON.stringify(action));
+    return JSON.stringify(action);
   }
-}
+};
 
 module.exports.HeroType = HeroType;
 module.exports.Hero = Hero;

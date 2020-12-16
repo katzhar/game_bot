@@ -9,7 +9,7 @@ const {
   PlayerChangeColor,
   PlayerPrepared,
   PlayerReady,
-} = require('./message.js');
+} = require('./message');
 
 class Game {
   bot_ready = true;
@@ -19,7 +19,7 @@ class Game {
     this.process = child_process.fork(`bot.js`, {
       execArgv: ['--max-old-space-size=4096'],
     });
-    if (! game_id) {
+    if (!game_id) {
       this.game_id = 0;
     } else {
       this.game_id = game_id;
@@ -36,7 +36,7 @@ class Game {
     });
     let message = new RequestGame(user_id, bot_id, game_id);
 
-    wss.onopen = (e) => {
+    wss.onopen = () => {
       console.log(">>> Request Game");
       message.send_message().then((res) => {
         wss.send(res);
@@ -142,10 +142,9 @@ class Game {
         });
 
         // Передача боту параметров игры
-        this.game_parameters.json["Teams"] = input_msg.json.AllPlayersConnectedArgs.Teams;
+        this.game_parameters.json["Teams"] = input_msg.json["AllPlayersConnectedArgs"]["Teams"];
         let msg_bytes = this.game_parameters.json;
-        // this.initial = new InitialGame(msg_bytes);
-         this.process.send({data:msg_bytes,initial:true});
+        this.process.send({ data: msg_bytes, initial: true });
       }
 
       if (input_msg.msg_type === 2) {
@@ -154,23 +153,25 @@ class Game {
 
       if (input_msg.msg_type === 9) {
         console.log("IN <<< Player disconnected");
+        process.exit();
       }
 
       if (input_msg.msg_type === 4) {
         const get_command = async () => {
           this.process.on("message", async (command) => {
-            while (! this.bot_ready) {
+            while (!this.bot_ready) {
               if (command.trim() === "end") {
                 this.bot_ready = true;
                 break;
-              } else if (command.trim()) {
+              } else {
                 console.log("OUT >>> Send command: " + command);
                 let msg = new GameActions(this.game_server, this.game_id, JSON.parse(command));
                 try {
                   const res = await msg.send_message();
                   wss.send(res);
-                } catch (e) {
-                  console.log('==shit_happens', e);
+                }
+                catch (e) {
+                  console.log(e);
                 }
               }
             }
@@ -182,9 +183,8 @@ class Game {
           // Если бот готов, отправляем ему стейт
           this.bot_ready = false;
           let msg_bytes = input_msg.json["GameStateArgs"]['State'];
-          // await this.process.send({ data: msg_bytes, params: this.initial });
           await this.process.send({ data: msg_bytes, initial: false });
-          if (! this.message_listener_is_active) {
+          if (!this.message_listener_is_active) {
             await get_command();
             this.message_listener_is_active = true;
           }
@@ -193,16 +193,14 @@ class Game {
 
       if (input_msg.msg_type === 5) {
         console.log("IN <<< Game cancel");
-        // this.process.exit();
       }
 
       if (input_msg.msg_type === 6) {
         console.log("IN <<< Game over");
-        // this.process.exit();
       }
     };
 
-    wss.onclose = (e) => {
+    wss.onclose = () => {
       console.log('Connection closed');
     };
 
@@ -210,6 +208,6 @@ class Game {
       console.log(err);
     };
   };
-}
+};
 
 module.exports = Game;

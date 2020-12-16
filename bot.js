@@ -1,16 +1,13 @@
 const { HeroType } = require('./model/hero');
 const { AbilityType } = require('./model/abilites');
 const { State } = require('./model/state');
+const { Map } = require('./model/map');
+const { Parameters } = require('./model/parameters');
+const { Teams } = require('./model/teams');
 
-const { Map } = require('./model/map.js');
-const { Parameters } = require('./model/parameters.js');
-const { Teams } = require('./model/teams.js');
-
-
-let game_map =null;
+let game_map = null;
 let game_params = null;
 let game_teams = null;
-
 
 const Bot = (game, game_teams, game_params, game_map) => {
   try {
@@ -19,8 +16,9 @@ const Bot = (game, game_teams, game_params, game_map) => {
       const state = new State(game, game_teams, game_params);
       const my_buildings = state.my_buildings();
       const my_squads = state.my_squads();
+
       // сортируем по остаточному пути
-      my_squads.sort(function (a, b) {
+      my_squads.sort((a, b) => {
         if (a.way.left > b.way.left) {
           return 1;
         }
@@ -31,44 +29,41 @@ const Bot = (game, game_teams, game_params, game_map) => {
       });
 
       const enemy_buildings = state.enemy_buildings();
-
       const enemy_squads = state.enemy_squads();
-
       const neutral_buildings = state.neutral_buildings();
       const forges_buildings = state.forges_buildings();
-      /* Играем за мага */
 
+      /* Играем за мага */
       if (game_teams.my_her.hero_type === HeroType.Mag) {
         // проверяем доступность абилки Обмен башнями
         if (state.ability_ready(AbilityType[6])) {
           // если враг применил абилку обмен башнями
           const build_exchange = state.enemy_active_abilities(AbilityType[6]);
-          if (build_exchange.length > 0)
+          if (build_exchange.length > 0
+            || (my_buildings[0] && my_buildings[0].creeps_count < 10))
             process.send(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id));
-          else if (my_buildings[0] && my_buildings[0].creeps_count < 10)
-            process.send(game_teams.my_her.exchange(enemy_buildings[0].id, my_buildings[0].id))
         }
         // проверяем доступность абилки Чума
         if (state.ability_ready(AbilityType[5])) {
           // для эффективности применяем ближе к башне
           if (my_squads.length > 1) {
-            //сколько тиков первому отряду осталось до башни
+            // сколько тиков первому отряду осталось до башни
             const left_to_aim = my_squads[0].way.left / my_squads[0].speed;
             // если первый отряд находится в зоне инициализации абилки
             const plague_parameters = game_params.get_ability_parameters(AbilityType[5]);
-            if (plague_parameters.cast_time + 30 > left_to_aim)
-              process.send(game_teams.my_her.plague(enemy_buildings[0].id))
+            if (plague_parameters.cast_time + 30 > left_to_aim
+              && enemy_buildings[0] && enemy_buildings[0].id)
+              process.send(game_teams.my_her.plague(enemy_buildings[0].id));
           }
         }
         // атакуем башню противника
         my_buildings.forEach((my_building) => {
           if (my_building.creeps_count > my_building.level.player_max_count)
-             process.send(game_teams.my_her.move(my_building.id, enemy_buildings[0].id, 1))
+            process.send(game_teams.my_her.move(my_building.id, enemy_buildings[0].id, 1));
         })
       }
 
       /* Играем за рунного кузнеца */
-
       if (game_teams.my_her.hero_type === HeroType.BlackSmith) {
         // Проверяем доступность абилки Щит
         if (state.ability_ready(AbilityType[7]))
@@ -78,9 +73,8 @@ const Bot = (game, game_teams, game_params, game_map) => {
         if (enemy_squads.length > 4)
           if (state.ability_ready(AbilityType[4])) {
             location = game_map.get_squad_center_position(enemy_squads[2]);
-            process.send(game_teams.my_her.area_damage(location))
+            process.send(game_teams.my_her.area_damage(location));
           }
-
         // Upgrade башни
         if (my_buildings[0].level.id < game_params.tower_levels.length - 1) {
           // Если хватает стоимости на upgrade
@@ -90,7 +84,6 @@ const Bot = (game, game_teams, game_params, game_map) => {
             my_buildings[0].creeps_count -= update_coast;
           }
         }
-
         // Атакуем башню противника
         // определяем расстояние между башнями
         const distance = game_map.towers_distance(my_buildings[0].id, enemy_buildings[0].id);
@@ -106,26 +99,23 @@ const Bot = (game, game_teams, game_params, game_map) => {
           const grow_creeps = ticks / enemy_buildings[0].level.creep_creation_time;
           enemy_creeps = enemy_buildings[0].creeps_count + grow_creeps;
           if (enemy_creeps >= enemy_buildings[0].level.player_max_count)
-            enemy_creeps = enemy_buildings[0].level.player_max_count
+            enemy_creeps = enemy_buildings[0].level.player_max_count;
         }
         // определяем количество крипов с учетом бонуса защиты
         const enemy_defence = enemy_creeps * (1 + enemy_buildings[0].DefenseBonus);
         // если получается в моей башне крипов больше + 10 на червя - идем на врага всей толпой
         if (enemy_defence + 10 < my_buildings[0].creeps_count)
-          process.send(game_teams.my_her.move(my_buildings[0].id, enemy_buildings[0].id, 1))
+          process.send(game_teams.my_her.move(my_buildings[0].id, enemy_buildings[0].id, 1));
       }
 
       /* Играем за воина */
-
       if (game_teams.my_her.hero_type === HeroType.Warrior) {
         // проверяем доступность абилки Крик
         if (state.ability_ready(AbilityType[3]))
           process.send(game_teams.my_her.growl(enemy_buildings[0].id));
-
         // атака сразу используя абилку Берсерк
         if (my_buildings[0].creeps_count > 16)
           process.send(game_teams.my_her.move(my_buildings[0].id, enemy_buildings[0].id, 1));
-
         // проверяем доступность абилки Берсерк
         if (state.ability_ready(AbilityType[2])) {
           // для эффективности повышаем площадь, применяем на 5 отрядах
@@ -136,7 +126,7 @@ const Bot = (game, game_teams, game_params, game_map) => {
             const berserk_parameters = game_params.get_ability_parameters(AbilityType[2]);
             if (berserk_parameters.cast_time + 50 > left_to_aim) {
               location = game_map.get_squad_center_position(my_squads[2]);
-              process.send(game_teams.my_her.berserk(location))
+              process.send(game_teams.my_her.berserk(location));
             }
           }
         }
@@ -151,18 +141,17 @@ const Bot = (game, game_teams, game_params, game_map) => {
     }
   }
   catch (e) {
-     console.log('error',e)
+    console.log('error', e);
   } finally {
     process.send('end');
   }
 };
 
-  process.on('message', async (game) => {
-    if(game.initial) {
-     game_map = new Map(game.data);  // карта игрового мира
+process.on('message', async (game) => {
+  if (game.initial) {
+    game_map = new Map(game.data);  // карта игрового мира
     game_params = new Parameters(game.data);  // параметры игры
-     game_teams = new Teams(game.data);  // моя команда
-    }
-    else
-    await Bot(game.data, game_teams, game_params,game_map);
-  });
+    game_teams = new Teams(game.data);  // моя команда
+  } else
+    await Bot(game.data, game_teams, game_params, game_map);
+});
