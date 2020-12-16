@@ -10,14 +10,14 @@ class Way {
 class Squad {
   // Состояние отрядов. Передается в игровом стейте
   constructor(squad) {
-    this.id = squad["Id"];  // идентификатор отряда
-    this.from_id = squad["FromId"];  // откуда вышел
-    this.to_id = squad["ToId"];  // куда идет
-    this.player_color = squad["PlayerColor"];  // кому принадлежит
-    this.creeps_count = squad["CreepsCount"];  // сколько крипов в отряде
-    this.speed = squad["Speed"];  // скорость передвижения
-    this.way = new Way(squad["Way"]["Total"], squad["Way"]["Traveled"]);  // путь отряда
-    this.buff = squad["BuffMask"];  // побитовая маска - каждый байт - крип, в каждом байте бит соответствует бафу
+    this.id = squad.Id;  // идентификатор отряда
+    this.from_id = squad.FromId;  // откуда вышел
+    this.to_id = squad.ToId;  // куда идет
+    this.player_color = squad.PlayerColor;  // кому принадлежит
+    this.creeps_count = squad.CreepsCount;  // сколько крипов в отряде
+    this.speed = squad.Speed;  // скорость передвижения
+    this.way = new Way(squad.Way.Total, squad.Way.Traveled);  // путь отряда
+    this.buff = squad.BuffMask;  // побитовая маска - каждый байт - крип, в каждом байте бит соответствует бафу
     // - берсерк 0, чума 1, убийство червяком -2
   }
 }

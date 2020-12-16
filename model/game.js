@@ -129,8 +129,8 @@ class Game {
         botPlayerChangeColor();
 
         // Передача боту параметров игры
-        this.game_parameters.json["HeroType"] = this.hero_type;
-        this.game_parameters.json["PlayerColor"] = player_color;
+        this.game_parameters.json.HeroType = this.hero_type;
+        this.game_parameters.json.PlayerColor = player_color;
       }
 
       if (input_msg.msg_type === 10) {
@@ -142,7 +142,7 @@ class Game {
         });
 
         // Передача боту параметров игры
-        this.game_parameters.json["Teams"] = input_msg.json["AllPlayersConnectedArgs"]["Teams"];
+        this.game_parameters.json.Teams = input_msg.json.AllPlayersConnectedArgs.Teams;
         let msg_bytes = this.game_parameters.json;
         this.process.send({ data: msg_bytes, initial: true });
       }
@@ -182,7 +182,7 @@ class Game {
           console.log("IN <<< Game tick: " + input_msg.json.GameStateArgs.Tick.toString());
           // Если бот готов, отправляем ему стейт
           this.bot_ready = false;
-          let msg_bytes = input_msg.json["GameStateArgs"]['State'];
+          let msg_bytes = input_msg.json.GameStateArgs.State;
           await this.process.send({ data: msg_bytes, initial: false });
           if (!this.message_listener_is_active) {
             await get_command();

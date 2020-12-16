@@ -6,21 +6,21 @@ class Parameters {
     // Класс, предоставляющий доступ к параметрам игры
     constructor(game) {
         let parameters = game;
-        parameters = parameters["ResponseGameParametersArgs"]["Parameters"];
+        parameters = parameters.ResponseGameParametersArgs.Parameters;
         // максимальная продолжительность игры в тиках
-        this.duration = parameters["Duration"];
+        this.duration = parameters.Duration;
         // защита башен по умолчанию
-        this.default_defence_parameters = parameters["DefaultDefenseParameter"];
+        this.default_defence_parameters = parameters.DefaultDefenseParameter;
         // уровни башен
         this.tower_levels = [];
-        for (let tower in parameters["Towers"]) {
+        for (let tower in parameters.Towers) {
             this.tower_levels = [...this.tower_levels, new TowerLevelParameters(+tower,
-                parameters["Towers"][tower])];
+                parameters.Towers.tower)];
         }
         // параметры кузницы
-        this.forge = new ForgeParameters(parameters["Forges"]);
+        this.forge = new ForgeParameters(parameters.Forges);
         // параметры крипов
-        this.creep = new CreepParameters(parameters["Creeps"]);
+        this.creep = new CreepParameters(parameters.Creeps);
         // параметры абилок
         this.abilities = [];
         parameters.AbilitiesParameters.abilities.forEach((ability) => {
@@ -28,7 +28,7 @@ class Parameters {
             this.abilities = [...this.abilities, new AbilityParameters(ability)];
         });
         this.game_events = [];
-        parameters["GameEventsParameters"].forEach((game_event) =>
+        parameters.GameEventsParameters.forEach((game_event) =>
             this.game_events = [...this.game_events, new GameEventParameters(game_event)]
         )
     }
