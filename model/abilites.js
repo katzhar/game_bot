@@ -22,9 +22,9 @@ const AbilityInputType = [
 
 class Ability {
   constructor(Ability) {
-    this.ability = AbilityType[Ability.Ability]; //тип абилки
+    this.ability = AbilityType[Ability.Ability]; // тип абилки
     if (Ability.TargetTowerId)
-      this.target_tower_id = Ability.TargetTowerId; //башня к которой применена (для input type 2)
+      this.target_tower_id = Ability.TargetTowerId; // башня к которой применена (для input type 2)
     if (Ability.FirstTargetTowerId)
       this.first_target_tower_id = Ability.FirstTargetTowerId;  // башня к которой применена (для input type 3)
     if (Ability.SecondTargetTowerId)
@@ -42,7 +42,7 @@ class Ability {
 }
 
 class AbilityParameters {
-  /* Класс предоставляющий праматеры абилок по умолчанию, которые передаются в игровых параметрах при
+  /* Класс, предоставляющий праматеры абилок по умолчанию, которые передаются в игровых параметрах при
   инициализации игры */
 
   constructor(params) {
@@ -64,10 +64,8 @@ class AbilityParameters {
 }
 
 class GameEventParameters {
-  /* 
-  Класс предоставляющий праматеры глобальных событий игры,
-  которые передаются в игровых параметрах при инициализации игры
-  */
+  /* Класс, предоставляющий праматеры глобальных событий игры,
+  которые передаются в игровых параметрах при инициализации игры */
 
   constructor(params) {
     // с какого тика начинается

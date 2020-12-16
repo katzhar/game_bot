@@ -9,7 +9,6 @@ class ParentsMessage {
     const compressed = await gzip(this.json);
     return compressed.toString('base64');
   }
-
   to_string = () => {
     return (JSON.stringify(this.json));
   }

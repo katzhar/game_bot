@@ -9,7 +9,7 @@ class PLayer {
   /* Класс с необходимой информацией об иргроках */
   constructor(player_color, hero_type) {
     this.player_color = player_color;
-    this.hero_type = hero_type
+    this.hero_type = hero_type;
   }
 }
 
@@ -71,7 +71,7 @@ class Teams {
     this.teams.forEach((team) => {
       team.Players.forEach((player) => {
         if (team.TeamId === team_id)
-          result = [...result, player.PlayerColor]
+          result = [...result, player.PlayerColor];
       })
     });
     return result;

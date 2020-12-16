@@ -15,7 +15,7 @@ class Parameters {
         this.tower_levels = [];
         for (let tower in parameters["Towers"]) {
             this.tower_levels = [...this.tower_levels, new TowerLevelParameters(+tower,
-                parameters["Towers"][tower])]
+                parameters["Towers"][tower])];
         }
         // параметры кузницы
         this.forge = new ForgeParameters(parameters["Forges"]);
@@ -25,11 +25,11 @@ class Parameters {
         this.abilities = [];
         parameters.AbilitiesParameters.abilities.forEach((ability) => {
             // параметры глобальных игровых событий
-            this.abilities = [...this.abilities, new AbilityParameters(ability)]
+            this.abilities = [...this.abilities, new AbilityParameters(ability)];
         });
         this.game_events = [];
         parameters["GameEventsParameters"].forEach((game_event) =>
-            this.game_events = [...this.game_events, new GameEventParameters(game_event)],
+            this.game_events = [...this.game_events, new GameEventParameters(game_event)]
         )
     }
 

@@ -78,7 +78,7 @@ class Map {
         return res;
       }
     }
-    return { "x": 0, "y": 0 }
+    return { "x": 0, "y": 0 };
   };
 
   get_nearest_towers = (from_id, towers) => {
@@ -116,6 +116,6 @@ class Map {
         }
     })
   }
-}
+};
 
 module.exports.Map = Map;

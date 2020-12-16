@@ -1,7 +1,7 @@
 const { Ability } = require('./abilites');
 const { Building, BuildingType } = require('./buildings');
 const { Squad } = require('./squads');
-const { Cooldown } = require('./cooldowns')
+const { Cooldown } = require('./cooldowns');
 
 class State {
   /* Класс, предоставляющий доступ к состоянию игры */
@@ -33,6 +33,7 @@ class State {
     this.state.CooldownState.forEach((cooldown) => {
       this.cooldowns = [...this.cooldowns, new Cooldown(cooldown)];
     });
+
     // глобальный бафф который происходит побитовая маска
     this.global_buffs_mask = this.state.GlobalBuffsMask;
 
@@ -45,7 +46,7 @@ class State {
       if (team_colors.length > 0) {
         this.buildings = this.buildings.filter((x) => {
           x.type !== BuildingType[2]
-            && team_colors.includes(x.player_color)
+            && team_colors.includes(x.player_color);
         });
         this.buildings.forEach((building) => {
           building.add_defence(parameters.forge.defence_bonus);
@@ -63,7 +64,7 @@ class State {
   enemy_buildings = () => {
     // Вражеские здания
     return this.buildings.filter(x => !this.__my_team_players_color.includes(x.player_color)
-      && x.player_color !== 0 && x.type === BuildingType[1])
+      && x.player_color !== 0 && x.type === BuildingType[1]);
   };
 
   neutral_buildings = () => {
@@ -97,7 +98,7 @@ class State {
     // Активные абилки примененные врагом
     if (ability) {
       return this.abilities.filter((x) => {
-        !this.__my_team_players_color.includes(x.player_color) && x.ability === ability
+        !this.__my_team_players_color.includes(x.player_color) && x.ability === ability;
       });
     } else {
       return this.abilities.filter((x) =>

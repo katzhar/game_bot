@@ -1,9 +1,9 @@
 const { HeroType } = require('./model/hero');
 const { AbilityType } = require('./model/abilites');
 const { State } = require('./model/state');
-const { Map } = require('./model/map.js');
-const { Parameters } = require('./model/parameters.js');
-const { Teams } = require('./model/teams.js');
+const { Map } = require('./model/map');
+const { Parameters } = require('./model/parameters');
+const { Teams } = require('./model/teams');
 
 let game_map = null;
 let game_params = null;
@@ -30,7 +30,6 @@ const Bot = (game, game_teams, game_params, game_map) => {
 
       const enemy_buildings = state.enemy_buildings();
       const enemy_squads = state.enemy_squads();
-
       const neutral_buildings = state.neutral_buildings();
       const forges_buildings = state.forges_buildings();
 
