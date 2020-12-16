@@ -1,9 +1,9 @@
 const Game = require('./model/game');
 const { ArgumentParser } = require('argparse');
 
-const IP = 'wss://ift.gameapi.it-god.ru';
-const USERID = 'USERID';
-const BOTID = 'BOTID';
+const IP = 'wss://gameapi.it-god.ru';
+const USERID = 'USER_ID';
+const BOTID = 'BOT_ID';
 
 if (typeof require !== 'undefined' && require.main === module) {
     const parser = new ArgumentParser({
